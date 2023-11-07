@@ -29,13 +29,17 @@ document.onreadystatechange = async function() {
 
         for (let poki of poke.results)
         {
-            let pokeData = await fetchPokemon(poki.url)
-            console.log(pokeData)
-            let newElem = document.createElement("img")
-            newElem.alt = pokeData.name
-            newElem.src = sprite + `${pokeData.id}.png`;
+            const pokeData = await fetchPokemon(poki.url)
+            let newPoke = document.createElement("a")
+            newPoke.classList.add("pokemon")
 
-            dex.appendChild(newElem)
+            let pokeSprite = document.createElement("img")
+            pokeSprite.alt = pokeData.name
+            pokeSprite.src = sprite + `${pokeData.id}.png`;
+            pokeSprite.height = 156
+            newPoke.appendChild(pokeSprite)           
+
+            dex.appendChild(newPoke)
         }
     }
 }
