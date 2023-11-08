@@ -1,0 +1,18 @@
+---
+import Layout from "../layouts/Layout.astro"
+import { pokemons } from "../data/pokemons"
+
+const capitalize = ([first, ...rest], lowerRest = false) => first.toUpperCase() + (lowerRest ? rest.join('').toLowerCase() : rest.join(''));
+
+const { pokemon } = Astro.params
+
+const info = pokemons.find(p => p.id === pokemon)
+
+if (!info) {
+  return Astro.redirect("/404")
+}
+---
+
+<Layout title={capitalize(info.id)}>
+  <h1 class="text-9xl text-white">{capitalize(info.id)}</h1>
+</Layout>
