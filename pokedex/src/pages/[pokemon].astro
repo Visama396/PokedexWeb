@@ -2,17 +2,27 @@
 import Layout from "../layouts/Layout.astro"
 import { pokemons } from "../data/pokemons"
 
-const capitalize = ([first, ...rest], lowerRest = false) => first.toUpperCase() + (lowerRest ? rest.join('').toLowerCase() : rest.join(''));
-
 const { pokemon } = Astro.params
 
 const info = pokemons.find(p => p.id === pokemon)
 
 if (!info) {
-  return Astro.redirect("/404")
+    return Astro.redirect("/404")
 }
+
+const pokeData = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${info.id}`).then(response => response.json())
+
+console.log(pokeData)
 ---
 
-<Layout title={capitalize(info.id)}>
-  <h1 class="text-9xl text-white">{capitalize(info.id)}</h1>
+<Layout title={info.title}>
+    <header>
+        <h1 class="font-black text-6xl">{info.title}</h1>
+    </header>
+
+    <section>
+        <picture>
+            <img src={info.img} alt={info.id} class="" width="200px">
+        </picture>
+    </section>
 </Layout>

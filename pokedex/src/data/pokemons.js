@@ -35,8 +35,8 @@ export const pokemons = [
     img: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png'
   },
   {
-    id: 'squirt',
-    title: 'Squirt',
+    id: 'wartortle',
+    title: 'Wartortle',
     img: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/8.png'
   },
   {

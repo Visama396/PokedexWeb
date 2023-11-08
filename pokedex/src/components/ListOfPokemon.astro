@@ -1,15 +1,18 @@
 ---
 import PokemonItem from "./PokemonItem.astro";
+import { capitalize } from "../utils/capitalize"
 
-import { pokemons } from "../data/pokemons"
+const getPokemonId = (url) => url.split('/').at(-2)
+
+const pokedex = await fetch(`https://pokeapi.co/api/v2/pokemon-species/`).then(response => response.json())
 ---
 
 <section class="grid grid-cols-2 px-4 md:grid-cols-3 lg:grid-cols-5 gap-3">
   {
-    pokemons.map(({ id, title, img }) => {
+    pokedex.results.map(({ name, url }) => {
       return (
         <div>
-          <PokemonItem id={id} title={title} img={img} />
+          <PokemonItem id={name} title={capitalize(name)} img={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${getPokemonId(url)}.png`} />
         </div>
       )
     })
