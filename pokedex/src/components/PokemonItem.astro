@@ -7,7 +7,7 @@ export interface Props {
 
 const {id, title, img} = Astro.props
 ---
-<a class="hover:scale-105 bg-zinc-200 inline-block transition-all hover:contrast-125 hover:shadow-2xl rounded-lg" href={`/${id}`}>
-  <img class="h-full object-cover w-full max-w-full" src={img} alt={id}>
-  <h2 class="font-black text-center">{title}</h2>
+<a class="hover:scale-105 bg-zinc-200 inline-block text-center transition-all hover:contrast-125 hover:shadow-2xl rounded-lg w-full h-full" href={`/${id}`}>
+  <img class="object-cover max-w-full" src={img} alt={id}>
+  <h2 class="font-black">{title}</h2>
 </a>

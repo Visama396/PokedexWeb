@@ -12,7 +12,7 @@ const pokedex = await fetch(`https://pokeapi.co/api/v2/pokemon-species/`).then(r
     pokedex.results.map(({ name, url }) => {
       return (
         <div>
-          <PokemonItem id={name} title={capitalize(name)} img={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${getPokemonId(url)}.png`} />
+          <PokemonItem id={name} title={capitalize(name)} img={`https://play.pokemonshowdown.com/sprites/ani/${name}.gif`} />
         </div>
       )
     })
