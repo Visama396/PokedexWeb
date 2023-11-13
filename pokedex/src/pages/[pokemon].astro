@@ -1,28 +1,23 @@
 ---
 import Layout from "../layouts/Layout.astro"
-import { pokemons } from "../data/pokemons"
 
 const { pokemon } = Astro.params
 
-const info = pokemons.find(p => p.id === pokemon)
+const pokeData = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon}`).then(response => response.json()).catch(err => console.error("Pokémon not found. Cause: Name incorrect."))
 
-if (!info) {
-    return Astro.redirect("/404")
-}
+if (!pokeData) return Astro.redirect("/404")
 
-const pokeData = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${info.id}`).then(response => response.json())
-
-console.log(pokeData)
+console.log(pokeData.types)
 ---
 
-<Layout title={info.title}>
+<Layout title="Gola">
     <header>
-        <h1 class="font-black text-6xl">{info.title}</h1>
+        <h1 class="font-black text-6xl">Hola</h1>
     </header>
 
     <section>
         <picture>
-            <img src={info.img} alt={info.id} class="" width="200px">
+            <img src={`https://play.pokemonshowdown.com/sprites/ani/${pokemon}.gif`} alt="{info.id}" class="object-cover">
         </picture>
     </section>
 </Layout>
