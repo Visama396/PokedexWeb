@@ -1,5 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro"
+import { capitalize } from "../utils/capitalize"
 
 const { pokemon } = Astro.params
 
@@ -10,14 +11,19 @@ if (!pokeData) return Astro.redirect("/404")
 console.log(pokeData.types)
 ---
 
-<Layout title="Gola">
-    <header>
-        <h1 class="font-black text-6xl">Hola</h1>
-    </header>
-
-    <section>
+<Layout title={pokemon}>
+    <nav>
+        <a href="/" class="text-white px-4 py-4">Home</a>
+    </nav>
+    <section class="grid grid-rows-3 px-4 py-4">
+        <header class="grid grid-rows-2 grid-cols-2">
+            <h1 class="font-black text-white" style={`text-shadow: 0px 0px 10px rgba(255,255,255,0.7); view-transition-name: title-${pokemon}`}>{capitalize(pokemon)}</h1>
+        </header>
         <picture>
-            <img src={`https://play.pokemonshowdown.com/sprites/ani/${pokemon}.gif`} alt="{info.id}" class="object-cover">
+            <img src={`https://play.pokemonshowdown.com/sprites/ani/${pokemon}.gif`} alt="{info.id}" class="object-cover" style={`view-transition-name: sprite-${pokemon};`}>
         </picture>
+        <section>
+
+        </section>
     </section>
 </Layout>

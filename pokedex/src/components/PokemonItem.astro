@@ -8,8 +8,14 @@ export interface Props {
 const {id, title, img} = Astro.props
 
 const data = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`).then(response => response.json()).catch(err => console.error("Pokémon not found. Cause: Name incorrect."))
+console.log(data.types.length)
+
 ---
-<a class="grid justify-center place-content-end transition-all rounded-lg w-full h-full pb-4 gap-2 hover:scale-105 hover:contrast-125 hover:shadow-2xl" style={`background-color: var(--${data.types[0].type.name}); box-shadow: 0px 0px 10px var(--${data.types[0].type.name})`} href={`/${id}`}>
-  <img class="object-cover mx-auto" src={img} alt={id}>
-  <h2 class="font-black text-center">{title}</h2>
+<a 
+  class="grid justify-center place-content-end transition-all rounded-lg w-full h-full pb-4 gap-2 hover:scale-105 hover:contrast-125 hover:shadow-2xl" 
+  style={(data.types.length == 1)? `background-color: var(--${data.types[0].type.name})`: `background: linear-gradient(135deg, var(--${data.types[0].type.name}), var(--${data.types[1].type.name}))`} 
+  href={`/${id}`}>
+  
+    <img class="object-cover mx-auto" src={img} alt={id} style={`view-transition-name: sprite-${id};`}>
+    <h1 class="font-black text-center text-white" style={`view-transition-name: title-${id}`}>{title}</h1>
 </a>
