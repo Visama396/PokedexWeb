@@ -12,6 +12,7 @@ import ListOfPokemon from '../components/ListOfPokemon.astro';
 </Layout>
 
 <style is:global>
+	@import url('https://fonts.googleapis.com/css2?family=Nova+Mono&display=swap');
 	:root {
 		--normal: #A8A77A;
 		--fire: #EE8130;
@@ -31,5 +32,9 @@ import ListOfPokemon from '../components/ListOfPokemon.astro';
 		--dark: #705746;
 		--steel: #B7B7CE;
 		--fairy: #D685AD;
+	}
+
+	.pokemon {
+		font-family: 'Nova Mono', monospace;
 	}
 </style>
