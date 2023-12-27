@@ -1,0 +1,1 @@
+export const getGenus = (genera, language) => genera.filter(genus => genus.language.name === language)[0]

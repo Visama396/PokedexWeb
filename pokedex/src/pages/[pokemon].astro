@@ -1,27 +1,53 @@
 ---
+import type { Code } from "astro:components"
 import Layout from "../layouts/Layout.astro"
 import { capitalize } from "../utils/capitalize"
+import { getDexNumber } from "../utils/getDexNumber"
+import { getGenus } from "../utils/getPokemonGenus"
 
 const { pokemon } = Astro.params
 
 const pokeData = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon}`).then(response => response.json()).catch(err => console.error("Pokémon not found. Cause: Name incorrect."))
 
 if (!pokeData) return Astro.redirect("/404")
+
+const pokeSpecies = await fetch(pokeData.species.url).then(response => response.json())
+
+//console.log(pokeData)
+//console.log(pokeSpecies)
+//const getFlavorText = (language, game) => pokeSpecies.flavor_text_entries.filter(text => text.language.name == language && text.version.name == game)
 ---
 
 <Layout title={pokemon}>
     <nav>
         <a href="/" class="text-white px-4 py-4">Home</a>
     </nav>
-    <section class="grid grid-rows-3 px-4 py-4">
-        <header class="grid grid-rows-2 grid-cols-2">
-            <h1 class="font-black text-white" style={`text-shadow: 0px 0px 10px rgba(255,255,255,0.7); view-transition-name: title-${pokemon}`}>{capitalize(pokemon)}</h1>
-        </header>
-        <picture>
-            <img src={`https://play.pokemonshowdown.com/sprites/ani/${pokemon}.gif`} alt={pokemon} class="object-cover" style={`view-transition-name: sprite-${pokemon};`}>
-        </picture>
+    <section class="grid grid-rows-[max-content_1fr] px-4 py-4 justify-center">
         <section>
+            <h1 class="font-black text-white text-6xl text-center" style={`text-shadow: 0px 0px 10px rgba(255,255,255,0.7);`}>{capitalize(pokemon)}</h1>
+        </section>
+        <section class="grid grid-cols-3 gap-4 py-10">
+            <picture>
+                <img src={pokeData.sprites.other.home.front_default} width="350px" alt={pokemon} class="object-cover">
+            </picture>
+            <section>
+                <h2 class="text-white text-4xl font-black">Pokédex Data</h2>
+                <section class="grid grid-cols-[max-content_1fr] grid-rows-[max-content_1fr] text-white">
+                    <p class="font-black text-right mr-2">National N°</p><p>{getDexNumber(pokeData.id)}</p>
+                    <p class="font-black text-right mr-2">Type</p><p></p>
+                    <p class="font-black text-right mr-2">Species</p><p>{(getGenus(pokeSpecies.genera, "en") == undefined)? "" : getGenus(pokeSpecies.genera, "en").genus}</p>
+                    <p class="font-black text-right mr-2">Height</p><p>{pokeData.height/10} m</p>
+                    <p class="font-black text-right mr-2">Weight</p><p>{pokeData.weight/10} kg</p>
+                    <p class="font-black text-right mr-2">Abilities</p><section><p>Overgrow</p><p>Chlorophyll (Hidden ability)</p></section>
+                    <p class="font-black text-right mr-2">Local N°</p><section><p>0001</p><p>0226</p><p>0001</p><p>0231</p><p>0080</p><p>0001</p><p>0068</p><p>0164</p></section>
+                </section>
+            </section>
+            <section>
+                <h2 class="text-white text-4xl font-black">Training</h2>
+                <section class="grid grid-cols-2 grid-rows-[max-content_1fr] text-white">
 
+                </section>
+            </section>
         </section>
     </section>
 </Layout>

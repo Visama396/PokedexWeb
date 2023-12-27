@@ -1,16 +1,100 @@
 ---
 import PokemonItem from "./PokemonItem.astro";
 import { capitalize } from "../utils/capitalize"
+import { getIdFromUrl } from "../utils/getIdFromUrl"
 
 const pokedex = await fetch(`https://pokeapi.co/api/v2/pokemon/`).then(response => response.json())
 ---
 
-<section class="grid grid-cols-2 px-4 md:grid-cols-3 lg:grid-cols-5 gap-3" style="grid-auto-rows: 1fr">
+<section id="pokedex" class="grid grid-cols-2 px-4 md:grid-cols-3 lg:grid-cols-5 gap-3" style="grid-auto-rows: 1fr" data-next={pokedex.next}>
   {
-    pokedex.results.map(({ name }) => {
+    pokedex.results.map(({ name, url }) => {
       return (
-        <PokemonItem id={name} title={capitalize(name)} img={`https://play.pokemonshowdown.com/sprites/ani/${name}.gif`} />
+        <PokemonItem id={name} url={url} title={capitalize(name)} img={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${getIdFromUrl(url)}.png`} />
       )
     })
   }
 </section>
+
+<script is:inline>
+let isLoading = false
+let pokedex = document.querySelector("#pokedex")
+
+const capitalize = ([first, ...rest], lowerRest = false) => first.toUpperCase() + (lowerRest ? rest.join('').toLowerCase() : rest.join(''))
+
+async function addNewPokemon(pokemon) {
+  for (poke of pokemon) {
+    const data = await fetch(poke.url).then(response => response.json()).catch(err => console.error("Pokémon not found."))
+
+    let newPokemonElement = document.createElement("a")
+    newPokemonElement.classList.add("grid", "justify-center", "place-content-end", "transition-all", "rounded-lg", "w-full", "h-full", "pb-4", "gap-2", "hover:scale-105", "hover:shadow-2xl")
+    if (data.types.length == 1)
+      newPokemonElement.style.backgroundColor = "var(--"+data.types[0].type.name+")"
+    else
+      newPokemonElement.style.background = "linear-gradient(135deg, var(--"+data.types[0].type.name+"), var(--"+data.types[1].type.name+"))"
+
+    newPokemonElement.href = "/"+data.name
+
+    let pokemonSpriteElement = document.createElement("img")
+    pokemonSpriteElement.classList.add("object-cover", "mx-auto")
+    pokemonSpriteElement.src = data.sprites.other.home.front_default
+    pokemonSpriteElement.alt = data.name
+    newPokemonElement.appendChild(pokemonSpriteElement)
+
+    let pokemonNameElement = document.createElement("h1")
+    pokemonNameElement.classList.add("front-black", "text-center", "text-2xl", "text-white", "pokemon")
+    pokemonNameElement.innerText = capitalize(data.name)
+    newPokemonElement.appendChild(pokemonNameElement)
+
+    let pokemonTypesContainer = document.createElement("p")
+    pokemonTypesContainer.classList.add("text-center")
+    pokemonTypesContainer.style.fontWeight = "bold"
+
+    if (data.types.length == 1)
+    {
+      const typeOneElement = document.createElement("span")
+      typeOneElement.style.color = "var(--light-"+data.types[0].type.name+")"
+      typeOneElement.style.textShadow = "0 0 10px rgba(255,255,255,0.5)"
+      typeOneElement.innerText = data.types[0].type.name
+      pokemonTypesContainer.appendChild(typeOneElement)
+    } else {
+      const typeOneElement = document.createElement("span")
+      typeOneElement.style.color = "var(--light-"+data.types[0].type.name+")"
+      typeOneElement.style.textShadow = "0 0 8px rgba(255,255,255,0.5)"
+      typeOneElement.innerText = data.types[0].type.name
+      pokemonTypesContainer.appendChild(typeOneElement)
+      const divisor = document.createElement("span")
+      divisor.innerText = " · "
+      pokemonTypesContainer.appendChild(divisor)
+      const typeTwoElement = document.createElement("span")
+      typeTwoElement.style.color = "var(--light-"+data.types[1].type.name+")"
+      typeTwoElement.style.textShadow = "0 0 8px rgba(255,255,255,0.5)"
+      typeTwoElement.innerText = data.types[1].type.name
+      pokemonTypesContainer.appendChild(typeTwoElement)
+    }
+    newPokemonElement.appendChild(pokemonTypesContainer)
+    
+    pokedex.appendChild(newPokemonElement)
+  }
+}
+
+async function loadMorePokemon(url) {
+  const pokemon = await fetch(url).then(response => response.json())
+  pokedex.dataset.next = pokemon.next
+  await addNewPokemon(pokemon.results).then(() => isLoading = !isLoading)
+}
+
+// Listen to the event of scrolling to load more Pokémon reaching the end of the site
+window.onscroll = async (event) => {
+  let scrollY = window.scrollY
+  let innerHeight = window.innerHeight
+  let offsetHeight = document.body.offsetHeight
+  
+  if (scrollY + innerHeight > offsetHeight - 100) {
+    if (!isLoading) {
+      isLoading = !isLoading
+      await loadMorePokemon(pokedex.dataset.next)
+    }
+  }
+}
+</script>
