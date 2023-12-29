@@ -1,0 +1,8 @@
+---
+import { capitalize } from "../utils/capitalize";
+
+const { stats } = Astro.props
+
+let yield_stat = stats.filter(stat => stat.effort > 0)[0]
+---
+<p>{yield_stat.effort} <span class="ml-1">{capitalize(yield_stat.stat.name.replace("special-attack", "Sp. Atk").replace("special-defense", "Sp. Def").replace("-", " "))}</span></p>

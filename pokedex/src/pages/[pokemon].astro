@@ -5,6 +5,11 @@ import { capitalize } from "../utils/capitalize"
 import { getDexNumber } from "../utils/getDexNumber"
 import { getGenus } from "../utils/getPokemonGenus"
 
+import PokemonAbilities from "../components/PokemonAbilities.astro"
+import PokemonEntryNumbers from "../components/PokemonEntryNumbers.astro"
+import PokemonItem from "../components/PokemonItem.astro"
+import PokemonYield from "../components/PokemonYield.astro"
+
 const { pokemon } = Astro.params
 
 const pokeData = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon}`).then(response => response.json()).catch(err => console.error("Pokémon not found. Cause: Name incorrect."))
@@ -13,38 +18,66 @@ if (!pokeData) return Astro.redirect("/404")
 
 const pokeSpecies = await fetch(pokeData.species.url).then(response => response.json())
 
-//console.log(pokeData)
+console.log(pokeData.stats)
 //console.log(pokeSpecies)
 //const getFlavorText = (language, game) => pokeSpecies.flavor_text_entries.filter(text => text.language.name == language && text.version.name == game)
 ---
 
 <Layout title={pokemon}>
     <nav>
-        <a href="/" class="text-white px-4 py-4">Home</a>
+        <a href="/" class="inline-block p-4 text-white duration-500 ease-in-out hover:bg-slate-400">Home</a>
     </nav>
-    <section class="grid grid-rows-[max-content_1fr] px-4 py-4 justify-center">
+    <section class="grid grid-rows-[max-content_1fr] gap-y-8 px-4 justify-center text-white">
         <section>
-            <h1 class="font-black text-white text-6xl text-center" style={`text-shadow: 0px 0px 10px rgba(255,255,255,0.7);`}>{capitalize(pokemon)}</h1>
+            <h1 class="font-black text-6xl text-center" style={`text-shadow: 0px 0px 10px rgba(255,255,255,0.7);`}>{capitalize(pokemon)}</h1>
         </section>
-        <section class="grid grid-cols-3 gap-4 py-10">
+        <section class="grid xl:grid-cols-3 md:grid-cols-2 xl:gap-6 gap-2">
             <picture>
                 <img src={pokeData.sprites.other.home.front_default} width="350px" alt={pokemon} class="object-cover">
             </picture>
             <section>
-                <h2 class="text-white text-4xl font-black">Pokédex Data</h2>
-                <section class="grid grid-cols-[max-content_1fr] grid-rows-[max-content_1fr] text-white">
-                    <p class="font-black text-right mr-2">National N°</p><p>{getDexNumber(pokeData.id)}</p>
-                    <p class="font-black text-right mr-2">Type</p><p></p>
-                    <p class="font-black text-right mr-2">Species</p><p>{(getGenus(pokeSpecies.genera, "en") == undefined)? "" : getGenus(pokeSpecies.genera, "en").genus}</p>
-                    <p class="font-black text-right mr-2">Height</p><p>{pokeData.height/10} m</p>
-                    <p class="font-black text-right mr-2">Weight</p><p>{pokeData.weight/10} kg</p>
-                    <p class="font-black text-right mr-2">Abilities</p><section><p>Overgrow</p><p>Chlorophyll (Hidden ability)</p></section>
-                    <p class="font-black text-right mr-2">Local N°</p><section><p>0001</p><p>0226</p><p>0001</p><p>0231</p><p>0080</p><p>0001</p><p>0068</p><p>0164</p></section>
+                <h2 class="text-4xl mb-2 font-black">Pokédex Data</h2>
+                <section class="grid grid-cols-[max-content_1fr] grid-rows-[max-content_1fr] gap-y-1 gap-x-2">
+                    <p class="font-black text-right">National N°</p><p>{getDexNumber(pokeData.id)}</p>
+                    <p class="flex justify-end items-center font-black">Type</p><p class="flex gap-1">{(pokeData.types.length == 1)? <span class={"pill " + pokeData.types[0].type.name}>{pokeData.types[0].type.name}</span> : <span class={"pill " + pokeData.types[0].type.name}>{pokeData.types[0].type.name}</span><span class={"pill " + pokeData.types[1].type.name}>{pokeData.types[1].type.name}</span>}</p>
+                    <p class="font-black text-right">Species</p><p>{(getGenus(pokeSpecies.genera, "en") == undefined)? "Unknown" : getGenus(pokeSpecies.genera, "en").genus}</p>
+                    <p class="font-black text-right">Height</p><p>{pokeData.height/10} m</p>
+                    <p class="font-black text-right">Weight</p><p>{pokeData.weight/10} kg</p>
+                    <p class="flex justify-end items-center font-black">Abilities</p><PokemonAbilities abilities={pokeData.abilities} />
+                    <p class="flex justify-end items-center font-black ">Local N°</p><PokemonEntryNumbers entries={pokeSpecies.pokedex_numbers} />
+                </section>
+            </section>
+            <section class="grid justify-center xl:grid-cols-1 grid-cols-[max-content_1fr] xl:col-span-1 col-span-2 gap-2">
+                <section>
+                    <h2 class="text-4xl mb-2 font-black">Training</h2>
+                    <section class="grid grid-cols-2 grid-rows-[max-content_1fr] gap-y-1 gap-x-2">
+                        <p class="font-black text-right">EV yield</p><PokemonYield stats={pokeData.stats} />
+                        <p class="font-black text-right">Catch rate</p><p>{pokeSpecies.capture_rate}</p>
+                        <p class="font-black text-right">Base friendship</p><p>{pokeSpecies.base_happiness}</p>
+                        <p class="font-black text-right">Base exp.</p><p>{pokeData.base_experience}</p>
+                        <p class="font-black text-right">Growth rate</p><p>{capitalize(pokeSpecies.growth_rate.name).replace("-", " ")}</p>
+                    </section>
+                </section>
+                <section>
+                    <h2 class="text-4xl mb-2 font-black">Breeding</h2>
+                    <section class="grid grid-cols-[max-content_1fr] grid-rows-[max-content_1fr] gap-y-1 gap-x-2">
+                        <p class="font-black text-right">Egg groups</p><p>{(pokeSpecies.egg_groups.length == 1)? ((pokeSpecies.egg_groups[0].name == "no-eggs")? "Undiscovered" : <span>{capitalize(pokeSpecies.egg_groups[0].name)}</span>) : <span>{capitalize(pokeSpecies.egg_groups[0].name)}, </span><span>{capitalize(pokeSpecies.egg_groups[1].name)}</span>}</p>
+                        <p class="font-black text-right">Gender</p><p><span class="male">{(8-pokeSpecies.gender_rate)*12.5}% male</span>, <span class="female">{pokeSpecies.gender_rate*12.5}% female</span></p>
+                        <p class="font-black text-right">Egg Cycles</p><p>{pokeSpecies.hatch_counter} <span class="additional-info ml-1">({((pokeSpecies.hatch_counter-1) * 257)+1}-{pokeSpecies.hatch_counter * 257} steps)</span></p>
+                    </section>
+                </section>
+            </section>
+        </section>
+        <section class="grid md:grid-cols-2 xl:gap-6 gap-2">
+            <section>
+                <h2 class="text-4xl mb-2 font-black">Base stats</h2>
+                <section>
+
                 </section>
             </section>
             <section>
-                <h2 class="text-white text-4xl font-black">Training</h2>
-                <section class="grid grid-cols-2 grid-rows-[max-content_1fr] text-white">
+                <h2 class="text-4xl mb-2 font-black">Type defenses</h2>
+                <section>
 
                 </section>
             </section>

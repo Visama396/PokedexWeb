@@ -22,8 +22,136 @@ const { title } = Astro.props;
 	</body>
 </html>
 <style is:global>
+	@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+	:root {
+		--normal: #A8A77A;
+		--fire: #EE8130;
+		--water: #6390F0;
+		--electric: #F7D02C;
+		--grass: #7AC74C;
+		--ice: #96D9D6;
+		--fighting: #C22E28;
+		--poison: #A33EA1;
+		--ground: #E2BF65;
+		--flying: #A98FF3;
+		--psychic: #F95587;
+		--bug: #A6B91A;
+		--rock: #B6A136;
+		--ghost: #735797;
+		--dragon: #6F35FC;
+		--dark: #705746;
+		--steel: #B7B7CE;
+		--fairy: #D685AD;
+		--light-normal: #737373;
+		--light-fire: #D52100;
+		--light-water: #0080FF;
+		--light-electric: #C90;
+		--light-grass: #5CB737;
+		--light-ice: #0AF;
+		--light-fighting: #A84D3D;
+		--light-poison: #88447A;
+		--light-ground: #BF9926;
+		--light-flying: #556DFF;
+		--light-psychic: #FF227A;
+		--light-bug: #83901A;
+		--light-rock: #A59249;
+		--light-ghost: #5454B3;
+		--light-dragon: #4E38E9;
+		--light-dark: #573E31;
+		--light-steel: #8E8EA4;
+		--light-fairy: #E76DE7;
+	}
+
 	html {
-		font-family: system-ui, sans-serif;
+		font-family: 'Poppins', sans-serif;
 		background: #111;
+	}
+
+	.pill {
+		display: inline-block;
+		padding: .2rem .5rem;
+		background-color: var(--normal);
+		border-radius: 8px;
+	}
+
+	.pill.fire {
+		background-color: var(--fire);
+	}
+
+	.pill.water {
+		background-color: var(--water);
+	}
+
+	.pill.electric {
+		background-color: var(--electric);
+	}
+
+	.pill.grass {
+		background-color: var(--grass);
+	}
+
+	.pill.ice {
+		background-color: var(--ice);
+	}
+
+	.pill.fighting {
+		background-color: var(--fighting);
+	}
+
+	.pill.poison {
+		background-color: var(--poison);
+	}
+
+	.pill.ground {
+		background-color: var(--ground);
+	}
+
+	.pill.flying {
+		background-color: var(--flying);
+	}
+
+	.pill.psychic {
+		background-color: var(--psychic);
+	}
+
+	.pill.bug {
+		background-color: var(--bug);
+	}
+
+	.pill.rock {
+		background-color: var(--rock);
+	}
+
+	.pill.ghost {
+		background-color: var(--ghost);
+	}
+
+	.pill.dragon {
+		background-color: var(--dragon);
+	}
+
+	.pill.dark {
+		background-color: var(--dark);
+	}
+
+	.pill.steel {
+		background-color: var(--steel);
+	}
+
+	.pill.fairy {
+		background-color: var(--fairy);
+	}
+	
+	.additional-info {
+		color: grey;
+		font-size: .9rem;
+	}
+
+	.male {
+		color: #3273DC;
+	}
+
+	.female {
+		color: #FF6BCE;
 	}
 </style>

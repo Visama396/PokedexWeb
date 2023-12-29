@@ -1,0 +1,12 @@
+---
+import { getDexNumber } from "../utils/getDexNumber";
+import { capitalize } from "../utils/capitalize";
+const { entries } = Astro.props
+---
+<section>
+    {
+        entries.map(({entry_number, pokedex}) => {
+            if (pokedex.name != "national") return <p>{getDexNumber(entry_number)} <i class="ml-1 additional-info">({capitalize(pokedex.name).replaceAll("-", " ")})</i></p>
+        })
+    }
+</section>

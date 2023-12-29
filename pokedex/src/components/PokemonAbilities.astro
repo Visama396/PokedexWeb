@@ -1,0 +1,11 @@
+---
+import { capitalize } from "../utils/capitalize";
+const { abilities } = Astro.props
+---
+<section>
+    {
+        abilities.map(({ability, is_hidden}) => {
+            return <p>{capitalize(ability.name)} {(is_hidden)? <i class="ml-1 additional-info">(hidden ability)</i> : " " }</p>
+        })
+    }
+</section>
