@@ -1,0 +1,244 @@
+---
+import { capitalize } from "../utils/capitalize";
+const { pokemon, type1, type2 } = Astro.props
+
+let get_damage_relations_type1, get_damage_relations_type2
+let types = [
+    {
+        name: 'normal',
+        value: 1
+    },
+    {
+        name: 'fire',
+        value: 1
+    },
+    {
+        name: 'water',
+        value: 1
+    },
+    {
+        name: 'electric',
+        value: 1
+    },
+    {
+        name: 'plant',
+        value: 1
+    },
+    {
+        name: 'ice',
+        value: 1
+    },
+    {
+        name: 'fighting',
+        value: 1
+    },
+    {
+        name: 'poison',
+        value: 1
+    },
+    {
+        name: 'ground',
+        value: 1
+    },
+    {
+        name: 'flying',
+        value: 1
+    },
+    {
+        name: 'psychic',
+        value: 1
+    },
+    {
+        name: 'bug',
+        value: 1
+    },
+    {
+        name: 'rock',
+        value: 1
+    },
+    {
+        name: 'ghost',
+        value: 1
+    },
+    {
+        name: 'dragon',
+        value: 1
+    },
+    {
+        name: 'dark',
+        value: 1
+    },
+    {
+        name: 'steel',
+        value: 1
+    },
+    {
+        name: 'fairy',
+        value: 1
+    },
+]
+
+get_damage_relations_type1 = await fetch(`https://pokeapi.co/api/v2/type/${type1}`).then(response => response.json())
+//console.log(get_damage_relations_type1.damage_relations.double_damage_from)
+//console.log(get_damage_relations_type1.damage_relations.half_damage_from)
+//console.log(get_damage_relations_type1.damage_relations.no_damage_from)
+
+for (const type of get_damage_relations_type1.damage_relations.double_damage_from) {
+    for (const t of types) {
+        if (type.name == t.name) t.value *= 2
+    }
+    
+}
+
+for (const type of get_damage_relations_type1.damage_relations.half_damage_from) {
+    for (const t of types) {
+        if (type.name == t.name) t.value /= 2
+    }
+}
+
+for (const type of get_damage_relations_type1.damage_relations.no_damage_from) {
+    for (const t of types) {
+        if (type.name == t.name) t.value = 0
+    }
+}
+
+if (type2) {
+    get_damage_relations_type2 = await fetch(`https://pokeapi.co/api/v2/type/${type2}`).then(response => response.json())
+
+    for (const type of get_damage_relations_type2.damage_relations.double_damage_from) {
+        for (const t of types) {
+            if (type.name == t.name) t.value *= 2
+        }
+    }
+
+    for (const type of get_damage_relations_type2.damage_relations.half_damage_from) {
+        for (const t of types) {
+            if (type.name == t.name) t.value /= 2
+        }
+    }
+
+    for (const type of get_damage_relations_type2.damage_relations.no_damage_from) {
+        for (const t of types) {
+            if (type.name == t.name) t.value = 0
+        }
+    }
+}
+
+for (const t of types) {
+    //console.log(t)
+}
+---
+<section>
+    <h2 class="text-4xl mb-2 font-black">Type defenses</h2>
+    <p>The effectiveness of each type on {capitalize(pokemon)}</p>
+    <section class="grid xl:grid-cols-9 grid-cols-6 xl:gap-2 gap-4">
+        <div class="type-effective">
+            <picture>
+                <img src="/normal.svg" />
+            </picture>
+            <p class={`font-black text-center ${(types[0].value < 1)? 'text-[red]' : ((types[0].value > 1)? 'text-[green]' : '')}`}>{(types[0].value == 0.25)? <span>&frac14;</span> : ((types[0].value == 0.5)? <span>&frac12;</span>: ((types[0].value > 1)? <span>{types[0].value}</span> : <span></span>))}</p>
+        </div>
+        <div class="type-effective">
+            <picture>
+                <img src="/fire.svg" />
+            </picture>
+            <p class={`font-black text-center ${(types[1].value < 1)? 'text-[red]' : ((types[1].value > 1)? 'text-[green]' : '')}`}>{(types[1].value == 0.25)? <span>&frac14;</span> : ((types[1].value == 0.5)? <span>&frac12;</span>: ((types[1].value > 1)? <span>{types[1].value}</span> : <span></span>))}</p>
+        </div>
+        <div class="type-effective">
+            <picture>
+                <img src="/water.svg" />
+            </picture>
+            <p class={`font-black text-center ${(types[2].value < 1)? 'text-[red]' : ((types[2].value > 1)? 'text-[green]' : '')}`}>{(types[2].value == 0.25)? <span>&frac14;</span> : ((types[2].value == 0.5)? <span>&frac12;</span>: ((types[2].value > 1)? <span>{types[2].value}</span> : <span></span>))}</p>
+        </div>
+        <div class="type-effective">
+            <picture>
+                <img src="/electric.svg" />
+            </picture>
+            <p class={`font-black text-center ${(types[3].value < 1)? 'text-[red]' : ((types[3].value > 1)? 'text-[green]' : '')}`}>{(types[3].value == 0.25)? <span>&frac14;</span> : ((types[3].value == 0.5)? <span>&frac12;</span>: ((types[3].value > 1)? <span>{types[3].value}</span> : <span></span>))}</p>
+        </div>
+        <div class="type-effective">
+            <picture>
+                <img src="/grass.svg" />
+            </picture>
+            <p class={`font-black text-center ${(types[4].value < 1)? 'text-[red]' : ((types[4].value > 1)? 'text-[green]' : '')}`}>{(types[4].value == 0.25)? <span>&frac14;</span> : ((types[4].value == 0.5)? <span>&frac12;</span>: ((types[4].value > 1)? <span>{types[4].value}</span> : <span></span>))}</p>
+        </div>
+        <div class="type-effective">
+            <picture>
+                <img src="/ice.svg" />
+            </picture>
+            <p class={`font-black text-center ${(types[5].value < 1)? 'text-[red]' : ((types[5].value > 1)? 'text-[green]' : '')}`}>{(types[5].value == 0.25)? <span>&frac14;</span> : ((types[5].value == 0.5)? <span>&frac12;</span>: ((types[5].value > 1)? <span>{types[5].value}</span> : <span></span>))}</p>
+        </div>
+        <div class="type-effective">
+            <picture>
+                <img src="/fighting.svg" />
+            </picture>
+            <p class={`font-black text-center ${(types[6].value < 1)? 'text-[red]' : ((types[6].value > 1)? 'text-[green]' : '')}`}>{(types[6].value == 0.25)? <span>&frac14;</span> : ((types[6].value == 0.5)? <span>&frac12;</span>: ((types[6].value > 1)? <span>{types[6].value}</span> : <span></span>))}</p>
+        </div>
+        <div class="type-effective">
+            <picture>
+                <img src="/poison.svg" />
+            </picture>
+            <p class={`font-black text-center ${(types[7].value < 1)? 'text-[red]' : ((types[7].value > 1)? 'text-[green]' : '')}`}>{(types[7].value == 0.25)? <span>&frac14;</span> : ((types[7].value == 0.5)? <span>&frac12;</span>: ((types[7].value > 1)? <span>{types[7].value}</span> : <span></span>))}</p>
+        </div>
+        <div class="type-effective">
+            <picture>
+                <img src="/ground.svg" />
+            </picture>
+            <p class={`font-black text-center ${(types[8].value < 1)? 'text-[red]' : ((types[8].value > 1)? 'text-[green]' : '')}`}>{(types[8].value == 0.25)? <span>&frac14;</span> : ((types[8].value == 0.5)? <span>&frac12;</span>: ((types[8].value > 1)? <span>{types[8].value}</span> : <span></span>))}</p>
+        </div>
+        <div class="type-effective">
+            <picture>
+                <img src="/flying.svg" />
+            </picture>
+            <p class={`font-black text-center ${(types[9].value < 1)? 'text-[red]' : ((types[9].value > 1)? 'text-[green]' : '')}`}>{(types[9].value == 0.25)? <span>&frac14;</span> : ((types[9].value == 0.5)? <span>&frac12;</span>: ((types[9].value > 1)? <span>{types[9].value}</span> : <span></span>))}</p>
+        </div>
+        <div class="type-effective">
+            <picture>
+                <img src="/psychic.svg" />
+            </picture>
+            <p class={`font-black text-center ${(types[10].value < 1)? 'text-[red]' : ((types[10].value > 1)? 'text-[green]' : '')}`}>{(types[10].value == 0.25)? <span>&frac14;</span> : ((types[10].value == 0.5)? <span>&frac12;</span>: ((types[10].value > 1)? <span>{types[10].value}</span> : <span></span>))}</p>
+        </div>
+        <div class="type-effective">
+            <picture>
+                <img src="/bug.svg" />
+            </picture>
+            <p class={`font-black text-center ${(types[11].value < 1)? 'text-[red]' : ((types[11].value > 1)? 'text-[green]' : '')}`}>{(types[11].value == 0.25)? <span>&frac14;</span> : ((types[11].value == 0.5)? <span>&frac12;</span>: ((types[11].value > 1)? <span>{types[11].value}</span> : <span></span>))}</p>
+        </div>
+        <div class="type-effective">
+            <picture>
+                <img src="/rock.svg" />
+            </picture>
+            <p class={`font-black text-center ${(types[12].value < 1)? 'text-[red]' : ((types[12].value > 1)? 'text-[green]' : '')}`}>{(types[12].value == 0.25)? <span>&frac14;</span> : ((types[12].value == 0.5)? <span>&frac12;</span>: ((types[12].value > 1)? <span>{types[12].value}</span> : <span></span>))}</p>
+        </div>
+        <div class="type-effective">
+            <picture>
+                <img src="/ghost.svg" />
+            </picture>
+            <p class={`font-black text-center ${(types[13].value < 1)? 'text-[red]' : ((types[13].value > 1)? 'text-[green]' : '')}`}>{(types[13].value == 0.25)? <span>&frac14;</span> : ((types[13].value == 0.5)? <span>&frac12;</span>: ((types[13].value > 1)? <span>{types[13].value}</span> : <span></span>))}</p>
+        </div>
+        <div class="type-effective">
+            <picture>
+                <img src="/dragon.svg" />
+            </picture>
+            <p class={`font-black text-center ${(types[14].value < 1)? 'text-[red]' : ((types[14].value > 1)? 'text-[green]' : '')}`}>{(types[14].value == 0.25)? <span>&frac14;</span> : ((types[14].value == 0.5)? <span>&frac12;</span>: ((types[14].value > 1)? <span>{types[14].value}</span> : <span></span>))}</p>
+        </div>
+        <div class="type-effective">
+            <picture>
+                <img src="/dark.svg" />
+            </picture>
+            <p class={`font-black text-center ${(types[15].value < 1)? 'text-[red]' : ((types[15].value > 1)? 'text-[green]' : '')}`}>{(types[15].value == 0.25)? <span>&frac14;</span> : ((types[15].value == 0.5)? <span>&frac12;</span>: ((types[15].value > 1)? <span>{types[15].value}</span> : <span></span>))}</p>
+        </div>
+        <div class="type-effective">
+            <picture>
+                <img src="/steel.svg" />
+            </picture>
+            <p class={`font-black text-center ${(types[16].value < 1)? 'text-[red]' : ((types[16].value > 1)? 'text-[green]' : '')}`}>{(types[16].value == 0.25)? <span>&frac14;</span> : ((types[16].value == 0.5)? <span>&frac12;</span>: ((types[16].value > 1)? <span>{types[16].value}</span> : <span></span>))}</p>
+        </div>
+        <div class="type-effective">
+            <picture>
+                <img src="/fairy.svg" />
+            </picture>
+            <p class={`font-black text-center ${(types[17].value < 1)? 'text-[red]' : ((types[17].value > 1)? 'text-[green]' : '')}`}>{(types[17].value == 0.25)? <span>&frac14;</span> : ((types[17].value == 0.5)? <span>&frac12;</span>: ((types[17].value > 1)? <span>{types[17].value}</span> : <span></span>))}</p>
+        </div>
+    </section>
+</section>

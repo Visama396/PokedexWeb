@@ -4,11 +4,13 @@ import Layout from "../layouts/Layout.astro"
 import { capitalize } from "../utils/capitalize"
 import { getDexNumber } from "../utils/getDexNumber"
 import { getGenus } from "../utils/getPokemonGenus"
+import { getEfectiveness } from "../utils/calculateEfectiveness"
 
 import PokemonAbilities from "../components/PokemonAbilities.astro"
 import PokemonEntryNumbers from "../components/PokemonEntryNumbers.astro"
 import PokemonItem from "../components/PokemonItem.astro"
 import PokemonYield from "../components/PokemonYield.astro"
+import PokemonTypeEffectiveness from "../components/PokemonTypeEffectiveness.astro"
 
 const { pokemon } = Astro.params
 
@@ -18,24 +20,23 @@ if (!pokeData) return Astro.redirect("/404")
 
 const pokeSpecies = await fetch(pokeData.species.url).then(response => response.json())
 
-console.log(pokeData.stats)
+//console.log(pokeData)
 //console.log(pokeSpecies)
-//const getFlavorText = (language, game) => pokeSpecies.flavor_text_entries.filter(text => text.language.name == language && text.version.name == game)
 ---
 
 <Layout title={pokemon}>
     <nav>
         <a href="/" class="inline-block p-4 text-white duration-500 ease-in-out hover:bg-slate-400">Home</a>
     </nav>
-    <section class="grid grid-rows-[max-content_1fr] gap-y-8 px-4 justify-center text-white">
+    <section class="grid grid-rows-[max-content_1fr] xl:gap-y-8 px-4 justify-center text-white">
         <section>
             <h1 class="font-black text-6xl text-center" style={`text-shadow: 0px 0px 10px rgba(255,255,255,0.7);`}>{capitalize(pokemon)}</h1>
         </section>
-        <section class="grid xl:grid-cols-3 md:grid-cols-2 xl:gap-6 gap-2">
-            <picture>
+        <section class="grid pokedata-grid xl:gap-6 gap-4">
+            <picture class="sprite">
                 <img src={pokeData.sprites.other.home.front_default} width="350px" alt={pokemon} class="object-cover">
             </picture>
-            <section>
+            <section class="data">
                 <h2 class="text-4xl mb-2 font-black">Pokédex Data</h2>
                 <section class="grid grid-cols-[max-content_1fr] grid-rows-[max-content_1fr] gap-y-1 gap-x-2">
                     <p class="font-black text-right">National N°</p><p>{getDexNumber(pokeData.id)}</p>
@@ -47,40 +48,122 @@ console.log(pokeData.stats)
                     <p class="flex justify-end items-center font-black ">Local N°</p><PokemonEntryNumbers entries={pokeSpecies.pokedex_numbers} />
                 </section>
             </section>
-            <section class="grid justify-center xl:grid-cols-1 grid-cols-[max-content_1fr] xl:col-span-1 col-span-2 gap-2">
-                <section>
-                    <h2 class="text-4xl mb-2 font-black">Training</h2>
-                    <section class="grid grid-cols-2 grid-rows-[max-content_1fr] gap-y-1 gap-x-2">
-                        <p class="font-black text-right">EV yield</p><PokemonYield stats={pokeData.stats} />
-                        <p class="font-black text-right">Catch rate</p><p>{pokeSpecies.capture_rate}</p>
-                        <p class="font-black text-right">Base friendship</p><p>{pokeSpecies.base_happiness}</p>
-                        <p class="font-black text-right">Base exp.</p><p>{pokeData.base_experience}</p>
-                        <p class="font-black text-right">Growth rate</p><p>{capitalize(pokeSpecies.growth_rate.name).replace("-", " ")}</p>
-                    </section>
+            <section class="training">
+                <h2 class="text-4xl mb-2 font-black">Training</h2>
+                <section class="grid xl:grid-cols-2 grid-cols-[max-content_1fr] grid-rows-[max-content_1fr] gap-y-1 gap-x-2">
+                    <p class="font-black text-right">EV yield</p><PokemonYield stats={pokeData.stats} />
+                    <p class="font-black text-right">Catch rate</p><p>{pokeSpecies.capture_rate}</p>
+                    <p class="font-black text-right">Base friendship</p><p>{pokeSpecies.base_happiness}</p>
+                    <p class="font-black text-right">Base exp.</p><p>{pokeData.base_experience}</p>
+                    <p class="font-black text-right">Growth rate</p><p>{capitalize(pokeSpecies.growth_rate.name).replace("-", " ")}</p>
                 </section>
-                <section>
-                    <h2 class="text-4xl mb-2 font-black">Breeding</h2>
-                    <section class="grid grid-cols-[max-content_1fr] grid-rows-[max-content_1fr] gap-y-1 gap-x-2">
-                        <p class="font-black text-right">Egg groups</p><p>{(pokeSpecies.egg_groups.length == 1)? ((pokeSpecies.egg_groups[0].name == "no-eggs")? "Undiscovered" : <span>{capitalize(pokeSpecies.egg_groups[0].name)}</span>) : <span>{capitalize(pokeSpecies.egg_groups[0].name)}, </span><span>{capitalize(pokeSpecies.egg_groups[1].name)}</span>}</p>
-                        <p class="font-black text-right">Gender</p><p><span class="male">{(8-pokeSpecies.gender_rate)*12.5}% male</span>, <span class="female">{pokeSpecies.gender_rate*12.5}% female</span></p>
-                        <p class="font-black text-right">Egg Cycles</p><p>{pokeSpecies.hatch_counter} <span class="additional-info ml-1">({((pokeSpecies.hatch_counter-1) * 257)+1}-{pokeSpecies.hatch_counter * 257} steps)</span></p>
-                    </section>
+            </section>
+            <section class="breeding">
+                <h2 class="text-4xl mb-2 font-black">Breeding</h2>
+                <section class="grid xl:grid-cols-2 grid-cols-[max-content_1fr] grid-rows-[max-content_1fr] gap-y-1 gap-x-2">
+                    <p class="font-black text-right">Egg groups</p><p>{(pokeSpecies.egg_groups.length == 1)? ((pokeSpecies.egg_groups[0].name == "no-eggs")? "Undiscovered" : <span>{capitalize(pokeSpecies.egg_groups[0].name)}</span>) : <span>{capitalize(pokeSpecies.egg_groups[0].name)}, </span><span>{capitalize(pokeSpecies.egg_groups[1].name)}</span>}</p>
+                    <p class="font-black text-right">Gender</p><p><span class="male">{(8-pokeSpecies.gender_rate)*12.5}% male</span>, <span class="female">{pokeSpecies.gender_rate*12.5}% female</span></p>
+                    <p class="font-black text-right">Egg Cycles</p><p>{pokeSpecies.hatch_counter} <span class="additional-info ml-1">({((pokeSpecies.hatch_counter-1) * 257)+1}-{pokeSpecies.hatch_counter * 257} steps)</span></p>
                 </section>
             </section>
         </section>
-        <section class="grid md:grid-cols-2 xl:gap-6 gap-2">
-            <section>
+        <section class="grid md:grid-cols-2 xl:gap-6 gap-2 mt-4">
+            <section class="grid gap-y-2">
                 <h2 class="text-4xl mb-2 font-black">Base stats</h2>
-                <section>
-
+                <section class="grid grid-cols-[max-content_max-content_1fr_max-content_max-content_max-content_max-content] gap-2">
+                    <section>
+                        <p class="text-[gray] text-right">HP</p>
+                        <p class="text-[gray] text-right">Attack</p>
+                        <p class="text-[gray] text-right">Defense</p>
+                        <p class="text-[gray] text-right">Sp. Atk</p>
+                        <p class="text-[gray] text-right">Sp. Def</p>
+                        <p class="text-[gray] text-right">Speed</p>
+                        <p class="text-[gray] text-right">Total</p>
+                    </section>
+                    <section>
+                        <p>{pokeData.stats[0].base_stat}</p>
+                        <p>{pokeData.stats[1].base_stat}</p>
+                        <p>{pokeData.stats[2].base_stat}</p>
+                        <p>{pokeData.stats[3].base_stat}</p>
+                        <p>{pokeData.stats[4].base_stat}</p>
+                        <p>{pokeData.stats[5].base_stat}</p>
+                        <p class="font-black">{pokeData.stats[0].base_stat + pokeData.stats[1].base_stat + pokeData.stats[2].base_stat + pokeData.stats[3].base_stat + pokeData.stats[4].base_stat + pokeData.stats[5].base_stat}</p>
+                    </section>
+                    <section class="stat-bar-column">
+                        <p><span class="stat-bar" data-stat={pokeData.stats[0].base_stat} style={`display:inline-block; height: 5px; background-color: hsl(${Math.floor(pokeData.stats[0].base_stat * 0.4) * 1.25}, 100%, 50%)`}></span></p>
+                        <p><span class="stat-bar" data-stat={pokeData.stats[1].base_stat} style={`display:inline-block; height: 5px; background-color: hsl(${Math.floor(pokeData.stats[1].base_stat * 0.4) * 1.25}, 100%, 50%)`}></span></p>
+                        <p><span class="stat-bar" data-stat={pokeData.stats[2].base_stat} style={`display:inline-block; height: 5px; background-color: hsl(${Math.floor(pokeData.stats[2].base_stat * 0.4) * 1.25}, 100%, 50%)`}></span></p>
+                        <p><span class="stat-bar" data-stat={pokeData.stats[3].base_stat} style={`display:inline-block; height: 5px; background-color: hsl(${Math.floor(pokeData.stats[3].base_stat * 0.4) * 1.25}, 100%, 50%)`}></span></p>
+                        <p><span class="stat-bar" data-stat={pokeData.stats[4].base_stat} style={`display:inline-block; height: 5px; background-color: hsl(${Math.floor(pokeData.stats[4].base_stat * 0.4) * 1.25}, 100%, 50%)`}></span></p>
+                        <p><span class="stat-bar" data-stat={pokeData.stats[5].base_stat} style={`display:inline-block; height: 5px; background-color: hsl(${Math.floor(pokeData.stats[5].base_stat * 0.4) * 1.25}, 100%, 50%)`}></span></p>
+                        <p></p>
+                    </section>
+                    <section>
+                        <p>105</p>
+                        <p>48</p>
+                        <p>48</p>
+                        <p>63</p>
+                        <p>63</p>
+                        <p>45</p>
+                        <p class="font-black">Min</p>
+                    </section>
+                    <section>
+                        <p>152</p>
+                        <p>111</p>
+                        <p>111</p>
+                        <p>128</p>
+                        <p>128</p>
+                        <p>106</p>
+                        <p class="font-black">Max</p>
+                    </section>
+                    <section>
+                        <p>200</p>
+                        <p>92</p>
+                        <p>92</p>
+                        <p>121</p>
+                        <p>121</p>
+                        <p>85</p>
+                        <p class="font-black">Min</p>
+                    </section>
+                    <section>
+                        <p>294</p>
+                        <p>216</p>
+                        <p>216</p>
+                        <p>251</p>
+                        <p>251</p>
+                        <p>207</p>
+                        <p class="font-black">Max</p>
+                    </section>
                 </section>
+                <footer class="flex flex-col">
+                    <i class="additional-info">Minimum calculated values assuming unfavourable nature, 0EVs and 0IVs</i>
+                    <i class="additional-info">Maximum calculated values assuming favourable nature, 252EVS and 31IVs</i>
+                    <i class="additional-info">(Still work in progress)</i>
+                </footer>
             </section>
+            <PokemonTypeEffectiveness pokemon={pokemon} type1={pokeData.types[0].type.name} type2={pokeData.types[1]?.type.name} />
+        </section>
+        <section>
+            <h2 class="text-4xl mb-2 font-black">Evolution chart</h2>
             <section>
-                <h2 class="text-4xl mb-2 font-black">Type defenses</h2>
-                <section>
 
-                </section>
             </section>
+        </section>
+        <section>
+            <h2 class="text-4xl mb-2 font-black">Moves learned by {capitalize(pokemon)}</h2>
+        </section>
+        <section>
+            <h2 class="text-4xl mb-2 font-black">Pokédex entries</h2>
+        </section>
+        <section>
+            <h2 class="text-4xl mb-2 font-black">Other languages</h2>
         </section>
     </section>
 </Layout>
+
+<script is:inline>
+let statBars = document.querySelectorAll(".stat-bar")
+for (statBar of statBars) {
+    statBar.style.width = `${Math.floor(statBar.dataset.stat * 0.4)}%`;
+}
+</script>

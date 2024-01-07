@@ -154,4 +154,51 @@ const { title } = Astro.props;
 	.female {
 		color: #FF6BCE;
 	}
+
+	.pokedata-grid {
+		grid-template-columns: 1fr;
+		grid-template-areas:
+			"Sprite"
+			"Data"
+			"Training"
+			"Breeding"
+	}
+
+	@media (min-width: 768px) 
+	{
+		.pokedata-grid {
+			grid-template-columns: 1fr 1fr;
+			grid-template-rows: max-content_1fr max-content_1fr;
+			grid-template-areas:
+				"Sprite Data"
+				"Training Breeding"
+		}
+	}
+
+	@media (min-width: 1280px)
+	{
+		.pokedata-grid {
+			grid-template-columns: 1fr 1fr 1fr;
+			grid-template-rows: 1fr 1fr;
+			grid-template-areas:
+				"Sprite Data Training"
+				"Sprite Data Breeding"
+		}
+	}
+
+	.sprite {
+		grid-area: Sprite;
+	}
+
+	.data {
+		grid-area: Data;
+	}
+
+	.training {
+		grid-area: Training;
+	}
+
+	.breeding {
+		grid-area: Breeding;
+	}
 </style>
