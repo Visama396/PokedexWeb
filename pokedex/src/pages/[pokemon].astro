@@ -5,6 +5,7 @@ import { capitalize } from "../utils/capitalize"
 import { getDexNumber } from "../utils/getDexNumber"
 import { getGenus } from "../utils/getPokemonGenus"
 import { getEfectiveness } from "../utils/calculateEfectiveness"
+import { calculateHP, calculateStat } from "../utils/calculateStats"
 
 import PokemonAbilities from "../components/PokemonAbilities.astro"
 import PokemonEntryNumbers from "../components/PokemonEntryNumbers.astro"
@@ -99,46 +100,45 @@ const pokeSpecies = await fetch(pokeData.species.url).then(response => response.
                         <p></p>
                     </section>
                     <section>
-                        <p>105</p>
-                        <p>48</p>
-                        <p>48</p>
-                        <p>63</p>
-                        <p>63</p>
-                        <p>45</p>
+                        <p>{calculateHP(pokeData.stats[0].base_stat, 0, 0, 50)}</p>
+                        <p>{calculateStat(pokeData.stats[1].base_stat, 0, 0, 50, 0.9)}</p>
+                        <p>{calculateStat(pokeData.stats[2].base_stat, 0, 0, 50, 0.9)}</p>
+                        <p>{calculateStat(pokeData.stats[3].base_stat, 0, 0, 50, 0.9)}</p>
+                        <p>{calculateStat(pokeData.stats[4].base_stat, 0, 0, 50, 0.9)}</p>
+                        <p>{calculateStat(pokeData.stats[5].base_stat, 0, 0, 50, 0.9)}</p>
                         <p class="font-black">Min</p>
                     </section>
                     <section>
-                        <p>152</p>
-                        <p>111</p>
-                        <p>111</p>
-                        <p>128</p>
-                        <p>128</p>
-                        <p>106</p>
+                        <p>{calculateHP(pokeData.stats[0].base_stat, 31, 252, 50)}</p>
+                        <p>{calculateStat(pokeData.stats[1].base_stat, 31, 252, 50, 1.1)}</p>
+                        <p>{calculateStat(pokeData.stats[2].base_stat, 31, 252, 50, 1.1)}</p>
+                        <p>{calculateStat(pokeData.stats[3].base_stat, 31, 252, 50, 1.1)}</p>
+                        <p>{calculateStat(pokeData.stats[4].base_stat, 31, 252, 50, 1.1)}</p>
+                        <p>{calculateStat(pokeData.stats[5].base_stat, 31, 252, 50, 1.1)}</p>
                         <p class="font-black">Max</p>
                     </section>
                     <section>
-                        <p>200</p>
-                        <p>92</p>
-                        <p>92</p>
-                        <p>121</p>
-                        <p>121</p>
-                        <p>85</p>
+                        <p>{calculateHP(pokeData.stats[0].base_stat, 0, 0, 100)}</p>
+                        <p>{calculateStat(pokeData.stats[1].base_stat, 0, 0, 100, 0.9)}</p>
+                        <p>{calculateStat(pokeData.stats[2].base_stat, 0, 0, 100, 0.9)}</p>
+                        <p>{calculateStat(pokeData.stats[3].base_stat, 0, 0, 100, 0.9)}</p>
+                        <p>{calculateStat(pokeData.stats[4].base_stat, 0, 0, 100, 0.9)}</p>
+                        <p>{calculateStat(pokeData.stats[5].base_stat, 0, 0, 100, 0.9)}</p>
                         <p class="font-black">Min</p>
                     </section>
                     <section>
-                        <p>294</p>
-                        <p>216</p>
-                        <p>216</p>
-                        <p>251</p>
-                        <p>251</p>
-                        <p>207</p>
+                        <p>{calculateHP(pokeData.stats[0].base_stat, 31, 252, 100)}</p>
+                        <p>{calculateStat(pokeData.stats[1].base_stat, 31, 252, 100, 1.1)}</p>
+                        <p>{calculateStat(pokeData.stats[2].base_stat, 31, 252, 100, 1.1)}</p>
+                        <p>{calculateStat(pokeData.stats[3].base_stat, 31, 252, 100, 1.1)}</p>
+                        <p>{calculateStat(pokeData.stats[4].base_stat, 31, 252, 100, 1.1)}</p>
+                        <p>{calculateStat(pokeData.stats[5].base_stat, 31, 252, 100, 1.1)}</p>
                         <p class="font-black">Max</p>
                     </section>
                 </section>
                 <footer class="flex flex-col">
                     <i class="additional-info">Minimum calculated values assuming unfavourable nature, 0EVs and 0IVs</i>
                     <i class="additional-info">Maximum calculated values assuming favourable nature, 252EVS and 31IVs</i>
-                    <i class="additional-info">(Still work in progress)</i>
                 </footer>
             </section>
             <PokemonTypeEffectiveness pokemon={pokemon} type1={pokeData.types[0].type.name} type2={pokeData.types[1]?.type.name} />
