@@ -3,7 +3,7 @@ import PokemonItem from "./PokemonItem.astro";
 import { capitalize } from "../utils/capitalize"
 import { getIdFromUrl } from "../utils/getIdFromUrl"
 
-const pokedex = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=500`).then(response => response.json())
+const pokedex = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=100`).then(response => response.json())
 ---
 <div class="flex gap-3 flex-col justify-center items-center pb-5">
   <input type="search" id="pokedex-filter" class="outline-none rounded-full px-2 py-1 bg-zinc-600/50 text-white text-center">
