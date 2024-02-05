@@ -1,26 +1,30 @@
-import * as adapter from '@astrojs/netlify/ssr-function.js';
 import { renderers } from './renderers.mjs';
-import { manifest } from './manifest_e4439ef4.mjs';
-import './chunks/astro_ab4bf765.mjs';
-import './chunks/pages/generic_7f9eef86.mjs';
-import './chunks/astro-assets-services_dc74f136.mjs';
+import { manifest } from './manifest_tZDqfiW7.mjs';
+import * as serverEntrypointModule from '@astrojs/netlify/ssr-function.js';
+import { onRequest } from './_noop-middleware.mjs';
 
-const _page0  = () => import('./chunks/generic_12ad4597.mjs');
-const _page1  = () => import('./chunks/index_46a4f056.mjs');
-const _page2  = () => import('./chunks/404_ea62887f.mjs');
-const _page3  = () => import('./chunks/_pokemon__7c5ffaf0.mjs');const pageMap = new Map([["node_modules/.pnpm/astro@3.4.4_typescript@5.2.2/node_modules/astro/dist/assets/endpoint/generic.js", _page0],["src/pages/index.astro", _page1],["src/pages/404.astro", _page2],["src/pages/[pokemon].astro", _page3]]);
+const _page0 = () => import('./chunks/generic_4io-A3O1.mjs');
+const _page1 = () => import('./chunks/index_DFv8WE-M.mjs');
+const _page2 = () => import('./chunks/404_WLPk3ofr.mjs');
+const _page3 = () => import('./chunks/_pokemon__J1MXUDhG.mjs');
+const pageMap = new Map([
+    ["node_modules/astro/dist/assets/endpoint/generic.js", _page0],
+    ["src/pages/index.astro", _page1],
+    ["src/pages/404.astro", _page2],
+    ["src/pages/[pokemon].astro", _page3]
+]);
+
 const _manifest = Object.assign(manifest, {
-	pageMap,
-	renderers,
+    pageMap,
+    renderers,
+    middleware: onRequest
 });
 const _args = undefined;
-
-const _exports = adapter.createExports(_manifest, _args);
-const _default = _exports['default'];
-
+const _exports = serverEntrypointModule.createExports(_manifest, _args);
+const __astrojsSsrVirtualEntry = _exports.default;
 const _start = 'start';
-if(_start in adapter) {
-	adapter[_start](_manifest, _args);
+if (_start in serverEntrypointModule) {
+	serverEntrypointModule[_start](_manifest, _args);
 }
 
-export { _default as default, pageMap };
+export { __astrojsSsrVirtualEntry as default, pageMap };
