@@ -1,10 +1,39 @@
 ---
-const { evolutionChainUrl } = Astro.props
+import { array, number } from 'astro/zod'
+import ArrowRight from '../components/icons/arrowRight.astro'
+const { evolutionChainUrl, spriteUrl } = Astro.props
 
 const evolutionChain = await fetch(evolutionChainUrl).then(response => response.json()).catch(err => console.error('Pokemon does not have evolution chain', err))
+
+let evoData = evolutionChain.chain
+let evoChain = []
+
+function getAllEvolutions(evolution, array) {
+  array.push(evolution);
+
+  if (Array.isArray(evolution.evolves_to) && evolution.evolves_to.length > 0) {
+    for (let i = 0; i < evolution.evolves_to.length; i++) {
+      getAllEvolutions(evolution.evolves_to[i], array)
+    }
+  }
+  
+}
+getAllEvolutions(evoData, evoChain)
+/*evoChain.map(chain => {
+  console.log(chain.species.name)
+})*/
 ---
-<section >
+<section>
   <h2 class="text-4xl mb-2 font-black">Evolution chart</h2>
-  <div>
+  <div class="bg-zinc-800/20 rounded-xl flex justify-center items-center py-5">
+    {evoChain.map(chain => (
+      <div class="evochain">
+        <picture class="bg-zinc-700/10 rounded-full size-[200px] flex justify-center items-center">
+          <img class="h-[60%]" src={spriteUrl} alt={`sprite ${chain.species.name}`} />
+        </picture>
+        <p>{chain.species.name}</p>
+      </div>
+    ))}
+    <ArrowRight class="size-10" />
   </div>
 </section>
