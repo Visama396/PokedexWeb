@@ -123,10 +123,6 @@ if (type2) {
         }
     }
 }
-
-for (const t of types) {
-    //console.log(t)
-}
 ---
 <section>
     <h2 class="text-4xl mb-2 font-black">Type defenses</h2>
@@ -136,109 +132,109 @@ for (const t of types) {
             <picture>
                 <img src="/normal.svg" />
             </picture>
-            <p class={`font-black text-center ${(types[0].value < 1)? 'text-[red]' : ((types[0].value > 1)? 'text-[green]' : '')}`}>{(types[0].value == 0.25)? <span>&frac14;</span> : ((types[0].value == 0.5)? <span>&frac12;</span>: ((types[0].value > 1)? <span>{types[0].value}</span> : <span></span>))}</p>
+            <p class={`font-black text-center ${(types[0].value < 1)? 'text-[red]' : ((types[0].value > 1)? 'text-[green]' : '')}`}>{(types[0].value == 0.25)? <span>&frac14;</span> : ((types[0].value == 0.5)? <span>&frac12;</span>: ((types[0].value > 1)? <span>{types[0].value}</span> : <span>1</span>))}</p>
         </div>
         <div class="type-effective">
             <picture>
                 <img src="/fire.svg" />
             </picture>
-            <p class={`font-black text-center ${(types[1].value < 1)? 'text-[red]' : ((types[1].value > 1)? 'text-[green]' : '')}`}>{(types[1].value == 0.25)? <span>&frac14;</span> : ((types[1].value == 0.5)? <span>&frac12;</span>: ((types[1].value > 1)? <span>{types[1].value}</span> : <span></span>))}</p>
+            <p class={`font-black text-center ${(types[1].value < 1)? 'text-[red]' : ((types[1].value > 1)? 'text-[green]' : '')}`}>{(types[1].value == 0.25)? <span>&frac14;</span> : ((types[1].value == 0.5)? <span>&frac12;</span>: ((types[1].value > 1)? <span>{types[1].value}</span> : <span>1</span>))}</p>
         </div>
         <div class="type-effective">
             <picture>
                 <img src="/water.svg" />
             </picture>
-            <p class={`font-black text-center ${(types[2].value < 1)? 'text-[red]' : ((types[2].value > 1)? 'text-[green]' : '')}`}>{(types[2].value == 0.25)? <span>&frac14;</span> : ((types[2].value == 0.5)? <span>&frac12;</span>: ((types[2].value > 1)? <span>{types[2].value}</span> : <span></span>))}</p>
+            <p class={`font-black text-center ${(types[2].value < 1)? 'text-[red]' : ((types[2].value > 1)? 'text-[green]' : '')}`}>{(types[2].value == 0.25)? <span>&frac14;</span> : ((types[2].value == 0.5)? <span>&frac12;</span>: ((types[2].value > 1)? <span>{types[2].value}</span> : <span>1</span>))}</p>
         </div>
         <div class="type-effective">
             <picture>
                 <img src="/electric.svg" />
             </picture>
-            <p class={`font-black text-center ${(types[3].value < 1)? 'text-[red]' : ((types[3].value > 1)? 'text-[green]' : '')}`}>{(types[3].value == 0.25)? <span>&frac14;</span> : ((types[3].value == 0.5)? <span>&frac12;</span>: ((types[3].value > 1)? <span>{types[3].value}</span> : <span></span>))}</p>
+            <p class={`font-black text-center ${(types[3].value < 1)? 'text-[red]' : ((types[3].value > 1)? 'text-[green]' : '')}`}>{(types[3].value == 0.25)? <span>&frac14;</span> : ((types[3].value == 0.5)? <span>&frac12;</span>: ((types[3].value > 1)? <span>{types[3].value}</span> : <span>1</span>))}</p>
         </div>
         <div class="type-effective">
             <picture>
                 <img src="/grass.svg" />
             </picture>
-            <p class={`font-black text-center ${(types[4].value < 1)? 'text-[red]' : ((types[4].value > 1)? 'text-[green]' : '')}`}>{(types[4].value == 0.25)? <span>&frac14;</span> : ((types[4].value == 0.5)? <span>&frac12;</span>: ((types[4].value > 1)? <span>{types[4].value}</span> : <span></span>))}</p>
+            <p class={`font-black text-center ${(types[4].value < 1)? 'text-[red]' : ((types[4].value > 1)? 'text-[green]' : '')}`}>{(types[4].value == 0.25)? <span>&frac14;</span> : ((types[4].value == 0.5)? <span>&frac12;</span>: ((types[4].value > 1)? <span>{types[4].value}</span> : <span>1</span>))}</p>
         </div>
         <div class="type-effective">
             <picture>
                 <img src="/ice.svg" />
             </picture>
-            <p class={`font-black text-center ${(types[5].value < 1)? 'text-[red]' : ((types[5].value > 1)? 'text-[green]' : '')}`}>{(types[5].value == 0.25)? <span>&frac14;</span> : ((types[5].value == 0.5)? <span>&frac12;</span>: ((types[5].value > 1)? <span>{types[5].value}</span> : <span></span>))}</p>
+            <p class={`font-black text-center ${(types[5].value < 1)? 'text-[red]' : ((types[5].value > 1)? 'text-[green]' : '')}`}>{(types[5].value == 0.25)? <span>&frac14;</span> : ((types[5].value == 0.5)? <span>&frac12;</span>: ((types[5].value > 1)? <span>{types[5].value}</span> : <span>1</span>))}</p>
         </div>
         <div class="type-effective">
             <picture>
                 <img src="/fighting.svg" />
             </picture>
-            <p class={`font-black text-center ${(types[6].value < 1)? 'text-[red]' : ((types[6].value > 1)? 'text-[green]' : '')}`}>{(types[6].value == 0.25)? <span>&frac14;</span> : ((types[6].value == 0.5)? <span>&frac12;</span>: ((types[6].value > 1)? <span>{types[6].value}</span> : <span></span>))}</p>
+            <p class={`font-black text-center ${(types[6].value < 1)? 'text-[red]' : ((types[6].value > 1)? 'text-[green]' : '')}`}>{(types[6].value == 0.25)? <span>&frac14;</span> : ((types[6].value == 0.5)? <span>&frac12;</span>: ((types[6].value > 1)? <span>{types[6].value}</span> : <span>1</span>))}</p>
         </div>
         <div class="type-effective">
             <picture>
                 <img src="/poison.svg" />
             </picture>
-            <p class={`font-black text-center ${(types[7].value < 1)? 'text-[red]' : ((types[7].value > 1)? 'text-[green]' : '')}`}>{(types[7].value == 0.25)? <span>&frac14;</span> : ((types[7].value == 0.5)? <span>&frac12;</span>: ((types[7].value > 1)? <span>{types[7].value}</span> : <span></span>))}</p>
+            <p class={`font-black text-center ${(types[7].value < 1)? 'text-[red]' : ((types[7].value > 1)? 'text-[green]' : '')}`}>{(types[7].value == 0.25)? <span>&frac14;</span> : ((types[7].value == 0.5)? <span>&frac12;</span>: ((types[7].value > 1)? <span>{types[7].value}</span> : <span>1</span>))}</p>
         </div>
         <div class="type-effective">
             <picture>
                 <img src="/ground.svg" />
             </picture>
-            <p class={`font-black text-center ${(types[8].value < 1)? 'text-[red]' : ((types[8].value > 1)? 'text-[green]' : '')}`}>{(types[8].value == 0.25)? <span>&frac14;</span> : ((types[8].value == 0.5)? <span>&frac12;</span>: ((types[8].value > 1)? <span>{types[8].value}</span> : <span></span>))}</p>
+            <p class={`font-black text-center ${(types[8].value < 1)? 'text-[red]' : ((types[8].value > 1)? 'text-[green]' : '')}`}>{(types[8].value == 0.25)? <span>&frac14;</span> : ((types[8].value == 0.5)? <span>&frac12;</span>: ((types[8].value > 1)? <span>{types[8].value}</span> : <span>1</span>))}</p>
         </div>
         <div class="type-effective">
             <picture>
                 <img src="/flying.svg" />
             </picture>
-            <p class={`font-black text-center ${(types[9].value < 1)? 'text-[red]' : ((types[9].value > 1)? 'text-[green]' : '')}`}>{(types[9].value == 0.25)? <span>&frac14;</span> : ((types[9].value == 0.5)? <span>&frac12;</span>: ((types[9].value > 1)? <span>{types[9].value}</span> : <span></span>))}</p>
+            <p class={`font-black text-center ${(types[9].value < 1)? 'text-[red]' : ((types[9].value > 1)? 'text-[green]' : '')}`}>{(types[9].value == 0.25)? <span>&frac14;</span> : ((types[9].value == 0.5)? <span>&frac12;</span>: ((types[9].value > 1)? <span>{types[9].value}</span> : <span>1</span>))}</p>
         </div>
         <div class="type-effective">
             <picture>
                 <img src="/psychic.svg" />
             </picture>
-            <p class={`font-black text-center ${(types[10].value < 1)? 'text-[red]' : ((types[10].value > 1)? 'text-[green]' : '')}`}>{(types[10].value == 0.25)? <span>&frac14;</span> : ((types[10].value == 0.5)? <span>&frac12;</span>: ((types[10].value > 1)? <span>{types[10].value}</span> : <span></span>))}</p>
+            <p class={`font-black text-center ${(types[10].value < 1)? 'text-[red]' : ((types[10].value > 1)? 'text-[green]' : '')}`}>{(types[10].value == 0.25)? <span>&frac14;</span> : ((types[10].value == 0.5)? <span>&frac12;</span>: ((types[10].value > 1)? <span>{types[10].value}</span> : <span>1</span>))}</p>
         </div>
         <div class="type-effective">
             <picture>
                 <img src="/bug.svg" />
             </picture>
-            <p class={`font-black text-center ${(types[11].value < 1)? 'text-[red]' : ((types[11].value > 1)? 'text-[green]' : '')}`}>{(types[11].value == 0.25)? <span>&frac14;</span> : ((types[11].value == 0.5)? <span>&frac12;</span>: ((types[11].value > 1)? <span>{types[11].value}</span> : <span></span>))}</p>
+            <p class={`font-black text-center ${(types[11].value < 1)? 'text-[red]' : ((types[11].value > 1)? 'text-[green]' : '')}`}>{(types[11].value == 0.25)? <span>&frac14;</span> : ((types[11].value == 0.5)? <span>&frac12;</span>: ((types[11].value > 1)? <span>{types[11].value}</span> : <span>1</span>))}</p>
         </div>
         <div class="type-effective">
             <picture>
                 <img src="/rock.svg" />
             </picture>
-            <p class={`font-black text-center ${(types[12].value < 1)? 'text-[red]' : ((types[12].value > 1)? 'text-[green]' : '')}`}>{(types[12].value == 0.25)? <span>&frac14;</span> : ((types[12].value == 0.5)? <span>&frac12;</span>: ((types[12].value > 1)? <span>{types[12].value}</span> : <span></span>))}</p>
+            <p class={`font-black text-center ${(types[12].value < 1)? 'text-[red]' : ((types[12].value > 1)? 'text-[green]' : '')}`}>{(types[12].value == 0.25)? <span>&frac14;</span> : ((types[12].value == 0.5)? <span>&frac12;</span>: ((types[12].value > 1)? <span>{types[12].value}</span> : <span>1</span>))}</p>
         </div>
         <div class="type-effective">
             <picture>
                 <img src="/ghost.svg" />
             </picture>
-            <p class={`font-black text-center ${(types[13].value < 1)? 'text-[red]' : ((types[13].value > 1)? 'text-[green]' : '')}`}>{(types[13].value == 0.25)? <span>&frac14;</span> : ((types[13].value == 0.5)? <span>&frac12;</span>: ((types[13].value > 1)? <span>{types[13].value}</span> : <span></span>))}</p>
+            <p class={`font-black text-center ${(types[13].value < 1)? 'text-[red]' : ((types[13].value > 1)? 'text-[green]' : '')}`}>{(types[13].value == 0.25)? <span>&frac14;</span> : ((types[13].value == 0.5)? <span>&frac12;</span>: ((types[13].value > 1)? <span>{types[13].value}</span> : <span>1</span>))}</p>
         </div>
         <div class="type-effective">
             <picture>
                 <img src="/dragon.svg" />
             </picture>
-            <p class={`font-black text-center ${(types[14].value < 1)? 'text-[red]' : ((types[14].value > 1)? 'text-[green]' : '')}`}>{(types[14].value == 0.25)? <span>&frac14;</span> : ((types[14].value == 0.5)? <span>&frac12;</span>: ((types[14].value > 1)? <span>{types[14].value}</span> : <span></span>))}</p>
+            <p class={`font-black text-center ${(types[14].value < 1)? 'text-[red]' : ((types[14].value > 1)? 'text-[green]' : '')}`}>{(types[14].value == 0.25)? <span>&frac14;</span> : ((types[14].value == 0.5)? <span>&frac12;</span>: ((types[14].value > 1)? <span>{types[14].value}</span> : <span>1</span>))}</p>
         </div>
         <div class="type-effective">
             <picture>
                 <img src="/dark.svg" />
             </picture>
-            <p class={`font-black text-center ${(types[15].value < 1)? 'text-[red]' : ((types[15].value > 1)? 'text-[green]' : '')}`}>{(types[15].value == 0.25)? <span>&frac14;</span> : ((types[15].value == 0.5)? <span>&frac12;</span>: ((types[15].value > 1)? <span>{types[15].value}</span> : <span></span>))}</p>
+            <p class={`font-black text-center ${(types[15].value < 1)? 'text-[red]' : ((types[15].value > 1)? 'text-[green]' : '')}`}>{(types[15].value == 0.25)? <span>&frac14;</span> : ((types[15].value == 0.5)? <span>&frac12;</span>: ((types[15].value > 1)? <span>{types[15].value}</span> : <span>1</span>))}</p>
         </div>
         <div class="type-effective">
             <picture>
                 <img src="/steel.svg" />
             </picture>
-            <p class={`font-black text-center ${(types[16].value < 1)? 'text-[red]' : ((types[16].value > 1)? 'text-[green]' : '')}`}>{(types[16].value == 0.25)? <span>&frac14;</span> : ((types[16].value == 0.5)? <span>&frac12;</span>: ((types[16].value > 1)? <span>{types[16].value}</span> : <span></span>))}</p>
+            <p class={`font-black text-center ${(types[16].value < 1)? 'text-[red]' : ((types[16].value > 1)? 'text-[green]' : '')}`}>{(types[16].value == 0.25)? <span>&frac14;</span> : ((types[16].value == 0.5)? <span>&frac12;</span>: ((types[16].value > 1)? <span>{types[16].value}</span> : <span>1</span>))}</p>
         </div>
         <div class="type-effective">
             <picture>
                 <img src="/fairy.svg" />
             </picture>
-            <p class={`font-black text-center ${(types[17].value < 1)? 'text-[red]' : ((types[17].value > 1)? 'text-[green]' : '')}`}>{(types[17].value == 0.25)? <span>&frac14;</span> : ((types[17].value == 0.5)? <span>&frac12;</span>: ((types[17].value > 1)? <span>{types[17].value}</span> : <span></span>))}</p>
+            <p class={`font-black text-center ${(types[17].value < 1)? 'text-[red]' : ((types[17].value > 1)? 'text-[green]' : '')}`}>{(types[17].value == 0.25)? <span>&frac14;</span> : ((types[17].value == 0.5)? <span>&frac12;</span>: ((types[17].value > 1)? <span>{types[17].value}</span> : <span>1</span>))}</p>
         </div>
     </section>
 </section>

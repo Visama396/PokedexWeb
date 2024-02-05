@@ -1,0 +1,12 @@
+---
+const { evolutionChainUrl } = Astro.props
+
+const evolutionChain = await fetch(evolutionChainUrl).then(response => response.json()).catch(err => console.error('Pokemon does not have evolution chain', err))
+
+console.log(evolutionChain.chain.evolves_to[0].evolution_details)
+---
+<section >
+  <h2 class="text-4xl mb-2 font-black">Evolution chart</h2>
+  <div>
+  </div>
+</section>

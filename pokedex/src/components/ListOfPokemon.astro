@@ -5,7 +5,29 @@ import { getIdFromUrl } from "../utils/getIdFromUrl"
 
 const pokedex = await fetch(`https://pokeapi.co/api/v2/pokemon/`).then(response => response.json())
 ---
-
+<div class="flex gap-3 flex-col justify-center items-center pb-5">
+  <input type="search" id="pokedex-filter" class="outline-none rounded-full px-2 py-1 bg-zinc-600/50 text-white text-center">
+  <div id="filter-types" class="flex gap-2 flex-wrap justify-center items-center">
+    <button type="button" data-type="normal" class="pill">Normal</button>
+    <button type="button" data-type="fire" class="pill fire">Fire</button>
+    <button type="button" data-type="water" class="pill water">Water</button>
+    <button type="button" data-type="electric" class="pill electric">Electric</button>
+    <button type="button" data-type="grass" class="pill grass">Grass</button>
+    <button type="button" data-type="ice" class="pill ice">Ice</button>
+    <button type="button" data-type="fighting" class="pill fighting">Fighting</button>
+    <button type="button" data-type="poison" class="pill poison">Poison</button>
+    <button type="button" data-type="ground" class="pill ground">Ground</button>
+    <button type="button" data-type="flying" class="pill flying">Flying</button>
+    <button type="button" data-type="psychic" class="pill psychic">Psychic</button>
+    <button type="button" data-type="bug" class="pill bug">Bug</button>
+    <button type="button" data-type="rock" class="pill rock">Rock</button>
+    <button type="button" data-type="ghost" class="pill ghost">Ghost</button>
+    <button type="button" data-type="dragon" class="pill dragon">Dragon</button>
+    <button type="button" data-type="dark" class="pill dark">Dark</button>
+    <button type="button" data-type="steel" class="pill steel">Steel</button>
+    <button type="button" data-type="fairy" class="pill fairy">Fairy</button>
+  </div>
+</div>
 <section id="pokedex" class="grid grid-cols-2 px-4 md:grid-cols-3 lg:grid-cols-5 gap-3" style="grid-auto-rows: 1fr" data-next={pokedex.next}>
   {
     pokedex.results.map(({ name, url }) => {
@@ -19,6 +41,46 @@ const pokedex = await fetch(`https://pokeapi.co/api/v2/pokemon/`).then(response 
 <script is:inline>
 let isLoading = false
 let pokedex = document.querySelector("#pokedex")
+let pokedexFilter = document.querySelector("#pokedex-filter")
+let typesFiltered = []
+let filterTypes = document.querySelector("#filter-types")
+
+const onFilterValueChange = (event) => {
+  let value = event?.target.value.toLowerCase() || ''
+  
+  for (let pokemon of pokedex.children) {
+    if (pokemon.id.includes(value)) {
+      pokemon.style.display = 'grid'
+    } 
+    else pokemon.style.display = 'none'
+
+    if (typesFiltered.length > 0) {
+      for (let type of typesFiltered) {
+        if (pokemon.style.background?.includes(type) || pokemon.style.backgroundColor.includes(type)) {
+          pokemon.style.display = 'none'
+        }
+      }
+    }
+  }
+}
+
+pokedexFilter.oninput = onFilterValueChange
+
+for (let type of filterTypes.children) {
+  type.onclick = (event) => {
+    let button = event.target
+    if (button.classList.contains('off')) {
+      button.classList.remove('off')
+      typesFiltered.splice(typesFiltered.indexOf(button.dataset.type), 1)
+    }
+    else {
+      button.classList.add('off')
+      typesFiltered.push(button.dataset.type)
+    }
+
+    onFilterValueChange()
+  }
+}
 
 const capitalize = ([first, ...rest], lowerRest = false) => first.toUpperCase() + (lowerRest ? rest.join('').toLowerCase() : rest.join(''))
 
@@ -34,6 +96,7 @@ async function addNewPokemon(pokemon) {
       newPokemonElement.style.background = "linear-gradient(135deg, var(--"+data.types[0].type.name+"), var(--"+data.types[1].type.name+"))"
 
     newPokemonElement.href = "/"+data.name
+    newPokemonElement.id = data.name.toLowerCase()
 
     let pokemonSpriteElement = document.createElement("img")
     pokemonSpriteElement.classList.add("object-cover", "mx-auto")

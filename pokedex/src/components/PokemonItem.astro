@@ -13,7 +13,7 @@ const data = await fetch(url).then(response => response.json()).catch(err => con
 <a 
   class="grid justify-center place-content-end transition-all rounded-lg w-full h-full pb-4 gap-2 hover:scale-105 hover:shadow-2xl" 
   style={(data.types.length == 1)? `background-color: var(--${data.types[0].type.name})`: `background: linear-gradient(135deg, var(--${data.types[0].type.name}), var(--${data.types[1].type.name}))`} 
-  href={`/${id}`}>
+  href={`/${id}`} id={title.toLowerCase()}>
   
     <img class="object-cover mx-auto" src={img} alt={id}>
     <h1 class="font-black text-center text-2xl text-white pokemon">{title}</h1>
