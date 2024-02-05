@@ -1,15 +1,13 @@
-/* empty css                               */import { e as createAstro, f as createComponent, r as renderTemplate, m as maybeRenderHead, j as addAttribute, i as renderComponent } from '../astro_78db06c0.mjs';
-import 'html-escaper';
-import 'clsx';
-import { $ as $$Layout } from './404_29240024.mjs';
-import { c as capitalize } from './_pokemon__bb624667.mjs';
+/* empty css                               */import { e as createAstro, f as createComponent, r as renderTemplate, m as maybeRenderHead, j as addAttribute, i as renderComponent } from '../astro_ab4bf765.mjs';
+import { $ as $$Layout } from './404_a1e81178.mjs';
+import { c as capitalize } from './_pokemon__8b5e5f1a.mjs';
 
 const $$Astro$3 = createAstro();
 const $$Title = createComponent(async ($$result, $$props, $$slots) => {
   const Astro2 = $$result.createAstro($$Astro$3, $$props, $$slots);
   Astro2.self = $$Title;
   return renderTemplate`${maybeRenderHead()}<h1 class="font-black uppercase text-4xl md:text-5xl lg:text-6xl text-center py-8 text-white" style="text-shadow: 0px 0px 10px rgba(255,255,255,0.7);">Pokédex</h1>`;
-}, "E:/PokedexWeb/pokedex/src/components/Title.astro", void 0);
+}, "E:/PokedexWeb/src/components/Title.astro", void 0);
 
 const $$Astro$2 = createAstro();
 const $$PokemonItem = createComponent(async ($$result, $$props, $$slots) => {
@@ -18,7 +16,7 @@ const $$PokemonItem = createComponent(async ($$result, $$props, $$slots) => {
   const { id, url, title, img } = Astro2.props;
   const data = await fetch(url).then((response) => response.json()).catch((err) => console.error("Pok\xE9mon not found. Cause: Url of data is not working."));
   return renderTemplate`${maybeRenderHead()}<a class="grid justify-center place-content-end transition-all rounded-lg w-full h-full pb-4 gap-2 hover:scale-105 hover:shadow-2xl"${addAttribute(data.types.length == 1 ? `background-color: var(--${data.types[0].type.name})` : `background: linear-gradient(135deg, var(--${data.types[0].type.name}), var(--${data.types[1].type.name}))`, "style")}${addAttribute(`/${id}`, "href")}${addAttribute(title.toLowerCase(), "id")}><img class="object-cover mx-auto"${addAttribute(img, "src")}${addAttribute(id, "alt")}><h1 class="font-black text-center text-2xl text-white pokemon">${title}</h1><p class="text-center" style="font-weight: bold">${data.types.length == 1 ? renderTemplate`<span${addAttribute(`color: var(--light-${data.types[0].type.name}); text-shadow: 0 0 10px rgba(255,255,255,0.5)`, "style")}>${data.types[0].type.name}</span>` : renderTemplate`<span${addAttribute(`color: var(--light-${data.types[0].type.name}); text-shadow: 0 0 8px rgba(255,255,255,0.5)`, "style")}>${data.types[0].type.name}</span><span> · </span><span${addAttribute(`color: var(--light-${data.types[1].type.name}); text-shadow: 0 0 8px rgba(255,255,255,0.5)`, "style")}>${data.types[1].type.name}</span>`}</p></a>`;
-}, "E:/PokedexWeb/pokedex/src/components/PokemonItem.astro", void 0);
+}, "E:/PokedexWeb/src/components/PokemonItem.astro", void 0);
 
 const getIdFromUrl = (url) => url.split('/')[6];
 
@@ -156,16 +154,16 @@ window.onscroll = async (event) => {
 <\/script>`])), maybeRenderHead(), addAttribute(pokedex.next, "data-next"), pokedex.results.map(({ name, url }) => {
     return renderTemplate`${renderComponent($$result, "PokemonItem", $$PokemonItem, { "id": name, "url": url, "title": capitalize(name), "img": `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${getIdFromUrl(url)}.png` })}`;
   }));
-}, "E:/PokedexWeb/pokedex/src/components/ListOfPokemon.astro", void 0);
+}, "E:/PokedexWeb/src/components/ListOfPokemon.astro", void 0);
 
 const $$Astro = createAstro();
 const $$Index = createComponent(async ($$result, $$props, $$slots) => {
   const Astro2 = $$result.createAstro($$Astro, $$props, $$slots);
   Astro2.self = $$Index;
   return renderTemplate`${renderComponent($$result, "Layout", $$Layout, { "title": "Pok\xE9dex" }, { "default": ($$result2) => renderTemplate`${maybeRenderHead()}<main class="m-auto max-w-7xl">${renderComponent($$result2, "Title", $$Title, {})}${renderComponent($$result2, "ListOfPokemon", $$ListOfPokemon, {})}</main>` })}`;
-}, "E:/PokedexWeb/pokedex/src/pages/index.astro", void 0);
+}, "E:/PokedexWeb/src/pages/index.astro", void 0);
 
-const $$file = "E:/PokedexWeb/pokedex/src/pages/index.astro";
+const $$file = "E:/PokedexWeb/src/pages/index.astro";
 const $$url = "";
 
 export { $$Index as default, $$file as file, $$url as url };

@@ -1,5 +1,31 @@
-import { isRemotePath, joinPaths } from '@astrojs/internal-helpers/path';
-import { A as AstroError, E as ExpectedImage, L as LocalImageUsedWrongly, M as MissingImageDimension, U as UnsupportedImageFormat, I as IncompatibleDescriptorOptions, a as UnsupportedImageConversion, b as InvalidImageService, c as ExpectedImageOptions, d as MissingSharp } from './astro_78db06c0.mjs';
+import { A as AstroError, E as ExpectedImage, L as LocalImageUsedWrongly, M as MissingImageDimension, U as UnsupportedImageFormat, I as IncompatibleDescriptorOptions, a as UnsupportedImageConversion, b as InvalidImageService, c as ExpectedImageOptions, d as MissingSharp } from './astro_ab4bf765.mjs';
+
+function removeTrailingForwardSlash(path) {
+  return path.endsWith("/") ? path.slice(0, path.length - 1) : path;
+}
+function removeLeadingForwardSlash(path) {
+  return path.startsWith("/") ? path.substring(1) : path;
+}
+function trimSlashes(path) {
+  return path.replace(/^\/|\/$/g, "");
+}
+function isString(path) {
+  return typeof path === "string" || path instanceof String;
+}
+function joinPaths(...paths) {
+  return paths.filter(isString).map((path, i) => {
+    if (i === 0) {
+      return removeTrailingForwardSlash(path);
+    } else if (i === paths.length - 1) {
+      return removeLeadingForwardSlash(path);
+    } else {
+      return trimSlashes(path);
+    }
+  }).join("/");
+}
+function isRemotePath(src) {
+  return /^(http|ftp|https|ws):?\/\//.test(src) || src.startsWith("data:");
+}
 
 const VALID_SUPPORTED_FORMATS = [
   "jpeg",
@@ -390,4 +416,4 @@ const sharp$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
   default: sharp_default
 }, Symbol.toStringTag, { value: 'Module' }));
 
-export { getConfiguredImageService as a, isRemoteAllowed as b, getImage as g, isESMImportedImage as i };
+export { getConfiguredImageService as a, isRemotePath as b, isRemoteAllowed as c, getImage as g, isESMImportedImage as i };
