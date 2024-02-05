@@ -1,5 +1,6 @@
 ---
-import { array, number } from 'astro/zod'
+import { getIdFromUrl } from "../utils/getIdFromUrl"
+import { capitalize } from "../utils/capitalize"
 import ArrowRight from '../components/icons/arrowRight.astro'
 const { evolutionChainUrl, spriteUrl } = Astro.props
 
@@ -19,21 +20,20 @@ function getAllEvolutions(evolution, array) {
   
 }
 getAllEvolutions(evoData, evoChain)
-/*evoChain.map(chain => {
-  console.log(chain.species.name)
-})*/
+evoChain.map(chain => {
+  console.log(chain.evolves_to)
+})
 ---
 <section>
   <h2 class="text-4xl mb-2 font-black">Evolution chart</h2>
-  <div class="bg-zinc-800/20 rounded-xl flex justify-center items-center py-5">
+  <div class="bg-zinc-800/20 rounded-xl flex justify-center items-center py-5 flex-wrap">
     {evoChain.map(chain => (
-      <div class="evochain">
-        <picture class="bg-zinc-700/10 rounded-full size-[200px] flex justify-center items-center">
-          <img class="h-[60%]" src={spriteUrl} alt={`sprite ${chain.species.name}`} />
+      <div class="evochain flex justify-center items-center flex-col">
+        <picture class="bg-zinc-700/10 rounded-full size-[120px] flex justify-center items-center">
+          <img class="h-[60%]" src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${getIdFromUrl(chain.species.url)}.png`} alt={`sprite ${chain.species.name}`} />
         </picture>
-        <p>{chain.species.name}</p>
+        <p>{capitalize(chain.species.name)}</p>
       </div>
     ))}
-    <ArrowRight class="size-10" />
   </div>
 </section>
