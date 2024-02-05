@@ -11,8 +11,6 @@ import PokemonYield from "../components/PokemonYield.astro"
 import PokemonTypeEffectiveness from "../components/PokemonTypeEffectiveness.astro"
 import PokemonEvolutionChart from "../components/PokemonEvolutionChart.astro"
 
-export const prerender = false
-
 const { pokemon } = Astro.params
 
 const pokeData = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon}`).then(response => response.json()).catch(err => console.error("Pokémon not found. Cause: Name incorrect.", err))
