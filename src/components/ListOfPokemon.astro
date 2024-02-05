@@ -156,7 +156,7 @@ window.onscroll = async (event) => {
   let innerHeight = window.innerHeight
   let offsetHeight = document.body.offsetHeight
   
-  if (scrollY + innerHeight > offsetHeight - 500) {
+  if (scrollY + innerHeight > offsetHeight - 150) {
     if (!isLoading) {
       isLoading = !isLoading
       await loadMorePokemon(pokedex.dataset.next)
