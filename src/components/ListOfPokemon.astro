@@ -51,22 +51,22 @@ let typesFiltered = []
 let filterTypes = document.querySelector("#filter-types")
 
 const onFilterValueChange = (event) => {
-  let value = event?.target.value.toLowerCase() || ''
+  let value = pokedexFilter.value.toLowerCase() || ''
   
   for (let pokemon of pokedex.children) {
-    if (pokemon.id.includes(value)) {
-      pokemon.style.display = 'grid'
-    } 
-    else pokemon.style.display = 'none'
-
     if (typesFiltered.length > 0) {
       for (let type of typesFiltered) {
-        if (pokemon.style.background?.includes(type) || pokemon.style.backgroundColor?.includes(type)) {
+        if ((pokemon.style.background?.includes(type) || pokemon.style.backgroundColor?.includes(type)) && pokemon.id.includes(value)) {
           pokemon.style.display = 'grid'
           break
         } 
         else pokemon.style.display = 'none'
       }
+    } else {
+      if (pokemon.id.includes(value)) {
+        pokemon.style.display = 'grid'
+      } 
+      else pokemon.style.display = 'none'
     }
   }
 }
