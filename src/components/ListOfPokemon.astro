@@ -1,9 +1,10 @@
 ---
-import PokemonItem from "./PokemonItem.astro";
+import PokemonItem from "./PokemonItem.astro"
+import ArrowUp from "./icons/arrowUp.astro"
 import { capitalize } from "../utils/capitalize"
 import { getIdFromUrl } from "../utils/getIdFromUrl"
 
-const pokedex = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=100`).then(response => response.json())
+const pokedex = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=250`).then(response => response.json())
 ---
 <div class="flex gap-3 flex-col justify-center items-center pb-5">
   <input type="search" id="pokedex-filter" class="outline-none rounded-full px-2 py-1 bg-zinc-600/50 text-white text-center">
@@ -37,6 +38,10 @@ const pokedex = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=100`).then(
     })
   }
 </section>
+
+<footer class="sticky inset-x-0 bottom-10 w-full mx-auto h-[50px] flex justify-end items-center">
+  <a href="/#top" class="size-10 p-1 rounded-full bg-zinc-700"><ArrowUp class="size-8 text-white"/></a>
+</footer>
 
 <script is:inline>
 let isLoading = false
@@ -142,25 +147,19 @@ async function addNewPokemon(pokemon) {
     pokedex.appendChild(newPokemonElement)
     onFilterValueChange()
   }
+
+  return Promise.resolve(true)
 }
 
 async function loadMorePokemon(url) {
   const pokemon = await fetch(url).then(response => response.json())
   pokedex.dataset.next = pokemon.next
-  await addNewPokemon(pokemon.results).then(() => isLoading = !isLoading)
-}
+  const result = await addNewPokemon(pokemon.results)
 
-// Listen to the event of scrolling to load more Pokémon reaching the end of the site
-window.onscroll = async (event) => {
-  let scrollY = window.scrollY
-  let innerHeight = window.innerHeight
-  let offsetHeight = document.body.offsetHeight
-  
-  if (scrollY + innerHeight > offsetHeight - 150) {
-    if (!isLoading) {
-      isLoading = !isLoading
-      await loadMorePokemon(pokedex.dataset.next)
-    }
+  if (result) {
+    loadMorePokemon(pokedex.dataset.next)
   }
 }
+
+loadMorePokemon(pokedex.dataset.next)
 </script>

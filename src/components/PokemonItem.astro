@@ -11,9 +11,10 @@ const {id, url, title, img} = Astro.props
 const data = await fetch(url).then(response => response.json()).catch(err => console.error("Pokémon not found. Cause: Url of data is not working."))
 ---
 <a 
-  class="grid justify-center place-content-end transition-all rounded-lg w-full h-full pb-4 gap-2 hover:scale-105 hover:shadow-2xl" 
+  class="grid justify-center place-content-end transition-all rounded-md w-full h-full pb-4 gap-2 hover:scale-105 hover:shadow-2xl" 
   style={(data.types.length == 1)? `background-color: var(--${data.types[0].type.name})`: `background: linear-gradient(135deg, var(--${data.types[0].type.name}), var(--${data.types[1].type.name}))`} 
   href={`/${id}`} id={title.toLowerCase()}>
+    <p>{data.id}</p>
     <img class="object-cover mx-auto" src={img} alt={id}>
     <h1 class="font-black text-center text-2xl text-white pokemon">{title}</h1>
     <p class="text-center text-md" style="font-weight: bold">{(data.types.length == 1)?
