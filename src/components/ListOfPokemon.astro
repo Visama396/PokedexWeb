@@ -90,13 +90,16 @@ for (let type of filterTypes.children) {
 }
 
 const capitalize = ([first, ...rest], lowerRest = false) => first.toUpperCase() + (lowerRest ? rest.join('').toLowerCase() : rest.join(''))
+const getDexNumber = (_) => (_ < 10) ? '000' + _ : (_ < 100) ? '00' + _ : (_ < 1000) ? '0' + _ : _
 
 async function addNewPokemon(pokemon) {
   for (poke of pokemon) {
-    const data = await fetch(poke.url).then(response => response.json()).catch(err => console.error("Pokémon not found."))
+    const data = await fetch(poke.url).then(response => response.json())
+
+    if (data.id > 10000) continue
 
     let newPokemonElement = document.createElement("a")
-    newPokemonElement.classList.add("grid", "justify-center", "place-content-end", "transition-all", "rounded-lg", "w-full", "h-full", "pb-4", "gap-2", "hover:scale-105", "hover:shadow-2xl")
+    newPokemonElement.classList.add("flex", "flex-col", "justify-center", "items-center", "transition-all", "rounded-lg", "py-2", "w-full", "h-full", "hover:scale-105", "hover:shadow-2xl")
     if (data.types.length == 1)
       newPokemonElement.style.backgroundColor = "var(--"+data.types[0].type.name+")"
     else
@@ -105,16 +108,24 @@ async function addNewPokemon(pokemon) {
     newPokemonElement.href = "/"+data.name
     newPokemonElement.id = data.name.toLowerCase()
 
+    let pokemonDexNumber = document.createElement("p")
+    pokemonDexNumber.innerText = `#${getDexNumber(data.id)}`
+    pokemonDexNumber.classList.add("text-center", "text-white", "text-xl")
+    newPokemonElement.appendChild(pokemonDexNumber)
+
     let pokemonSpriteElement = document.createElement("img")
-    pokemonSpriteElement.classList.add("object-cover", "mx-auto")
+    pokemonSpriteElement.classList.add("object-cover", "mx-auto", "w-[80%]")
     pokemonSpriteElement.src = data.sprites.other.home.front_default
     pokemonSpriteElement.alt = data.name
     newPokemonElement.appendChild(pokemonSpriteElement)
 
+    let pokemonTextDiv = document.createElement("div")
+    newPokemonElement.appendChild(pokemonTextDiv)
+
     let pokemonNameElement = document.createElement("h1")
     pokemonNameElement.classList.add("front-black", "text-center", "text-2xl", "text-white", "pokemon")
-    pokemonNameElement.innerText = capitalize(data.name)
-    newPokemonElement.appendChild(pokemonNameElement)
+    pokemonNameElement.innerText = capitalize(data.name).replace(/-/, " ")
+    pokemonTextDiv.appendChild(pokemonNameElement)
 
     let pokemonTypesContainer = document.createElement("p")
     pokemonTypesContainer.classList.add("text-center")
@@ -142,7 +153,7 @@ async function addNewPokemon(pokemon) {
       typeTwoElement.innerText = data.types[1].type.name
       pokemonTypesContainer.appendChild(typeTwoElement)
     }
-    newPokemonElement.appendChild(pokemonTypesContainer)
+    pokemonTextDiv.appendChild(pokemonTypesContainer)
     
     pokedex.appendChild(newPokemonElement)
     onFilterValueChange()
@@ -156,7 +167,7 @@ async function loadMorePokemon(url) {
   pokedex.dataset.next = pokemon.next
   const result = await addNewPokemon(pokemon.results)
 
-  if (result) {
+  if (result && pokedex.dataset.next != 'null') {
     loadMorePokemon(pokedex.dataset.next)
   }
 }
