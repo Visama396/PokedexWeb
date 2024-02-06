@@ -56,14 +56,15 @@ if (type2) {
 }
 
 function getColorByTypeValue(value) {
-    if (value == 1 || value == 0) return "text-[white]"
+    if (value == 0) return "text-yellow-200/30"
+    if (value == 1) return "text-[white]"
     if (value < 1) return "text-[green]"
     if (value > 1) return "text-[red]"
 }
 
 function getTextByTypeValue(value) {
-    if (value == 0.25) return 'x¼'
-    if (value == 0.5) return 'x½'
+    /*if (value == 0.25) return 'x¼'
+    if (value == 0.5) return 'x½'*/
     return 'x'+value
 }
 ---

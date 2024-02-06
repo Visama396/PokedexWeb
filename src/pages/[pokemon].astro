@@ -75,7 +75,8 @@ const pokeSpecies = await fetch(pokeData.species.url).then(response => response.
           <p>
             {pokeSpecies.egg_groups.map(group => <span>{(group.name == "no-eggs")? "Undiscovered" : capitalize(group.name)} </span>)}
           </p>
-          <p class="font-black text-right">Gender</p><p><span class="male">{(8-pokeSpecies.gender_rate)*12.5}% male</span>, <span class="female">{pokeSpecies.gender_rate*12.5}% female</span></p>
+          <p class="font-black text-right">Gender</p>
+          <p><span class="male">{(8-pokeSpecies.gender_rate)*12.5}% male</span>, <span class="female">{pokeSpecies.gender_rate*12.5}% female</span></p>
           <p class="font-black text-right">Egg Cycles</p>
           <p>{pokeSpecies.hatch_counter} <span class="additional-info ml-1">({((pokeSpecies.hatch_counter-1) * 257)+1}-{pokeSpecies.hatch_counter * 257} steps)</span></p>
         </section>
