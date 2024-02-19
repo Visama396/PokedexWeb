@@ -5,7 +5,13 @@ const { move, level } = Astro.props
 
 const details = await fetch(move).then(res => res.json())
 
-// console.log(details)
+const move_status_icons = {
+  "physical": "https://img.pokemondb.net/images/icons/move-physical.png",
+  "status": "https://img.pokemondb.net/images/icons/move-status.png",
+  "special": "https://img.pokemondb.net/images/icons/move-special.png"
+}
+
+//console.log(details.damage_class.name)
 
 ---
 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
@@ -19,7 +25,7 @@ const details = await fetch(move).then(res => res.json())
     <span class={`pill ${details.type.name}`}>{details.type.name}</span>
   </td>
   <td class="px-2 py-1">
-    <img src="https://img.pokemondb.net/images/icons/move-status.png" class="size-[30px]" alt="status move">
+    <img src={move_status_icons[details.damage_class.name]} class="h-6" alt="damage class move">
   </td>
   <td class="px-2 py-1">
     {details.power}
