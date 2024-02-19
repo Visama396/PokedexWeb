@@ -71,11 +71,11 @@ function getTextByTypeValue(value) {
 <section>
     <h2 class="text-4xl mb-2 font-black">Type defenses</h2>
     <p>The effectiveness of each type on {capitalize(pokemon)}</p>
-    <section class="grid xl:grid-cols-9 grid-cols-6 xl:gap-2 gap-4">
+    <section class="grid xl:grid-cols-9 grid-cols-6 xl:gap-2 md:gap-4 gap-8">
         {keys.map(type => (
             <div class="type-effective">
                 <picture>
-                    <img src={`/${type}.svg`} alt={type}>
+                    <img class="max-w-[64px]" src={`/${type}.svg`} alt={type}>
                 </picture>
                 <p class={`font-black text-center ${getColorByTypeValue(types[type])}`}>
                     {getTextByTypeValue(types[type])}

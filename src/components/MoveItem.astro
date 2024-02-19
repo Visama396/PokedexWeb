@@ -1,12 +1,30 @@
 ---
-const { move } = Astro.props
+import { capitalize } from "../utils/capitalize"
+
+const { move, level } = Astro.props
+
+const details = await fetch(move).then(res => res.json())
+
+// console.log(details)
 
 ---
-<div class="flex gap-x-2 items-center">
-  <span class="w-8"></span>
-  <span class="w-40"></span>
-  <span class="w-[60px]"><span class="pill fire">Fire</span></span>
-  <span class="w-10"><img src="https://img.pokemondb.net/images/icons/move-status.png" alt="status move"></span>
-  <span></span>
-  <span></span>
-</div>
+<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+  <td class="px-2 py-1">
+    {level}
+  </td>
+  <td class="px-2 py-1">
+    {capitalize(details.name.replace('-', ' '))}
+  </td>
+  <td class="px-2 py-1">
+    <span class={`pill ${details.type.name}`}>{details.type.name}</span>
+  </td>
+  <td class="px-2 py-1">
+    <img src="https://img.pokemondb.net/images/icons/move-status.png" class="size-[30px]" alt="status move">
+  </td>
+  <td class="px-2 py-1">
+    {details.power}
+  </td>
+  <td class="px-2 py-1">
+    {details.accuracy}
+  </td>
+</tr>

@@ -1,42 +1,55 @@
 ---
-const { moves, caption } = Astro.props
+import MoveItem from "./MoveItem.astro"
+
+const { moves, caption, generation, method } = Astro.props
+
+let shownMoves = []
 
 for (let move of moves) {
   for (let details of move.version_group_details) {
-    if (details.version_group.name == "scarlet-violet" && details.move_learn_method.name == 'level-up') {
-      console.log(move)
+    if (details.version_group.name == generation && details.move_learn_method.name == method) {
+      shownMoves.push({level: details.level_learned_at, url: move.move.url})
     }
   }
 }
 
-let shownMoves = []
+// console.log("Shown moves: ", method)
+//console.log(shownMoves)
 
 ---
 <section class="flex flex-col flex-1">
-  <h3 class="text-2xl mb-2 font-semibold text-white/80">{caption}</h3>
-  <div class="flex flex-col gap-2">
-    <div class="flex gap-x-2">
-      <span class="font-bold w-8">Lv.</span>
-      <span class="font-bold w-40">Move</span>
-      <span class="font-bold w-[60px]">Type</span>
-      <span class="font-bold">Cat.</span>
-      <span class="font-bold">Power</span>
-      <span class="font-bold">Acc.</span>
-    </div>
-    {
-      moves.map(move => (
-        move.version_group_details.map(details => {
-          if (details.version_group.name == 'scarlet-violet' && details.move_learn_method.name == 'level-up')
-          return (
-            <div class="flex gap-x-2 items-center">
-              <span class="w-8">{details.level_learned_at}</span>
-              <span class="w-40">{move.move.name}</span>
-              <span class="w-[60px]"><span class="pill fire">Fire</span></span>
-              <span class="w-10"><img src="https://img.pokemondb.net/images/icons/move-status.png" alt="status move"></span>
-            </div>
-          )
-        })
-      ))
-    }
+  <h2 class="font-semibold text-xl text-zinc-800/50">{caption}</h2>
+  <div class="relative overflow-x-auto">
+    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+      <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <tr>
+          <th scope="col" class="px-2 py-1">
+            Lv.
+          </th>
+          <th scope="col" class="px-2 py-1">
+            Move
+          </th>
+          <th scope="col" class="px-2 py-1">
+            Type
+          </th>
+          <th scope="col" class="px-2 py-1">
+            Cat.
+          </th>
+          <th scope="col" class="px-2 py-1">
+            Power
+          </th>
+          <th scope="col" class="px-2 py-1">
+            Acc.
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          shownMoves.map(move => (
+            <MoveItem level={move.level} move={move.url} />
+          ))
+        }
+      </tbody>
+    </table>
   </div>
 </section>
