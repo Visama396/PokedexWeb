@@ -3,7 +3,7 @@ import { capitalize } from "../utils/capitalize"
 
 const { move, level } = Astro.props
 
-const details = await fetch(move).then(res => res.json())
+const details = await fetch(move).then(res => res.json()).catch(err => console.error(err))
 
 const move_status_icons = {
   "physical": "https://img.pokemondb.net/images/icons/move-physical.png",
@@ -15,9 +15,11 @@ const move_status_icons = {
 
 ---
 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-  <td class="px-2 py-1">
-    {level}
-  </td>
+  {level ? (
+    <td class="px-2 py-1">
+      {level}
+    </td>
+  ): ""}
   <td class="px-2 py-1">
     {capitalize(details.name.replace('-', ' '))}
   </td>
