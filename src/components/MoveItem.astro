@@ -1,7 +1,7 @@
 ---
 import { capitalize } from "../utils/capitalize"
 
-const { move, level } = Astro.props
+const { move, level, method } = Astro.props
 
 const details = await fetch(move).then(res => res.json()).catch(err => console.error(err))
 
@@ -15,11 +15,11 @@ const move_status_icons = {
 
 ---
 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-  {level ? (
-    <td class="px-2 py-1">
-      {level}
-    </td>
-  ): ""}
+  {
+    level == 0 && method == 'level-up'
+      ? <td class="px-2 py-1">Evol.</td>
+      : level > 0 ? <td class="px-2 py-1">{level}</td> : "" 
+  }
   <td class="px-2 py-1">
     {capitalize(details.name.replace('-', ' '))}
   </td>
