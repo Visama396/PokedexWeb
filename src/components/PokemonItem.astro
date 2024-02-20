@@ -1,12 +1,13 @@
 ---
+import { backspaceAndCapitalize } from '../utils/capitalize'
+import { getDexNumber } from '../utils/getDexNumber'
+
 export interface Props {
   id: string
   url: string
   title: string
   img: string
 }
-
-import { getDexNumber } from '../utils/getDexNumber'
 
 const {id, url, title, img} = Astro.props
 
@@ -19,7 +20,7 @@ const data = await fetch(url).then(response => response.json())
     <p class="text-center text-white text-xl">#{getDexNumber(data.id)}</p>
     <img class="object-cover mx-auto" src={img} alt={id}>
     <div>
-      <h1 class="font-black text-center text-2xl text-white pokemon mt-2">{title.replace(/-/, " ")}</h1>
+      <h1 class="font-black text-center text-2xl text-white pokemon mt-2">{backspaceAndCapitalize(title)}</h1>
       <p class="text-center text-md" style="font-weight: bold">{(data.types.length == 1)?
         <span style={`color: var(--light-${data.types[0].type.name}); text-shadow: 0 0 6px rgba(255,255,255,0.4)`}>{data.types[0].type.name}</span> : 
         <span style={`color: var(--light-${data.types[0].type.name}); text-shadow: 0 0 6px rgba(255,255,255,0.4)`}>{data.types[0].type.name}</span><span> · </span><span style={`color: var(--light-${data.types[1].type.name}); text-shadow: 0 0 6px rgba(255,255,255,0.4)`}>{data.types[1].type.name}</span>
