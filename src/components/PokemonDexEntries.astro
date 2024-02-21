@@ -1,0 +1,19 @@
+---
+const { entries } = Astro.props
+
+//console.log(entries)
+
+/*entries.map(entry => {
+    console.log(entry.flavor_text.replace(/\\n/g, ' '))
+})*/
+---
+<section class="flex">
+    {
+        entries.map(entry => (
+            <div class="flex flex-row bg-zinc-300/50 radius-md">
+                <p>{entry.version.name}</p>
+                <p>{entry.flavor_text}</p>
+            </div>
+        ))
+    }
+</section>

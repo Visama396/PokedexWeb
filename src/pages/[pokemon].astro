@@ -11,6 +11,7 @@ import PokemonYield from "../components/PokemonYield.astro"
 import PokemonTypeEffectiveness from "../components/PokemonTypeEffectiveness.astro"
 import PokemonEvolutionChart from "../components/PokemonEvolutionChart.astro"
 import PokemonMoves from "../components/PokemonMoves.astro"
+import PokemonDexEntries from "../components/PokemonDexEntries.astro"
 
 const { pokemon } = Astro.params
 
@@ -168,6 +169,7 @@ const pokeSpecies = await fetch(pokeData.species.url).then(response => response.
   </section>
   <section>
     <h2 class="text-4xl mb-2 font-black">Pokédex entries</h2>
+    <PokemonDexEntries entries={pokeSpecies.flavor_text_entries} />
   </section>
   <section>
     <h2 class="text-4xl mb-2 font-black">Other languages</h2>

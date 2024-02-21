@@ -90,6 +90,25 @@ for (let type of filterTypes.children) {
 }
 
 const capitalize = ([first, ...rest], lowerRest = false) => first.toUpperCase() + (lowerRest ? rest.join('').toLowerCase() : rest.join(''))
+const backspaceAndCapitalize = (name) => {
+	let afterhyphen = false
+	let result = ""
+
+	for (const char of name) {
+		if (afterhyphen) {
+			result += char.toUpperCase()
+			afterhyphen = false
+		} else if (char === '-') {
+			result += ' '
+			afterhyphen = true
+		} else {
+			result += char
+		}
+	}
+
+	return capitalize(result)
+}
+
 const getDexNumber = (_) => (_ < 10) ? '000' + _ : (_ < 100) ? '00' + _ : (_ < 1000) ? '0' + _ : _
 
 async function addNewPokemon(pokemon) {
@@ -124,7 +143,7 @@ async function addNewPokemon(pokemon) {
 
     let pokemonNameElement = document.createElement("h1")
     pokemonNameElement.classList.add("front-black", "text-center", "text-2xl", "text-white", "pokemon")
-    pokemonNameElement.innerText = capitalize(data.name).replace(/-/, " ")
+    pokemonNameElement.innerText = backspaceAndCapitalize(data.name)
     pokemonTextDiv.appendChild(pokemonNameElement)
 
     let pokemonTypesContainer = document.createElement("p")
