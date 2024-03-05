@@ -169,7 +169,6 @@ const pokeSpecies = await fetch(pokeData.species.url).then(response => response.
   </section>
   <section>
     <h2 class="text-4xl mb-2 font-black">Pokédex entries</h2>
-    <PokemonDexEntries entries={pokeSpecies.flavor_text_entries} />
   </section>
   <section>
     <h2 class="text-4xl mb-2 font-black">Other languages</h2>
