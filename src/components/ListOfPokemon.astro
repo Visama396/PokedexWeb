@@ -6,7 +6,7 @@ import { getIdFromUrl } from "../utils/getIdFromUrl"
 
 const pokedex = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=250`).then(response => response.json())
 ---
-<div class="flex gap-3 flex-col justify-center items-center pb-5">
+<div class="flex gap-3 flex-col justify-center items-center py-5 sticky top-0 bg-[#111]">
   <input type="search" id="pokedex-filter" class="outline-none rounded-full px-2 py-1 bg-zinc-600/50 text-white text-center">
   <div id="filter-types" class="flex gap-2 flex-wrap justify-center items-center">
     <button type="button" data-type="normal" class="pill off">Normal</button>

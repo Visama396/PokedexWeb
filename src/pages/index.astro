@@ -2,10 +2,12 @@
 import Layout from '../layouts/Layout.astro';
 import Title from '../components/Title.astro';
 import ListOfPokemon from '../components/ListOfPokemon.astro';
+import TopBar from '../components/TopBar.astro';
 ---
 
 <Layout title="Visamadex">
 	<main class="m-auto max-w-7xl">
+		<TopBar />
 		<Title />
 		<ListOfPokemon />
 	</main>

@@ -12,6 +12,7 @@ import PokemonTypeEffectiveness from "../components/PokemonTypeEffectiveness.ast
 import PokemonEvolutionChart from "../components/PokemonEvolutionChart.astro"
 import PokemonMoves from "../components/PokemonMoves.astro"
 import PokemonDexEntries from "../components/PokemonDexEntries.astro"
+import TopBar from "../components/TopBar.astro"
 
 const { pokemon } = Astro.params
 
@@ -26,9 +27,7 @@ const pokeSpecies = await fetch(pokeData.species.url).then(response => response.
 ---
 
 <Layout title={`Visamadex · ${capitalize(pokemon)} details page`}>
-  <nav>
-    <a href="/" class="inline-block p-4 text-white duration-500 ease-in-out hover:bg-slate-400">Home</a>
-  </nav>
+  <TopBar />
   <section class="grid grid-rows-[max-content_1fr] xl:gap-y-8 px-4 justify-center text-white">
     <section>
       <h1 class="font-black text-6xl md:text-center" style={`text-shadow: 0px 0px 10px rgba(255,255,255,0.7);`}>{backspaceAndCapitalize(pokemon)}</h1>
