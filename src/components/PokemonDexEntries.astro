@@ -1,17 +1,67 @@
 ---
-const { entries } = Astro.props
+const { entries, lang } = Astro.props
 
 //console.log(entries)
 
-/*entries.map(entry => {
-    console.log(entry.flavor_text.replace(/\\n/g, ' '))
-})*/
+const versionToGeneration = {
+    // Gen 1
+    red: 1, blue: 1, yellow: 1,
+    // Gen 2
+    gold: 2, silver: 2, crystal: 2,
+    // Gen 3
+    ruby: 3, sapphire: 3, emerald: 3, firered: 3, leafgreen: 3,
+    // Gen 4
+    diamond: 4, pearl: 4, platinum: 4, heartgold: 4, soulsilver: 4,
+    // Gen 5
+    black: 5, white: 5, 'black-2': 5, 'white-2': 5,
+    // Gen 6
+    x: 6, y: 6, 'omega-ruby': 6, 'alpha-sapphire': 6,
+    // Gen 7
+    sun: 7, moon: 7, 'ultra-sun': 7, 'ultra-moon': 7,
+    'lets-go-pikachu': 7, 'lets-go-eevee': 7,
+    // Gen 8
+    sword: 8, shield: 8, 'brilliant-diamond': 8, 'shining-pearl': 8, 'legends-arceus': 8,
+    // Gen 9
+    scarlet: 9, violet: 9
+}
+
+function getOnePerGeneration(items) {
+    const seen = new Set()
+
+    return items
+        .filter(item => item.language.name === lang)
+        .filter(item => {
+            const version = item.version.name
+            const gen = versionToGeneration[version]
+            if (!gen) return false
+
+            if (seen.has(gen)) return false
+            else {
+                seen.add(gen)
+                return true
+            }
+        })
+}
+
+const generationToRomanNumber = [
+    'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX'
+]
+
+entries.map(entry => {
+    if (entry.language.name == lang) {
+        entry.flavor_text = entry.flavor_text.replace(/[\x00-\x1F\x7F]/g, " ")
+    }
+})
+
+let dexEntries = getOnePerGeneration(entries)
 ---
-<section class="flex">
+<section class="flex flex-col gap-2">
     {
-        entries.map(entry => (
-            <div class="flex flex-row bg-zinc-300/50 radius-md">
-                <p>{entry.version.name}</p>
+        dexEntries.map(entry => (
+            <div class="flex gap-2 flex-row items-center">
+                <div class="font-[Fascinate] bg-[#f44336] w-[50px] px-[0.75rem] py-[0.25rem] rounded-md text-center">
+                    {generationToRomanNumber[versionToGeneration[entry.version.name] - 1]}
+                </div>
                 <p>{entry.flavor_text}</p>
             </div>
         ))

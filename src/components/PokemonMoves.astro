@@ -7,7 +7,6 @@ let shownMoves = []
 
 for (let move of moves) {
   for (let details of move.version_group_details) {
-    console.log(details.move_learn_method.name)
     if (details.version_group.name == generation && details.move_learn_method.name == method) {
       shownMoves.push({level: details.level_learned_at, url: move.move.url})
     }
@@ -16,7 +15,9 @@ for (let move of moves) {
 
 shownMoves.sort((a, b) => {return a.level - b.level})
 ---
-<section class="flex flex-col flex-1">
+{
+  shownMoves.length > 0 ? (
+<section class="flex flex-col">
   <h2 class="font-semibold text-xl text-zinc-200/80">{caption}</h2>
   <div class="relative overflow-x-auto">
     <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -52,3 +53,5 @@ shownMoves.sort((a, b) => {return a.level - b.level})
     </table>
   </div>
 </section>
+  ) : ""
+}

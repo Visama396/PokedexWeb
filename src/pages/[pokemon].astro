@@ -23,7 +23,7 @@ if (!pokeData) return Astro.redirect("/404")
 const pokeSpecies = await fetch(pokeData.species.url).then(response => response.json())
 
 //console.log(pokeData)
-//console.log(pokeSpecies)
+//console.log(pokeSpecies.flavor_text_entries)
 //console.log(pokeData.moves)
 ---
 
@@ -162,13 +162,16 @@ const pokeSpecies = await fetch(pokeData.species.url).then(response => response.
   <PokemonEvolutionChart evolutionChainUrl={pokeSpecies.evolution_chain.url} spriteUrl={pokeData.sprites.other.home.front_default} />
   <section>
     <h2 class="text-4xl mb-2 font-black">Moves learned by {capitalize(pokemon)}</h2>
-    <div class="flex gap-2 flex-col lg:flex-row">
+    <div class="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-[repeat(auto-fit,minmax(min(25%,100%),1fr))]">
       <PokemonMoves moves={pokeData.moves} caption="Moves learnt by level" generation="scarlet-violet" method="level-up" />
       <PokemonMoves moves={pokeData.moves} caption="Moves learnt by TM" generation="scarlet-violet" method="machine" />
+      <PokemonMoves moves={pokeData.moves} caption="Moves learnt by tutor" generation="scarlet-violet" method="tutor" />
+      <PokemonMoves moves={pokeData.moves} caption="Moves learnt by breeding" generation="scarlet-violet" method="egg" />
     </div>
   </section>
   <section>
     <h2 class="text-4xl mb-2 font-black">Pokédex entries</h2>
+    <PokemonDexEntries entries={pokeSpecies.flavor_text_entries} lang="en" />
   </section>
   <section>
     <h2 class="text-4xl mb-2 font-black">Other languages</h2>
