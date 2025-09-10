@@ -7,6 +7,7 @@ let shownMoves = []
 
 for (let move of moves) {
   for (let details of move.version_group_details) {
+    console.log(details.move_learn_method.name)
     if (details.version_group.name == generation && details.move_learn_method.name == method) {
       shownMoves.push({level: details.level_learned_at, url: move.move.url})
     }
