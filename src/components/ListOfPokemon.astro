@@ -4,7 +4,7 @@ import ArrowUp from "./icons/arrowUp.astro"
 import { capitalize } from "../utils/capitalize"
 import { getIdFromUrl } from "../utils/getIdFromUrl"
 
-const pokedex = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=250`).then(response => response.json())
+const pokedex = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=100`).then(response => response.json())
 ---
 <div class="flex gap-3 flex-col justify-center items-center py-5 sticky top-0 bg-[#111]">
   <input type="search" id="pokedex-filter" class="outline-none rounded-full px-2 py-1 bg-zinc-600/50 text-white text-center">
@@ -177,11 +177,13 @@ async function addNewPokemon(pokemon) {
     pokedex.appendChild(newPokemonElement)
     onFilterValueChange()
   }
+  isLoading = false
 
   return Promise.resolve(true)
 }
 
 async function loadMorePokemon(url) {
+  isLoading = true
   const pokemon = await fetch(url).then(response => response.json())
   pokedex.dataset.next = pokemon.next
   const result = await addNewPokemon(pokemon.results)
@@ -191,5 +193,11 @@ async function loadMorePokemon(url) {
   }
 }
 
-loadMorePokemon(pokedex.dataset.next)
+window.addEventListener('scroll', () => {
+  const bottomOffSet = 100
+  if (window.innerHeight + document.documentElement.scrollTop + bottomOffSet >= document.documentElement.scrollHeight) {
+    if (!isLoading) loadMorePokemon(pokedex.dataset.next)
+  }
+})
+//loadMorePokemon(pokedex.dataset.next)
 </script>
