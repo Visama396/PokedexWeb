@@ -44,11 +44,12 @@ const pokedex = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=100`).then(
 </footer>
 
 <script is:inline>
-let isLoading = false
+let isLoading = true
 let pokedex = document.querySelector("#pokedex")
 let pokedexFilter = document.querySelector("#pokedex-filter")
 let typesFiltered = []
 let filterTypes = document.querySelector("#filter-types")
+let bottomOffset = 380
 
 const onFilterValueChange = (event) => {
   let value = pokedexFilter.value.toLowerCase() || ''
@@ -177,7 +178,6 @@ async function addNewPokemon(pokemon) {
     pokedex.appendChild(newPokemonElement)
     onFilterValueChange()
   }
-  isLoading = false
 
   return Promise.resolve(true)
 }
@@ -189,15 +189,23 @@ async function loadMorePokemon(url) {
   const result = await addNewPokemon(pokemon.results)
 
   if (result && pokedex.dataset.next != 'null') {
-    loadMorePokemon(pokedex.dataset.next)
+    isLoading = false
   }
 }
 
 window.addEventListener('scroll', () => {
-  const bottomOffSet = 100
-  if (window.innerHeight + document.documentElement.scrollTop + bottomOffSet >= document.documentElement.scrollHeight) {
+  if (window.innerHeight + document.documentElement.scrollTop + bottomOffset >= document.documentElement.scrollHeight) {
     if (!isLoading) loadMorePokemon(pokedex.dataset.next)
   }
 })
-//loadMorePokemon(pokedex.dataset.next)
+
+document.onreadystatechange = function() {
+  if(document.readyState == "complete") {
+    const pokemonCard = document.querySelector("a.pokemon-card")
+    if (pokemonCard) {
+      bottomOffset = pokemonCard.offsetHeight + 60
+    }
+    isLoading = false
+  }
+}
 </script>
