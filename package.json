@@ -13,6 +13,7 @@
     "@astrojs/netlify": "^5.0.1",
     "@astrojs/react": "^4.4.0",
     "@astrojs/tailwind": "^5.1.0",
+    "@lucide/astro": "^0.555.0",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
     "astro": "^4.3.2",
