@@ -11,6 +11,7 @@ export default function Pokemondle() {
 	const [weight, setWeight] = useState(0)
 	const [baseStats, setBaseStats] = useState(0)
 	const [sprite, setSprite] = useState('')
+	const [pokemonNameInput, setPokemonNameInput] = useState('')
 
 	useEffect(() => {
 		const pokeId = getDailyPokemon()
@@ -19,7 +20,7 @@ export default function Pokemondle() {
 				let gen = data.generation.name
 				gen = gen.replace('generation-', '')
 				gen = capitalize(gen, false)
-				setGeneration('Generation ' + gen)
+				setGeneration(gen)
 			})
 
 		fetch(`https://pokeapi.co/api/v2/pokemon/${pokeId}`)
@@ -39,15 +40,32 @@ export default function Pokemondle() {
 		return <div></div>
 	} else {
 		return (
-			<main>
-				<h2 className='text-white text-xl'>{capitalize(pokemon.name)}</h2>
-				<p>{types.join(', ')}</p>
-				<p>{abilities.join(', ')}</p>
-				<p>{generation}</p>
-				<p>{height / 10} m</p>
-				<p>{weight / 10} kg</p>
-				<p>{baseStats}</p>
-				<img className='size-4' src={sprite} alt={pokemon.name} />
+			<main className='text-white'>
+				<input className='text-black' type='text' value={pokemonNameInput} onChange={e => setPokemonNameInput(e.target.value)} />
+				<table>
+					<thead>
+						<tr>
+							<th>Type 1</th>
+							<th>Type 2</th>
+							<th>Height</th>
+							<th>Weight</th>
+							<th>Base Stats</th>
+							<th>Generation</th>
+							<th>Sprite</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>{types[0]}</td>
+							<td>{types[1] || 'None'}</td>
+							<td>{height / 10} m</td>
+							<td>{weight / 10} kg</td>
+							<td>{baseStats}</td>
+							<td>{generation}</td>
+							<td><img className='size-[20rem]' src={sprite} alt={pokemon.name} /></td>
+						</tr>
+					</tbody>
+				</table>
 			</main>
 		)
 	}
