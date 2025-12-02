@@ -2,10 +2,10 @@
 /**
  *
  * @param word The string to capitalize
- * @param lowerRest whether to lowercase the rest of the string (default: false)
+ * @param lowerRest whether to lowercase the rest of the string (default: true)
  * @returns The capitalized string
  */
-export const capitalize = ([first, ...rest]: string, lowerRest = false) => first.toUpperCase() + (lowerRest ? rest.join('').toLowerCase() : rest.join(''))
+export const capitalize = ([first, ...rest]: string, lowerRest = true) => first.toUpperCase() + (lowerRest ? rest.join('').toLowerCase() : rest.join('').toUpperCase())
 
 /**
  *
