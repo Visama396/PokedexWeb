@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react'
 import { capitalize } from '../utils/capitalize'
 import { getDailyPokemon } from '../utils/getDailyPokemon'
+import PokedleInput from './PokedleInput'
 
 export default function Pokemondle() {
 	const [pokemon, setPokemon] = useState(null)
+	const [allPokemon, setAllPokemon] = useState([])
 	const [types, setTypes] = useState([])
 	const [abilities, setAbilities] = useState([])
 	const [generation, setGeneration] = useState('')
@@ -11,9 +13,15 @@ export default function Pokemondle() {
 	const [weight, setWeight] = useState(0)
 	const [baseStats, setBaseStats] = useState(0)
 	const [sprite, setSprite] = useState('')
-	const [pokemonNameInput, setPokemonNameInput] = useState('')
+	const [pokeTries, setPokeTries] = useState([])
 
 	useEffect(() => {
+		fetch('https://pokeapi.co/api/v2/pokemon/?limit=1025')
+			.then(response => response.json())
+			.then(data => {
+				setAllPokemon(data.results)
+			})
+
 		const pokeId = getDailyPokemon()
 		fetch(`https://pokeapi.co/api/v2/pokemon-species/${pokeId}`)
 			.then(response => response.json()).then(data => {
@@ -36,36 +44,44 @@ export default function Pokemondle() {
 			})
 	}, [])
 
+	const handlePokemonClick = (pokeName, pokeId) => {
+		console.log(pokeName, pokeId)
+	}
+
 	if (!pokemon) {
 		return <div></div>
 	} else {
 		return (
 			<main className='text-white'>
-				<input className='text-black' type='text' value={pokemonNameInput} onChange={e => setPokemonNameInput(e.target.value)} />
-				<table>
-					<thead>
-						<tr>
-							<th>Type 1</th>
-							<th>Type 2</th>
-							<th>Height</th>
-							<th>Weight</th>
-							<th>Base Stats</th>
-							<th>Generation</th>
-							<th>Sprite</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>{types[0]}</td>
-							<td>{types[1] || 'None'}</td>
-							<td>{height / 10} m</td>
-							<td>{weight / 10} kg</td>
-							<td>{baseStats}</td>
-							<td>{generation}</td>
-							<td><img className='size-[20rem]' src={sprite} alt={pokemon.name} /></td>
-						</tr>
-					</tbody>
-				</table>
+				<div className='flex justify-center mb-[4rem]'>
+					<PokedleInput onPokemonClick={handlePokemonClick} pokedex={allPokemon} />
+				</div>
+				<div className='flex justify-center py-2'>
+					<table className='border-spacing-2 border-separate'>
+						<thead>
+							<tr>
+								<th>Tipo 1</th>
+								<th>Tipo 2</th>
+								<th>Altura</th>
+								<th>Peso</th>
+								<th>Stats base</th>
+								<th>Generación</th>
+								<th>Sprite</th>
+							</tr>
+						</thead>
+						<tbody className='text-center'>
+							<tr>
+								<td className='size-[8rem] rounded-md' style={{ backgroundColor: 'green' }}>{types[0]}</td>
+								<td className='size-[8rem] rounded-md' style={{ backgroundColor: 'green' }}>{types[1] || 'None'}</td>
+								<td className='size-[8rem] rounded-md' style={{ backgroundColor: 'red' }}><p>{height / 10} m</p><p>Down</p></td>
+								<td className='size-[8rem] rounded-md' style={{ backgroundColor: 'red' }}><p>{weight / 10} kg</p><p>Up</p></td>
+								<td className='size-[8rem] rounded-md' style={{ backgroundColor: 'green' }}><p>{baseStats}</p><p>Down</p></td>
+								<td className='size-[8rem] rounded-md' style={{ backgroundColor: 'green' }}><p>{generation}</p><p>Up</p></td>
+								<td className='flex justify-center size-[8rem] rounded-md'><img src={sprite} alt={pokemon.name} /></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 			</main>
 		)
 	}

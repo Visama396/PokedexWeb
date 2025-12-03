@@ -71,6 +71,28 @@ const { title, language } = Astro.props;
 		scroll-behavior: smooth;
 	}
 
+	.scrollbar-minimal::-webkit-scrollbar {
+		width: 6px;
+	}
+
+	.scrollbar-minimal::-webkit-scrollbar-track {
+		background: transparent;
+	}
+
+	.scrollbar-mininmal::-webkit-scrollbar-thumb {
+		background: rgba(255,255,255,0.25);
+		border-radius: 9999px;
+	}
+
+	.scrollbar-minimal::-webkit-scrollbar-thumb:hover {
+		background: rgba(255,255,255,0.35);
+	}
+
+	.scrollbar-minimal {
+		scrollbar-width: thin;
+		scrollbar-color: rgba(255,255,255,0.35) transparent;
+	}
+
 	.pill {
 		display: inline-block;
 		padding: .2rem .5rem;

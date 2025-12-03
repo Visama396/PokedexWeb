@@ -1,10 +1,12 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Pokemondle from "../components/Pokemondle";
+import TopBar from "../components/TopBar.astro";
 ---
 <Layout title="Visamadex · Pokedle" language="en">
-	<header class="p-2">
-		<h1 class="text-white text-4xl text-center">Pokedle</h1>
+	<TopBar />
+	<header class="p-2 mb-4">
+		<h1 class="font-black text-6xl md:text-center text-white">Pokedle</h1>
 	</header>
 	<Pokemondle client:load />
 </Layout>
