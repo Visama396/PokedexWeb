@@ -8,7 +8,7 @@ import { capitalize } from '../utils/capitalize'
  * @param {*} onPokemonClick Callback of the method that handles when a pokemon is clicked
  * @param {*} pokedex Array of pokemon objects
  */
-export default function PokedleInput({ onPokemonClick, pokedex = [] }) {
+export default function PokedleInput({ onPokemonClick, pokedex = [], language = 'en' }) {
 	const [inputValue, setInputValue] = useState('')
 	const [showAutoComplete, setShowAutoComplete] = useState(false)
 	const [autoCompletedPokemon, setAutoCompletedPokemon] = useState([])
