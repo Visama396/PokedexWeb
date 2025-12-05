@@ -3,6 +3,11 @@ import PokedleAutocompleteItem from './PokedleAutocompleteItem'
 import { getIdFromUrl } from '../utils/getIdFromUrl'
 import { capitalize } from '../utils/capitalize'
 
+/**
+ *
+ * @param {*} onPokemonClick Callback of the method that handles when a pokemon is clicked
+ * @param {*} pokedex Array of pokemon objects
+ */
 export default function PokedleInput({ onPokemonClick, pokedex = [] }) {
 	const [inputValue, setInputValue] = useState('')
 	const [showAutoComplete, setShowAutoComplete] = useState(false)

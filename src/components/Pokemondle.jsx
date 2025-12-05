@@ -2,53 +2,64 @@ import { useState, useEffect } from 'react'
 import { capitalize } from '../utils/capitalize'
 import { getDailyPokemon } from '../utils/getDailyPokemon'
 import PokedleInput from './PokedleInput'
+import PokemondleTry from './PokemondleTry'
 
 export default function Pokemondle() {
-	const [pokemon, setPokemon] = useState(null)
+	const [pokemon, setPokemon] = useState({ generation: '', height: 0, weight: 0, baseStats: 0, sprite: '', types: [], abilities: [], name: '', id: 0 })
 	const [allPokemon, setAllPokemon] = useState([])
-	const [types, setTypes] = useState([])
-	const [abilities, setAbilities] = useState([])
-	const [generation, setGeneration] = useState('')
-	const [height, setHeight] = useState(0)
-	const [weight, setWeight] = useState(0)
-	const [baseStats, setBaseStats] = useState(0)
-	const [sprite, setSprite] = useState('')
 	const [pokeTries, setPokeTries] = useState([])
 
 	useEffect(() => {
+		let pokemonOfTheDay = {
+			generation: '',
+			height: 0,
+			weight: 0,
+			baseStats: 0,
+			sprite: '',
+			types: [],
+			abilities: [],
+			name: '',
+			id: 0
+		}
+
+		pokemonOfTheDay.id = getDailyPokemon()
+
 		fetch('https://pokeapi.co/api/v2/pokemon/?limit=1025')
 			.then(response => response.json())
 			.then(data => {
 				setAllPokemon(data.results)
 			})
 
-		const pokeId = getDailyPokemon()
-		fetch(`https://pokeapi.co/api/v2/pokemon-species/${pokeId}`)
+		fetch(`https://pokeapi.co/api/v2/pokemon-species/${pokemonOfTheDay.id}`)
 			.then(response => response.json()).then(data => {
 				let gen = data.generation.name
 				gen = gen.replace('generation-', '')
 				gen = capitalize(gen, false)
-				setGeneration(gen)
+				pokemonOfTheDay.generation = gen
 			})
 
-		fetch(`https://pokeapi.co/api/v2/pokemon/${pokeId}`)
+		fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonOfTheDay.id}`)
 			.then(response => response.json())
 			.then(data => {
-				setPokemon(data)
-				setTypes(data.types.map(type => capitalize(type.type.name)))
-				setAbilities(data.abilities.map(ability => capitalize(ability.ability.name)))
-				setHeight(data.height)
-				setWeight(data.weight)
-				setBaseStats(data.stats.reduce((acc, stat) => acc + stat.base_stat, 0))
-				setSprite(data.sprites.other.home.front_default)
+				pokemonOfTheDay.name = capitalize(data.name)
+				pokemonOfTheDay.id = data.id
+				pokemonOfTheDay.height = data.height
+				pokemonOfTheDay.weight = data.weight
+				pokemonOfTheDay.baseStats = data.stats.reduce((acc, stat) => acc + stat.base_stat, 0)
+				pokemonOfTheDay.sprite = data.sprites.other.home.front_default
+				pokemonOfTheDay.types = data.types.map(type => capitalize(type.type.name))
+				pokemonOfTheDay.abilities = data.abilities.map(ability => capitalize(ability.ability.name))
 			})
+
+		setPokemon(pokemonOfTheDay)
 	}, [])
 
 	const handlePokemonClick = (pokeName, pokeId) => {
+		setPokeTries(pokeTries => [...pokeTries, { name: pokeName, id: pokeId }])
 		console.log(pokeName, pokeId)
 	}
 
-	if (!pokemon) {
+	if (pokemon.id === 0) {
 		return <div></div>
 	} else {
 		return (
@@ -64,6 +75,7 @@ export default function Pokemondle() {
 								<th>Tipo 2</th>
 								<th>Altura</th>
 								<th>Peso</th>
+								<th>Habilidad</th>
 								<th>Stats base</th>
 								<th>Generación</th>
 								<th>Sprite</th>
@@ -71,14 +83,22 @@ export default function Pokemondle() {
 						</thead>
 						<tbody className='text-center'>
 							<tr>
-								<td className='size-[8rem] rounded-md' style={{ backgroundColor: 'green' }}>{types[0]}</td>
-								<td className='size-[8rem] rounded-md' style={{ backgroundColor: 'green' }}>{types[1] || 'None'}</td>
-								<td className='size-[8rem] rounded-md' style={{ backgroundColor: 'red' }}><p>{height / 10} m</p><p>Down</p></td>
-								<td className='size-[8rem] rounded-md' style={{ backgroundColor: 'red' }}><p>{weight / 10} kg</p><p>Up</p></td>
-								<td className='size-[8rem] rounded-md' style={{ backgroundColor: 'green' }}><p>{baseStats}</p><p>Down</p></td>
-								<td className='size-[8rem] rounded-md' style={{ backgroundColor: 'green' }}><p>{generation}</p><p>Up</p></td>
-								<td className='flex justify-center size-[8rem] rounded-md'><img src={sprite} alt={pokemon.name} /></td>
+								<td className='size-[8rem] rounded-md' style={{ backgroundColor: 'green' }}>{pokemon.types[0]}</td>
+								<td className='size-[8rem] rounded-md' style={{ backgroundColor: 'green' }}>{pokemon.types[1] || 'None'}</td>
+								<td className='size-[8rem] rounded-md' style={{ backgroundColor: 'red' }}><p>{pokemon.height / 10} m</p><p>Down</p></td>
+								<td className='size-[8rem] rounded-md' style={{ backgroundColor: 'red' }}><p>{pokemon.weight / 10} kg</p><p>Up</p></td>
+								<td className='size-[8rem] rounded-md' style={{ backgroundColor: 'green' }}><p>{pokemon.abilities[0]}</p><p>Down</p></td>
+								<td className='size-[8rem] rounded-md' style={{ backgroundColor: 'green' }}><p>{pokemon.baseStats}</p><p>Down</p></td>
+								<td className='size-[8rem] rounded-md' style={{ backgroundColor: 'green' }}><p>{pokemon.generation}</p><p>Up</p></td>
+								<td className='flex justify-center size-[8rem] rounded-md'><img src={pokemon.sprite} alt={pokemon.name} /></td>
 							</tr>
+							{
+								pokeTries.map((pokeTry, index) => {
+									return (
+										<PokemondleTry key={index} pokemon={pokemon} pokeTry={pokeTry} />
+									)
+								})
+							}
 						</tbody>
 					</table>
 				</div>
