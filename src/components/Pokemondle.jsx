@@ -51,19 +51,29 @@ export default function Pokemondle({ language = 'en' }) {
 						pokemonOfTheDay.types = data.types.map(type => capitalize(type.type.name))
 						pokemonOfTheDay.abilities = data.abilities.map(ability => capitalize(ability.ability.name))
 					})
-					.finally(async () => {
-						await Promise.all(pokemonOfTheDay.abilities.map(async ability => {
-							const res = await fetch(`https://pokeapi.co/api/v2/ability/${ability}`)
-							const data = await res.json()
-							return data.names.find(name => name.language.name === language).name || data.name
-						}))
-						await Promise.all(pokemonOfTheDay.types.map(async type => {
-							const res = await fetch(`https://pokeapi.co/api/v2/type/${type}`)
-							const data = await res.json()
-							return data.names.find(name => name.language.name === language).name || data.name
-						}))
-						setPokemon(pokemonOfTheDay)
-						setLoading(false)
+					.finally(() => {
+						const newPokeAbilities = []
+						pokemonOfTheDay.abilities.map(ability =>
+							fetch(`https://pokeapi.co/api/v2/ability/${ability}`)
+								.then(response => response.json())
+								.then(data => {
+									newPokeAbilities.push(data.names.find(name => name.language.name === language).name || data.name)
+								}).finally(() => {
+									pokemonOfTheDay.abilities = newPokeAbilities
+									const newPokeTypes = []
+									pokemonOfTheDay.types.map(type =>
+										fetch(`https://pokeapi.co/api/v2/type/${type}`)
+											.then(response => response.json())
+											.then(data => {
+												newPokeTypes.push(data.names.find(name => name.language.name === language).name || data.name)
+											}).finally(() => {
+												pokemonOfTheDay.types = newPokeTypes
+												setPokemon(pokemonOfTheDay)
+												setLoading(false)
+											})
+									)
+								})
+						)
 					})
 			})
 	}, [])
@@ -114,7 +124,7 @@ export default function Pokemondle({ language = 'en' }) {
 						{
 							pokeTries.map((pokeTry, index) => {
 								return (
-									<PokemondleTry key={index} pokemon={pokemon} pokeTry={pokeTry} />
+									<PokemondleTry key={index} pokemon={pokemon} pokeTry={pokeTry} language={language} />
 								)
 							})
 						}
