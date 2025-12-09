@@ -3,12 +3,14 @@ import { capitalize } from '../utils/capitalize'
 import { getDailyPokemon } from '../utils/getDailyPokemon'
 import PokedleInput from './PokedleInput'
 import PokemondleTry from './PokemondleTry'
+import { translate } from '../utils/translate'
 
 export default function Pokemondle({ language = 'en' }) {
 	const [pokemon, setPokemon] = useState({ generation: '', height: 0, weight: 0, baseStats: 0, sprite: '', types: [], abilities: [], name: '', id: 0 })
 	const [allPokemon, setAllPokemon] = useState([])
 	const [pokeTries, setPokeTries] = useState([])
 	const [loading, setLoading] = useState(true)
+	const [lang, setLang] = useState(language)
 
 	useEffect(() => {
 		const pokemonOfTheDay = {
@@ -43,7 +45,7 @@ export default function Pokemondle({ language = 'en' }) {
 				let gen = species.generation.name.replace('generation-', '')
 				gen = capitalize(gen, false)
 
-				const localizedName = species.names.find(n => n.language.name === language)?.name || species.name
+				const localizedName = species.names.find(n => n.language.name === lang)?.name || species.name
 
 				// --- Procesar pokemon ---
 				let newPokemon = {
@@ -65,14 +67,14 @@ export default function Pokemondle({ language = 'en' }) {
 						newPokemon.abilities.map(async ability => {
 							const res = await fetch(`https://pokeapi.co/api/v2/ability/${ability}`)
 							const data = await res.json()
-							return data.names.find(n => n.language.name === language)?.name || data.name
+							return data.names.find(n => n.language.name === lang)?.name || data.name
 						})
 					),
 					Promise.all(
 						newPokemon.types.map(async type => {
 							const res = await fetch(`https://pokeapi.co/api/v2/type/${type}`)
 							const data = await res.json()
-							return data.names.find(n => n.language.name === language)?.name || data.name
+							return data.names.find(n => n.language.name === lang)?.name || data.name
 						})
 					)
 				])
@@ -101,35 +103,37 @@ export default function Pokemondle({ language = 'en' }) {
 	}
 
 	if (loading) {
-		return <div><h2 className='text-white text-xl text-center'>Loading...</h2></div>
+		return <div><h2 className='text-white text-xl text-center'>{translate('loading', lang)}</h2></div>
 	}
 
 	return (
-		<main className='text-white'>
+		<main className='text-white flex-1'>
 			<div className='flex justify-center mb-[4rem]'>
-				<PokedleInput onPokemonClick={handlePokemonClick} pokedex={allPokemon} />
+				<PokedleInput onPokemonClick={handlePokemonClick} pokedex={allPokemon} language={lang} />
 			</div>
 			<div className='flex justify-center py-2'>
 				<table className='border-spacing-2 border-separate'>
 					<thead>
-						<tr>
-							<th>Tipo 1</th>
-							<th>Tipo 2</th>
-							<th>Altura</th>
-							<th>Peso</th>
-							<th>Habilidad 1</th>
-							<th>Habilidad 2</th>
-							<th>Habilidad 3</th>
-							<th>Stats base</th>
-							<th>Generación</th>
-							<th>Sprite</th>
-						</tr>
+						{pokeTries.length > 0 && (
+							<tr>
+								<th>Tipo 1</th>
+								<th>Tipo 2</th>
+								<th>Altura</th>
+								<th>Peso</th>
+								<th>Habilidad 1</th>
+								<th>Habilidad 2</th>
+								<th>Habilidad 3</th>
+								<th>Stats base</th>
+								<th>Generación</th>
+								<th>Imagen</th>
+							</tr>
+						)}
 					</thead>
 					<tbody className='text-center'>
 						{
 							pokeTries.map((pokeTry, index) => {
 								return (
-									<PokemondleTry key={index} pokemon={pokemon} pokeTry={pokeTry} language={language} />
+									<PokemondleTry key={index} pokemon={pokemon} pokeTry={pokeTry} language={lang} />
 								)
 							})
 						}

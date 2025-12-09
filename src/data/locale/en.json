@@ -3,5 +3,9 @@
 	"pokedle": "Pokedle",
 	"up": "Higher",
 	"down": "Lower",
-	"none": "None"
+	"none": "None",
+	"pokedleInput": "Enter a Pokémon name",
+	"loading": "Loading...",
+	"pokedleDescription": "Guess the Pokémon of the day!",
+	"footer": "This page is not affiliated with Nintendo, Pokémon, The Pokémon Company, Game Freak, or any other company involved in the Pokémon franchise. All Pokémon names and images are property of Nintendo, The Pokémon Company, and Game Freak. Data is extracted from the PokeApi.co API and is subject to BSD-3-Clause license usage."
 }

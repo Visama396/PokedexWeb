@@ -164,7 +164,7 @@ export default function PokemondleTry({ pokemon, pokeTry, language }) {
 			<td className='size-[8rem] rounded-md font-bold' style={{ backgroundColor: compareAbilities(pokeTryData.abilities, pokemon.abilities, 2) }}>{pokeTryData.abilities[2] ?? translate('none', language)}</td>
 			<td className='size-[8rem] rounded-md' style={{ backgroundColor: pokeTryData.baseStats - pokemon.baseStats === 0 ? COLORS.green : COLORS.red }}><p className='font-bold'>{pokeTryData.baseStats}</p><p>{pokemon.baseStats === pokeTryData.baseStats ? '' : pokemon.baseStats > pokeTryData.baseStats ? translate('up', language) : translate('down', language)}</p></td>
 			<td className='size-[8rem] rounded-md' style={{ backgroundColor: translateGenToNum(pokeTryData.generation) === translateGenToNum(pokemon.generation) ? COLORS.green : COLORS.red }}><p className='font-bold'>{pokeTryData.generation}</p><p>{translateGenToNum(pokeTryData.generation) === translateGenToNum(pokemon.generation) ? '' : translateGenToNum(pokeTryData.generation) < translateGenToNum(pokemon.generation) ? translate('up', language) : translate('down', language)}</p></td>
-			<td className='size-[8rem] rounded-md'><img src={pokeTryData.sprite} alt={pokeTryData.name} /></td>
+			<td className='size-[8rem] rounded-md cursor-pointer'><img src={pokeTryData.sprite} title={pokeTryData.name} alt={pokeTryData.name} /></td>
 		</tr>
 	)
 }
