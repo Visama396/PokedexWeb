@@ -1,4 +1,7 @@
 {
 	"home": "Home",
-	"pokedle": "Pokedle"
+	"pokedle": "Pokedle",
+	"up": "Higher",
+	"down": "Lower",
+	"none": "None"
 }

@@ -3,7 +3,7 @@ export const getDailyPokemon = () => {
 	const seed = today.replace(/-/g, '')
 
 	function seededRandom(s) {
-		const x = Math.sin(s) * 4595
+		const x = Math.sin(s) * 8999
 		return x - Math.floor(x)
 	}
 
