@@ -86,7 +86,6 @@ export default function Pokemondle({ language = 'en' }) {
 
 				// --- Actualizar estado ---
 				setPokemon(newPokemon)
-				console.log(pokemon.name)
 			} catch (err) {
 				console.error(err)
 			} finally {
