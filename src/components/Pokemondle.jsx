@@ -20,67 +20,84 @@ export default function Pokemondle({ language = 'en' }) {
 			types: [],
 			abilities: [],
 			name: '',
-			id: 0
+			id: getDailyPokemon()
 		}
 
-		pokemonOfTheDay.id = getDailyPokemon()
-
-		fetch('https://pokeapi.co/api/v2/pokemon/?limit=1025')
-			.then(response => response.json())
+		fetch('https://pokeapi.co/api/v2/pokemon/?limit=1025').then(response => response.json())
 			.then(data => {
 				setAllPokemon(data.results)
 			})
 
-		fetch(`https://pokeapi.co/api/v2/pokemon-species/${pokemonOfTheDay.id}`)
-			.then(response => response.json()).then(data => {
-				let gen = data.generation.name
-				gen = gen.replace('generation-', '')
+		async function loadPokemonData() {
+			try {
+				// --- Requests al species y pokemon EN PARALELO ---
+				const [speciesRes, pokemonRes] = await Promise.all([
+					fetch(`https://pokeapi.co/api/v2/pokemon-species/${pokemonOfTheDay.id}`),
+					fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonOfTheDay.id}`)
+				])
+
+				const species = await speciesRes.json()
+				const pokemon = await pokemonRes.json()
+
+				// --- Procesar species ---
+				let gen = species.generation.name.replace('generation-', '')
 				gen = capitalize(gen, false)
-				pokemonOfTheDay.generation = gen
-				const name = data.names.find(name => name.language.name === language).name || data.name
-				pokemonOfTheDay.name = capitalize(name)
-			}).finally(() => {
-				fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonOfTheDay.id}`)
-					.then(response => response.json())
-					.then(data => {
-						pokemonOfTheDay.id = data.id
-						pokemonOfTheDay.height = data.height
-						pokemonOfTheDay.weight = data.weight
-						pokemonOfTheDay.baseStats = data.stats.reduce((acc, stat) => acc + stat.base_stat, 0)
-						pokemonOfTheDay.sprite = data.sprites.other.home.front_default
-						pokemonOfTheDay.types = data.types.map(type => capitalize(type.type.name))
-						pokemonOfTheDay.abilities = data.abilities.map(ability => capitalize(ability.ability.name))
-					})
-					.finally(() => {
-						const newPokeAbilities = []
-						pokemonOfTheDay.abilities.map(ability =>
-							fetch(`https://pokeapi.co/api/v2/ability/${ability}`)
-								.then(response => response.json())
-								.then(data => {
-									newPokeAbilities.push(data.names.find(name => name.language.name === language).name || data.name)
-								}).finally(() => {
-									pokemonOfTheDay.abilities = newPokeAbilities
-									const newPokeTypes = []
-									pokemonOfTheDay.types.map(type =>
-										fetch(`https://pokeapi.co/api/v2/type/${type}`)
-											.then(response => response.json())
-											.then(data => {
-												newPokeTypes.push(data.names.find(name => name.language.name === language).name || data.name)
-											}).finally(() => {
-												pokemonOfTheDay.types = newPokeTypes
-												setPokemon(pokemonOfTheDay)
-												setLoading(false)
-											})
-									)
-								})
-						)
-					})
-			})
+
+				const localizedName = species.names.find(n => n.language.name === language)?.name || species.name
+
+				// --- Procesar pokemon ---
+				let newPokemon = {
+					...pokemonOfTheDay,
+					id: pokemon.id,
+					name: capitalize(localizedName),
+					generation: gen,
+					height: pokemon.height,
+					weight: pokemon.weight,
+					baseStats: pokemon.stats.reduce((acc, s) => acc + s.base_stat, 0),
+					sprite: pokemon.sprites.other.home.front_default,
+					types: pokemon.types.map(t => t.type.name),
+					abilities: pokemon.abilities.map(a => a.ability.name)
+				}
+
+				// --- Localizar nombres de abilities y types en paralelo ---
+				const [localizedAbilities, localizedTypes] = await Promise.all([
+					Promise.all(
+						newPokemon.abilities.map(async ability => {
+							const res = await fetch(`https://pokeapi.co/api/v2/ability/${ability}`)
+							const data = await res.json()
+							return data.names.find(n => n.language.name === language)?.name || data.name
+						})
+					),
+					Promise.all(
+						newPokemon.types.map(async type => {
+							const res = await fetch(`https://pokeapi.co/api/v2/type/${type}`)
+							const data = await res.json()
+							return data.names.find(n => n.language.name === language)?.name || data.name
+						})
+					)
+				])
+
+				// Crear objeto final inmutable
+				newPokemon = {
+					...newPokemon,
+					abilities: localizedAbilities.map(a => capitalize(a)),
+					types: localizedTypes.map(t => capitalize(t))
+				}
+
+				// --- Actualizar estado ---
+				setPokemon(newPokemon)
+			} catch (err) {
+				console.error(err)
+			} finally {
+				setLoading(false)
+			}
+		}
+
+		loadPokemonData()
 	}, [])
 
 	const handlePokemonClick = (pokeName, pokeId) => {
 		setPokeTries(pokeTries => [...pokeTries, { name: pokeName, id: pokeId }])
-		console.log(pokeName, pokeId)
 	}
 
 	if (loading) {
@@ -109,18 +126,6 @@ export default function Pokemondle({ language = 'en' }) {
 						</tr>
 					</thead>
 					<tbody className='text-center'>
-						<tr>
-							<td className='size-[8rem] rounded-md' style={{ backgroundColor: 'green' }}>{pokemon.types[0]}</td>
-							<td className='size-[8rem] rounded-md' style={{ backgroundColor: 'green' }}>{pokemon.types[1] || 'None'}</td>
-							<td className='size-[8rem] rounded-md' style={{ backgroundColor: 'red' }}><p>{pokemon.height / 10} m</p><p>Down</p></td>
-							<td className='size-[8rem] rounded-md' style={{ backgroundColor: 'red' }}><p>{pokemon.weight / 10} kg</p><p>Up</p></td>
-							<td className='size-[8rem] rounded-md' style={{ backgroundColor: 'green' }}><p>{pokemon.abilities[0]}</p><p>Down</p></td>
-							<td className='size-[8rem] rounded-md' style={{ backgroundColor: 'green' }}><p>{pokemon.abilities[1] || 'None'}</p><p>Down</p></td>
-							<td className='size-[8rem] rounded-md' style={{ backgroundColor: 'green' }}><p>{pokemon.abilities[2] || 'None'}</p><p>Down</p></td>
-							<td className='size-[8rem] rounded-md' style={{ backgroundColor: 'green' }}><p>{pokemon.baseStats}</p><p>Down</p></td>
-							<td className='size-[8rem] rounded-md' style={{ backgroundColor: 'green' }}><p>{pokemon.generation}</p><p>Up</p></td>
-							<td className='flex justify-center size-[8rem] rounded-md'><img src={pokemon.sprite} alt={pokemon.name} /></td>
-						</tr>
 						{
 							pokeTries.map((pokeTry, index) => {
 								return (
