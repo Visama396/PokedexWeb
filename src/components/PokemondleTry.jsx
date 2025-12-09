@@ -151,7 +151,7 @@ export default function PokemondleTry({ pokemon, pokeTry, language }) {
 		return COLORS.red
 	}
 
-	if (loading) return <div>Loading...</div>
+	if (loading) return <div>{translate('loading', language)}</div>
 
 	return (
 		<tr>

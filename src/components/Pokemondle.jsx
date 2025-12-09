@@ -88,6 +88,7 @@ export default function Pokemondle({ language = 'en' }) {
 
 				// --- Actualizar estado ---
 				setPokemon(newPokemon)
+				console.log(newPokemon.name)
 			} catch (err) {
 				console.error(err)
 			} finally {
@@ -108,7 +109,7 @@ export default function Pokemondle({ language = 'en' }) {
 
 	return (
 		<main className='text-white flex-1'>
-			<div className='flex justify-center mb-[4rem]'>
+			<div className='flex justify-center mb-16'>
 				<PokedleInput onPokemonClick={handlePokemonClick} pokedex={allPokemon} language={lang} />
 			</div>
 			<div className='flex justify-center py-2'>
