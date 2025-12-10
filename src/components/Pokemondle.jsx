@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react'
 import { capitalize } from '../utils/capitalize'
-import { getDailyPokemon } from '../utils/getDailyPokemon'
+import { getDailyPokemon, getRandomPokemon } from '../utils/getDailyPokemon'
 import PokedleInput from './PokedleInput'
 import PokemondleTry from './PokemondleTry'
 import { translate } from '../utils/translate'
 
-export default function Pokemondle({ language = 'en' }) {
+export default function Pokemondle({ daily, language = 'en' }) {
 	const [pokemon, setPokemon] = useState({ generation: '', height: 0, weight: 0, baseStats: 0, sprite: '', types: [], abilities: [], name: '', id: 0 })
 	const [allPokemon, setAllPokemon] = useState([])
 	const [pokeTries, setPokeTries] = useState([])
@@ -22,7 +22,7 @@ export default function Pokemondle({ language = 'en' }) {
 			types: [],
 			abilities: [],
 			name: '',
-			id: getDailyPokemon()
+			id: daily ? getDailyPokemon() : getRandomPokemon()
 		}
 
 		fetch('https://pokeapi.co/api/v2/pokemon/?limit=1025').then(response => response.json())

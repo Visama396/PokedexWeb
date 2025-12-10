@@ -1,6 +1,8 @@
 {
 	"home": "Home",
 	"pokedle": "Pokedle",
+	"pokedlearcade": "Pokedle Arcade",
+	"pokedlearcadeDescription": "Guess the Pokémon!",
 	"up": "Higher",
 	"down": "Lower",
 	"none": "None",
