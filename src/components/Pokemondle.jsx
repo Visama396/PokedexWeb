@@ -9,20 +9,24 @@ export default function Pokemondle({ daily, language = 'en' }) {
 	const [pokemon, setPokemon] = useState({ generation: '', height: 0, weight: 0, baseStats: 0, sprite: '', types: [], abilities: [], name: '', id: 0 })
 	const [allPokemon, setAllPokemon] = useState([])
 	const [pokeDate, setPokeDate] = useState(() => {
-		try {
-			const savedDate = localStorage.getItem('pokeDate')
-			return savedDate || new Date().toLocaleDateString('es-ES', { timeZone: 'Europe/Madrid' })
-		} catch {
-			return new Date().toLocaleDateString('es-ES', { timeZone: 'Europe/Madrid' })
+		if (daily) {
+			try {
+				const savedDate = localStorage.getItem('pokeDate')
+				return savedDate || new Date().toLocaleDateString('es-ES', { timeZone: 'Europe/Madrid' })
+			} catch {
+				return new Date().toLocaleDateString('es-ES', { timeZone: 'Europe/Madrid' })
+			}
 		}
 	})
 	const [pokeTries, setPokeTries] = useState(() => {
-		try {
-			const stored = localStorage.getItem('pokeTries')
-			return stored ? JSON.parse(stored) : []
-		} catch {
-			return []
-		}
+		if (daily) {
+			try {
+				const stored = localStorage.getItem('pokeTries')
+				return stored ? JSON.parse(stored) : []
+			} catch {
+				return []
+			}
+		} else return []
 	})
 	const [loading, setLoading] = useState(true)
 	const [lang, setLang] = useState(language)
@@ -40,14 +44,16 @@ export default function Pokemondle({ daily, language = 'en' }) {
 			id: daily ? getDailyPokemon() : getRandomPokemon()
 		}
 
-		const todayDate = new Date().toLocaleDateString('es-ES', { timeZone: 'Europe/Madrid' })
-		const savedDate = localStorage.getItem('pokeDate')
-		if (!savedDate || savedDate !== todayDate) {
-			localStorage.removeItem('pokeTries')
-			setPokeTries([])
+		if (daily) {
+			const todayDate = new Date().toLocaleDateString('es-ES', { timeZone: 'Europe/Madrid' })
+			const savedDate = localStorage.getItem('pokeDate')
+			if (!savedDate || savedDate !== todayDate) {
+				localStorage.removeItem('pokeTries')
+				setPokeTries([])
 
-			localStorage.setItem('pokeDate', todayDate)
-			setPokeDate(todayDate)
+				localStorage.setItem('pokeDate', todayDate)
+				setPokeDate(todayDate)
+			}
 		}
 
 		fetch('https://pokeapi.co/api/v2/pokemon/?limit=1025').then(response => response.json())
@@ -124,8 +130,9 @@ export default function Pokemondle({ daily, language = 'en' }) {
 	}, [])
 
 	useEffect(() => {
-		console.log('saving pokeTries', JSON.stringify(pokeTries))
-		localStorage.setItem('pokeTries', JSON.stringify(pokeTries))
+		if (daily) {
+			localStorage.setItem('pokeTries', JSON.stringify(pokeTries))
+		}
 	}, [pokeTries])
 
 	const handlePokemonClick = (pokeName, pokeId) => {
