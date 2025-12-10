@@ -17,24 +17,24 @@ function getAllEvolutions(evolution, array) {
       getAllEvolutions(evolution.evolves_to[i], array)
     }
   }
-  
+
 }
 getAllEvolutions(evoData, evoChain)
-evoChain.map(chain => {
-  //console.log(chain.evolves_to)
-})
 ---
 <section>
   <h2 class="text-4xl mb-2 font-black">Evolution chart</h2>
-  <div class="bg-zinc-800/20 rounded-xl flex justify-center items-center py-5 flex-wrap gap-2">
-    {evoChain.map(chain => {
-      <a href={`/${chain.species.name}`} class="evochain flex justify-center items-center flex-col">
-        <picture class="bg-zinc-700/10 rounded-full size-[120px] flex justify-center items-center">
-          <img class="h-[60%]" src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${getIdFromUrl(chain.species.url)}.png`} alt={`sprite ${chain.species.name}`} />
-        </picture>
-        <p>{capitalize(chain.species.name)}</p>
-      </a>
-      {(chain.evolves_to.length > 0) && (<MoveRight />)}
-    })}
+  <div class="bg-zinc-800/20 rounded-xl flex justify-center items-center py-5 flex-wrap gap-4">
+    {evoChain.map((chain, i) => (
+	    <>
+	    	<a href={`/${chain.species.name}`} class="evochain flex justify-center items-center flex-col">
+		     	<picture class="bg-zinc-700/10 rounded-full size-[120px] flex justify-center items-center">
+		      		<img class="h-[60%]" src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${getIdFromUrl(chain.species.url)}.png`} alt={`sprite ${chain.species.name}`} />
+		        </picture>
+		        <p>{capitalize(chain.species.name)}</p>
+	        </a>
+			{i < evoChain.length - 1 && <MoveRight />}
+	    </>
+    )
+    )}
   </div>
 </section>
