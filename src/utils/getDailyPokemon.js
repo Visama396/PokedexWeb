@@ -1,11 +1,11 @@
 export const getDailyPokemon = () => {
-	/* const today = new Date().toISOString().slice(0, 10)
-	const seed = today.replace(/-/g, '') */
+	const today = new Date().toISOString().slice(0, 10)
+	const seed = today.replace(/-/g, '')
 
-	const seed = new Date().getTime()
+	// const seed = new Date().getTime()
 
 	function seededRandom(s) {
-		const x = Math.sin(s) * 15000
+		const x = Math.sin(s) * 10000
 		return x - Math.floor(x)
 	}
 
