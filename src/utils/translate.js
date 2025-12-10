@@ -18,3 +18,29 @@ export const translate = (key, language = 'en') => {
 		return en[key] || key
 	}
 }
+
+export const translateWithWords = (key, words, language = 'en') => {
+	let result = key
+	switch (language) {
+	case 'es':
+		result = es[key] || key
+		break
+	case 'de':
+		result = de[key] || key
+		break
+	case 'ja':
+		result = ja[key] || key
+		break
+	case 'ko':
+		result = ko[key] || key
+		break
+	default:
+		result = en[key] || key
+	}
+	for (let i = 0; i < words.length; i++) {
+		const index = 'n' + (i + 1)
+		result = result.replace(`${index}`, words[i])
+	}
+
+	return result
+}

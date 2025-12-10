@@ -59,7 +59,7 @@ let dexEntries = getOnePerGeneration(entries)
     {
         dexEntries.map(entry => (
             <div class="flex gap-2 flex-row items-center">
-                <div class="font-[Fascinate] bg-[#f44336] w-[50px] px-[0.75rem] py-[0.25rem] rounded-md text-center">
+                <div class="bg-[#c03c3e] w-[50px] px-[0.75rem] py-[0.25rem] rounded-md text-center font-bold">
                     {generationToRomanNumber[versionToGeneration[entry.version.name] - 1]}
                 </div>
                 <p>{entry.flavor_text}</p>

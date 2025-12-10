@@ -6,12 +6,12 @@ import TopBar from '../components/TopBar.astro';
 import { translate } from '../utils/translate';
 ---
 <Layout title="Visamadex" language="es">
+	<TopBar />
+	<Title />
 	<main class="m-auto max-w-7xl flex flex-col min-h-screen">
-		<TopBar />
-		<Title />
 		<ListOfPokemon />
-		<footer class="p-4 text-gray-600">
-			<p>{translate('footer', 'es')}</p>
-		</footer>
 	</main>
+	<footer class="p-4 text-gray-600">
+		<p>{translate('footer', 'es')}</p>
+	</footer>
 </Layout>

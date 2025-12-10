@@ -3,10 +3,8 @@
 	"pokedle": "Pokedle",
 	"pokedlearcade": "Pokedle Arcade",
 	"pokedlearcadeDescription": "Raten Sie den Pokémon!",
-	"up": "Höher",
-	"down": "Niedriger",
-	"none": "Keine",
 	"pokedleInput": "Gib einen Pokémon-Namen ein",
+	"yesterdayPokemon": "Der Pokémon von gestern war n1",
 	"loading": "Lade...",
 	"pokedleDescription": "Raten Sie den Pokémon des Tages!",
 	"footer": "Dieses Projekt ist nicht mit Nintendo, Pokémon, The Pokémon Company, Game Freak oder anderen Unternehmen verbunden, die mit der Pokémon-Franchise verbunden sind. Alle Pokémon-Namen und Bilder sind Eigentum von Nintendo, The Pokémon Company und Game Freak. Daten werden aus der PokeApi.co-API extrahiert und unter der BSD-3-Clause-Lizenz verwendet."

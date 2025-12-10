@@ -29,7 +29,7 @@ const pokedex = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=100`).then(
     <button type="button" data-type="fairy" class="pill fairy off">Fairy</button>
   </div>
 </div>
-<section id="pokedex" class="grid grid-cols-2 px-4 flex-1 md:grid-cols-3 lg:grid-cols-5 gap-3" style="grid-auto-rows: 1fr" data-next={pokedex.next}>
+<section id="pokedex" class="grid grid-cols-2 px-4 md:grid-cols-3 lg:grid-cols-5 gap-3" style="grid-auto-rows: 1fr" data-next={pokedex.next}>
   {
     pokedex.results.map(({ name, url }) => {
       return (

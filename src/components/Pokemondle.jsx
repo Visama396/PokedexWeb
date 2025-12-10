@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { capitalize } from '../utils/capitalize'
-import { getDailyPokemon, getRandomPokemon } from '../utils/getDailyPokemon'
+import { getDailyPokemon, getRandomPokemon } from '../utils/getPokemonId'
 import PokedleInput from './PokedleInput'
 import PokemondleTry from './PokemondleTry'
 import { translate } from '../utils/translate'
