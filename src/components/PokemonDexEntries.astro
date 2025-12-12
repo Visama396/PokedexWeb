@@ -58,11 +58,11 @@ let dexEntries = getOnePerGeneration(entries)
 <section class="flex flex-col gap-2">
     {
         dexEntries.map(entry => (
-            <div class="flex gap-2 flex-row items-center">
-                <div class="bg-[#c03c3e] w-[50px] px-[0.75rem] py-[0.25rem] rounded-md text-center font-bold">
+            <div class="flex gap-2">
+                <div class="bg-[#c03c3e] w-[15%] sm:w-[5%] px-2 py-1 rounded-md text-center font-bold self-center">
                     {generationToRomanNumber[versionToGeneration[entry.version.name] - 1]}
                 </div>
-                <p>{entry.flavor_text}</p>
+                <p class="w-[80%]">{entry.flavor_text}</p>
             </div>
         ))
     }

@@ -23,154 +23,189 @@ if (!pokeData) return Astro.redirect("/404")
 const pokeSpecies = await fetch(pokeData.species.url).then(response => response.json())
 ---
 <Layout title={`Visamadex · ${capitalize(pokemon)} details page`} language="en">
-  <TopBar />
-  <section class="grid grid-rows-[max-content_1fr] xl:gap-y-8 px-4 justify-center text-white">
-    <section>
-      <h1 class="font-black text-6xl md:text-center" style={`text-shadow: 0px 0px 10px rgba(255,255,255,0.7);`}>{backspaceAndCapitalize(pokemon)}</h1>
-    </section>
-    <section class="grid pokedata-grid xl:gap-6 gap-4">
-      <picture class="sprite">
-        <img src={pokeData.sprites.other.home.front_default} width="350px" alt={pokemon} class="object-cover">
-      </picture>
-      <section class="data">
-        <h2 class="text-4xl mb-2 font-black">Pokédex Data</h2>
-        <section class="grid grid-cols-[max-content_1fr] grid-rows-[max-content_1fr] gap-y-1 gap-x-2">
-          <p class="font-black text-right">National N°</p>
-          <p>{getDexNumber(pokeData.id)}</p>
-          <p class="flex justify-end items-center font-black">Type</p>
-          <p class="flex gap-1">
-            {pokeData.types.map(type => <span class={`pill ${type.type.name}`}>{type.type.name}</span>)}
-          </p>
-          <p class="font-black text-right">Species</p><p>{(getGenus(pokeSpecies.genera, "en") == undefined)? "Unknown" : getGenus(pokeSpecies.genera, "en").genus}</p>
-          <p class="font-black text-right">Height</p><p>{pokeData.height/10} m</p>
-          <p class="font-black text-right">Weight</p><p>{pokeData.weight/10} kg</p>
-          <p class="flex justify-end items-center font-black">Abilities</p>
-          <PokemonAbilities abilities={pokeData.abilities} />
-          <p class="flex justify-end items-center font-black ">Local N°</p>
-          <PokemonEntryNumbers entries={pokeSpecies.pokedex_numbers} />
-        </section>
-      </section>
-      <section class="training">
-        <h2 class="text-4xl mb-2 font-black">Training</h2>
-        <section class="grid xl:grid-cols-2 grid-cols-[max-content_1fr] grid-rows-[max-content_1fr] gap-y-1 gap-x-2">
-          <p class="font-black text-right">EV yield</p>
-          <PokemonYield stats={pokeData.stats} />
-          <p class="font-black text-right">Catch rate</p>
-          <p>{pokeSpecies.capture_rate}</p>
-          <p class="font-black text-right">Base friendship</p>
-          <p>{pokeSpecies.base_happiness}</p>
-          <p class="font-black text-right">Base exp.</p>
-          <p>{pokeData.base_experience}</p>
-          <p class="font-black text-right">Growth rate</p>
-          <p>{capitalize(pokeSpecies.growth_rate.name).replace("-", " ")}</p>
-        </section>
-      </section>
-      <section class="breeding">
-        <h2 class="text-4xl mb-2 font-black">Breeding</h2>
-        <section class="grid xl:grid-cols-2 grid-cols-[max-content_1fr] grid-rows-[max-content_1fr] gap-y-1 gap-x-2">
-          <p class="font-black text-right">Egg groups</p>
-          <p>
-            {pokeSpecies.egg_groups.map(group => <span>{(group.name == "no-eggs")? "Undiscovered" : capitalize(group.name)} </span>)}
-          </p>
-          <p class="font-black text-right">Gender</p>
-          <p><span class="male">{(8-pokeSpecies.gender_rate)*12.5}% male</span>, <span class="female">{pokeSpecies.gender_rate*12.5}% female</span></p>
-          <p class="font-black text-right">Egg Cycles</p>
-          <p>{pokeSpecies.hatch_counter} <span class="additional-info ml-1">({((pokeSpecies.hatch_counter-1) * 257)+1}-{pokeSpecies.hatch_counter * 257} steps)</span></p>
-        </section>
-      </section>
-    </section>
-    <section class="grid md:grid-cols-2 xl:gap-6 gap-4 mt-4">
-      <section class="grid gap-y-2">
-        <h2 class="text-4xl mb-2 font-black">Base stats</h2>
-        <section class="grid grid-cols-[max-content_max-content_1fr_max-content_max-content_max-content_max-content] gap-2">
-          <section>
-            <p class="text-[gray] text-right">HP</p>
-            <p class="text-[gray] text-right">Attack</p>
-            <p class="text-[gray] text-right">Defense</p>
-            <p class="text-[gray] text-right">Sp. Atk</p>
-            <p class="text-[gray] text-right">Sp. Def</p>
-            <p class="text-[gray] text-right">Speed</p>
-            <p class="text-[gray] text-right">Total</p>
-          </section>
-          <section>
-            <p>{pokeData.stats[0].base_stat}</p>
-            <p>{pokeData.stats[1].base_stat}</p>
-            <p>{pokeData.stats[2].base_stat}</p>
-            <p>{pokeData.stats[3].base_stat}</p>
-            <p>{pokeData.stats[4].base_stat}</p>
-            <p>{pokeData.stats[5].base_stat}</p>
-            <p class="font-black">{pokeData.stats[0].base_stat + pokeData.stats[1].base_stat + pokeData.stats[2].base_stat + pokeData.stats[3].base_stat + pokeData.stats[4].base_stat + pokeData.stats[5].base_stat}</p>
-          </section>
-          <section class="stat-bar-column">
-            <p><span class="stat-bar" data-stat={pokeData.stats[0].base_stat} style={`display:inline-block; height: 5px; background-color: hsl(${Math.floor(pokeData.stats[0].base_stat * 0.4) * 1.25}, 100%, 50%)`}></span></p>
-            <p><span class="stat-bar" data-stat={pokeData.stats[1].base_stat} style={`display:inline-block; height: 5px; background-color: hsl(${Math.floor(pokeData.stats[1].base_stat * 0.4) * 1.25}, 100%, 50%)`}></span></p>
-            <p><span class="stat-bar" data-stat={pokeData.stats[2].base_stat} style={`display:inline-block; height: 5px; background-color: hsl(${Math.floor(pokeData.stats[2].base_stat * 0.4) * 1.25}, 100%, 50%)`}></span></p>
-            <p><span class="stat-bar" data-stat={pokeData.stats[3].base_stat} style={`display:inline-block; height: 5px; background-color: hsl(${Math.floor(pokeData.stats[3].base_stat * 0.4) * 1.25}, 100%, 50%)`}></span></p>
-            <p><span class="stat-bar" data-stat={pokeData.stats[4].base_stat} style={`display:inline-block; height: 5px; background-color: hsl(${Math.floor(pokeData.stats[4].base_stat * 0.4) * 1.25}, 100%, 50%)`}></span></p>
-            <p><span class="stat-bar" data-stat={pokeData.stats[5].base_stat} style={`display:inline-block; height: 5px; background-color: hsl(${Math.floor(pokeData.stats[5].base_stat * 0.4) * 1.25}, 100%, 50%)`}></span></p>
-            <p></p>
-          </section>
-          <section>
-            <p>{calculateHP(pokeData.stats[0].base_stat, 0, 0, 50)}</p>
-            <p>{calculateStat(pokeData.stats[1].base_stat, 0, 0, 50, 0.9)}</p>
-            <p>{calculateStat(pokeData.stats[2].base_stat, 0, 0, 50, 0.9)}</p>
-            <p>{calculateStat(pokeData.stats[3].base_stat, 0, 0, 50, 0.9)}</p>
-            <p>{calculateStat(pokeData.stats[4].base_stat, 0, 0, 50, 0.9)}</p>
-            <p>{calculateStat(pokeData.stats[5].base_stat, 0, 0, 50, 0.9)}</p>
-            <p class="font-black">Min</p>
-          </section>
-          <section>
-            <p>{calculateHP(pokeData.stats[0].base_stat, 31, 252, 50)}</p>
-            <p>{calculateStat(pokeData.stats[1].base_stat, 31, 252, 50, 1.1)}</p>
-            <p>{calculateStat(pokeData.stats[2].base_stat, 31, 252, 50, 1.1)}</p>
-            <p>{calculateStat(pokeData.stats[3].base_stat, 31, 252, 50, 1.1)}</p>
-            <p>{calculateStat(pokeData.stats[4].base_stat, 31, 252, 50, 1.1)}</p>
-            <p>{calculateStat(pokeData.stats[5].base_stat, 31, 252, 50, 1.1)}</p>
-            <p class="font-black">Max</p>
-          </section>
-          <section>
-          <p>{calculateHP(pokeData.stats[0].base_stat, 0, 0, 100)}</p>
-          <p>{calculateStat(pokeData.stats[1].base_stat, 0, 0, 100, 0.9)}</p>
-          <p>{calculateStat(pokeData.stats[2].base_stat, 0, 0, 100, 0.9)}</p>
-          <p>{calculateStat(pokeData.stats[3].base_stat, 0, 0, 100, 0.9)}</p>
-          <p>{calculateStat(pokeData.stats[4].base_stat, 0, 0, 100, 0.9)}</p>
-          <p>{calculateStat(pokeData.stats[5].base_stat, 0, 0, 100, 0.9)}</p>
-          <p class="font-black">Min</p>
+	<TopBar />
+	<!-- Main -->
+	<section class="grid grid-rows-[max-content_1fr] xl:gap-y-8 px-2 md:px-4 justify-center text-white">
+		<section class="mb-4">
+			<h1 class="font-black text-6xl text-center" style={`text-shadow: 0px 0px 10px rgba(255,255,255,0.7);`}>{backspaceAndCapitalize(pokemon)}</h1>
+		</section>
+
+		<section class="grid pokedata-grid lg:gap-6 gap-4">
+			<picture class="sprite flex justify-center sm:block">
+				<img src={pokeData.sprites.other.home.front_default} alt={pokemon} class="w-[200px] md:w-[280px] lg:w-[350px] object-cover">
+			</picture>
+			<section class="data">
+				<h2 class="text-4xl mb-2 font-black text-center sm:text-left">Pokédex Data</h2>
+				<section class="flex flex-col gap-2">
+					<div class="flex gap-4">
+						<p class="font-black text-right w-[50%] sm:w-[30%]">National N°</p>
+						<p class="w-auto">{getDexNumber(pokeData.id)}</p>
+					</div>
+					<div class="flex gap-4">
+						<p class="font-black text-right w-[50%] sm:w-[30%]">Type</p>
+						<p class="flex gap-1 w-auto">
+							{pokeData.types.map(type => <span class={`pill ${type.type.name}`}>{type.type.name}</span>)}
+						</p>
+					</div>
+					<div class="flex gap-4">
+						<p class="font-black text-right w-[50%] sm:w-[30%]">Species</p>
+						<p class="w-auto">{(getGenus(pokeSpecies.genera, "en") == undefined)? "Unknown" : getGenus(pokeSpecies.genera, "en").genus}</p>
+					</div>
+					<div class="flex gap-4">
+						<p class="font-black text-right w-[50%] sm:w-[30%]">Height</p>
+						<p class="w-auto">{pokeData.height/10} m</p>
+					</div>
+					<div class="flex gap-4">
+						<p class="font-black text-right w-[50%] sm:w-[30%]">Weight</p>
+						<p class="w-auto">{pokeData.weight/10} kg</p>
+					</div>
+					<div class="flex gap-4">
+						<p class="flex justify-end items-start font-black w-[50%] sm:w-[30%]">Abilities</p>
+          				<PokemonAbilities abilities={pokeData.abilities} />
+					</div>
+					<div class="flex gap-4">
+						<p class="flex justify-end items-start font-black w-[50%] sm:w-[30%]">Local N°</p>
+          				<PokemonEntryNumbers entries={pokeSpecies.pokedex_numbers} />
+					</div>
+        		</section>
+      		</section>
+        	<section class="training">
+        		<h2 class="text-4xl mb-2 font-black text-center sm:text-left">Training</h2>
+          		<section class="flex flex-col gap-2">
+            		<div class="flex gap-4">
+              			<p class="font-black text-right w-[50%] sm:w-[40%]">EV yield</p>
+              			<PokemonYield stats={pokeData.stats} />
+              		</div>
+                	<div class="flex gap-4">
+                 		<p class="font-black text-right w-[50%] sm:w-[40%]">Catch rate</p>
+                   		<p>{pokeSpecies.capture_rate}</p>
+                 	</div>
+                	<div class="flex gap-4">
+                 		<p class="font-black text-right w-[50%] sm:w-[40%]">Base friendship</p>
+                   		<p>{pokeSpecies.base_happiness}</p>
+                 	</div>
+                	<div class="flex gap-4">
+                 		<p class="font-black text-right w-[50%] sm:w-[40%]">Base exp.</p>
+                   		<p>{pokeData.base_experience}</p>
+                 	</div>
+                	<div class="flex gap-4">
+                 		<p class="font-black text-right w-[50%] sm:w-[40%]">Growth rate</p>
+                   		<p>{capitalize(pokeSpecies.growth_rate.name).replace("-", " ")}</p>
+                 	</div>
+            	</section>
+         	</section>
+          	<section class="breeding">
+          		<h2 class="text-4xl mb-2 font-black text-center sm:text-left">Breeding</h2>
+            	<section class="flex flex-col gap-2">
+             		<div class="flex gap-4">
+               			<p class="font-black text-right w-[50%] sm:w-[40%]">Egg groups</p>
+                  		<p>
+                    		{pokeSpecies.egg_groups.map(group => <span>{(group.name == "no-eggs")? "Undiscovered" : capitalize(group.name)} </span>)}
+                   		</p>
+               		</div>
+                 	<div class="flex gap-4">
+                  		<p class="font-black text-right w-[50%] sm:w-[40%]">Gender</p>
+                    	<p><span class="male">{(8-pokeSpecies.gender_rate)*12.5}% male</span>, <span class="female">{pokeSpecies.gender_rate*12.5}% female</span></p>
+                  	</div>
+                   	<div class="flex gap-4">
+                    	<p class="font-black text-right w-[50%] sm:w-[40%]">Egg Cycles</p>
+                    	<p>{pokeSpecies.hatch_counter} <span class="additional-info ml-1">({((pokeSpecies.hatch_counter-1) * 257)+1}-{pokeSpecies.hatch_counter * 257} steps)</span></p>
+                    </div>
+            	</section>
+           </section>
+		</section>
+		<section class="grid md:grid-cols-2 xl:gap-6 gap-4 mt-4">
+			<section class="grid gap-y-2">
+				<h2 class="text-4xl mb-2 font-black text-center sm:text-left">Base stats</h2>
+				<section class="grid grid-cols-[max-content_max-content_1fr_max-content_max-content_max-content_max-content] gap-2 md:gap-4">
+					<section>
+            			<p class="text-[gray] text-right">HP</p>
+			            <p class="text-[gray] text-right">Attack</p>
+			            <p class="text-[gray] text-right">Defense</p>
+			            <p class="text-[gray] text-right">Sp. Atk</p>
+			            <p class="text-[gray] text-right">Sp. Def</p>
+			            <p class="text-[gray] text-right">Speed</p>
+			            <p class="text-[gray] text-right">Total</p>
+          			</section>
+             		<section>
+               			<p>{pokeData.stats[0].base_stat}</p>
+                  		<p>{pokeData.stats[1].base_stat}</p>
+                    	<p>{pokeData.stats[2].base_stat}</p>
+                     	<p>{pokeData.stats[3].base_stat}</p>
+                      	<p>{pokeData.stats[4].base_stat}</p>
+                      	<p>{pokeData.stats[5].base_stat}</p>
+                       	<p class="font-black">{pokeData.stats[0].base_stat + pokeData.stats[1].base_stat + pokeData.stats[2].base_stat + pokeData.stats[3].base_stat + pokeData.stats[4].base_stat + pokeData.stats[5].base_stat}</p>
+               		</section>
+                 	<section class="stat-bar-column">
+                 		<p><span class="stat-bar" data-stat={pokeData.stats[0].base_stat} style={`display:inline-block; height: 5px; background-color: hsl(${Math.floor(pokeData.stats[0].base_stat * 0.4) * 1.25}, 100%, 50%)`}></span></p>
+                   		<p><span class="stat-bar" data-stat={pokeData.stats[1].base_stat} style={`display:inline-block; height: 5px; background-color: hsl(${Math.floor(pokeData.stats[1].base_stat * 0.4) * 1.25}, 100%, 50%)`}></span></p>
+                     	<p><span class="stat-bar" data-stat={pokeData.stats[2].base_stat} style={`display:inline-block; height: 5px; background-color: hsl(${Math.floor(pokeData.stats[2].base_stat * 0.4) * 1.25}, 100%, 50%)`}></span></p>
+                     	<p><span class="stat-bar" data-stat={pokeData.stats[3].base_stat} style={`display:inline-block; height: 5px; background-color: hsl(${Math.floor(pokeData.stats[3].base_stat * 0.4) * 1.25}, 100%, 50%)`}></span></p>
+                     	<p><span class="stat-bar" data-stat={pokeData.stats[4].base_stat} style={`display:inline-block; height: 5px; background-color: hsl(${Math.floor(pokeData.stats[4].base_stat * 0.4) * 1.25}, 100%, 50%)`}></span></p>
+                      	<p><span class="stat-bar" data-stat={pokeData.stats[5].base_stat} style={`display:inline-block; height: 5px; background-color: hsl(${Math.floor(pokeData.stats[5].base_stat * 0.4) * 1.25}, 100%, 50%)`}></span></p>
+                  	</section>
+                   	<section>
+                    	<p>{calculateHP(pokeData.stats[0].base_stat, 0, 0, 50)}</p>
+                     	<p>{calculateStat(pokeData.stats[1].base_stat, 0, 0, 50, 0.9)}</p>
+                      	<p>{calculateStat(pokeData.stats[2].base_stat, 0, 0, 50, 0.9)}</p>
+                      	<p>{calculateStat(pokeData.stats[3].base_stat, 0, 0, 50, 0.9)}</p>
+                       	<p>{calculateStat(pokeData.stats[4].base_stat, 0, 0, 50, 0.9)}</p>
+                        <p>{calculateStat(pokeData.stats[5].base_stat, 0, 0, 50, 0.9)}</p>
+                        <p class="font-black">Min</p>
+                    </section>
+                    <section>
+                    	<p>{calculateHP(pokeData.stats[0].base_stat, 31, 252, 50)}</p>
+                     	<p>{calculateStat(pokeData.stats[1].base_stat, 31, 252, 50, 1.1)}</p>
+                      	<p>{calculateStat(pokeData.stats[2].base_stat, 31, 252, 50, 1.1)}</p>
+                       	<p>{calculateStat(pokeData.stats[3].base_stat, 31, 252, 50, 1.1)}</p>
+                        <p>{calculateStat(pokeData.stats[4].base_stat, 31, 252, 50, 1.1)}</p>
+                        <p>{calculateStat(pokeData.stats[5].base_stat, 31, 252, 50, 1.1)}</p>
+                        <p class="font-black">Max</p>
+                    </section>
+                    <section>
+                        <p>{calculateHP(pokeData.stats[0].base_stat, 0, 0, 100)}</p>
+                        <p>{calculateStat(pokeData.stats[1].base_stat, 0, 0, 100, 0.9)}</p>
+                        <p>{calculateStat(pokeData.stats[2].base_stat, 0, 0, 100, 0.9)}</p>
+                        <p>{calculateStat(pokeData.stats[3].base_stat, 0, 0, 100, 0.9)}</p>
+                        <p>{calculateStat(pokeData.stats[4].base_stat, 0, 0, 100, 0.9)}</p>
+                        <p>{calculateStat(pokeData.stats[5].base_stat, 0, 0, 100, 0.9)}</p>
+                        <p class="font-black">Max</p>
+                    </section>
+                    <section>
+                    	<p>{calculateHP(pokeData.stats[0].base_stat, 31, 252, 100)}</p>
+                     	<p>{calculateStat(pokeData.stats[1].base_stat, 31, 252, 100, 1.1)}</p>
+                      	<p>{calculateStat(pokeData.stats[2].base_stat, 31, 252, 100, 1.1)}</p>
+                       	<p>{calculateStat(pokeData.stats[3].base_stat, 31, 252, 100, 1.1)}</p>
+                        <p>{calculateStat(pokeData.stats[4].base_stat, 31, 252, 100, 1.1)}</p>
+                        <p>{calculateStat(pokeData.stats[5].base_stat, 31, 252, 100, 1.1)}</p>
+                        <p class="font-black">Max</p>
+                    </section>
+      			</section>
+         		<footer class="flex flex-col">
+           			<i class="additional-info px-2 sm:px-0">Minimum calculated values assuming unfavourable nature, 0EVs and 0IVs</i>
+              		<i class="additional-info px-2 sm:px-0">Maximum calculated values assuming favourable nature, 252EVS and 31IVs</i>
+           		</footer>
+    		</section>
+      		<PokemonTypeEffectiveness pokemon={pokemon} type1={pokeData.types[0].type.name} type2={pokeData.types[1]?.type.name} />
+  		</section>
+    	<PokemonEvolutionChart evolutionChainUrl={pokeSpecies.evolution_chain.url} spriteUrl={pokeData.sprites.other.home.front_default} />
+     	<section>
+      		<h2 class="text-4xl mb-2 font-black">Moves learned by {capitalize(pokemon)}</h2>
+        	<div class="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-[repeat(auto-fit,minmax(min(25%,100%),1fr))]">
+         		<PokemonMoves moves={pokeData.moves} caption="Moves learnt by level" generation="scarlet-violet" method="level-up" />
+          		<PokemonMoves moves={pokeData.moves} caption="Moves learnt by TM" generation="scarlet-violet" method="machine" />
+            	<PokemonMoves moves={pokeData.moves} caption="Moves learnt by tutor" generation="scarlet-violet" method="tutor" />
+             	<PokemonMoves moves={pokeData.moves} caption="Moves learnt by breeding" generation="scarlet-violet" method="egg" />
+         	</div>
+      	</section>
+       	<section>
+        	<h2 class="text-4xl mb-2 font-black">Pokédex entries</h2>
+        	<PokemonDexEntries entries={pokeSpecies.flavor_text_entries} lang="en" />
         </section>
         <section>
-          <p>{calculateHP(pokeData.stats[0].base_stat, 31, 252, 100)}</p>
-          <p>{calculateStat(pokeData.stats[1].base_stat, 31, 252, 100, 1.1)}</p>
-          <p>{calculateStat(pokeData.stats[2].base_stat, 31, 252, 100, 1.1)}</p>
-          <p>{calculateStat(pokeData.stats[3].base_stat, 31, 252, 100, 1.1)}</p>
-          <p>{calculateStat(pokeData.stats[4].base_stat, 31, 252, 100, 1.1)}</p>
-          <p>{calculateStat(pokeData.stats[5].base_stat, 31, 252, 100, 1.1)}</p>
-          <p class="font-black">Max</p>
+        	<h2 class="text-4xl mb-2 font-black">Other languages</h2>
         </section>
-      </section>
-      <footer class="flex flex-col">
-        <i class="additional-info">Minimum calculated values assuming unfavourable nature, 0EVs and 0IVs</i>
-        <i class="additional-info">Maximum calculated values assuming favourable nature, 252EVS and 31IVs</i>
-      </footer>
-    </section>
-    <PokemonTypeEffectiveness pokemon={pokemon} type1={pokeData.types[0].type.name} type2={pokeData.types[1]?.type.name} />
-  </section>
-  <PokemonEvolutionChart evolutionChainUrl={pokeSpecies.evolution_chain.url} spriteUrl={pokeData.sprites.other.home.front_default} />
-  <section>
-    <h2 class="text-4xl mb-2 font-black">Moves learned by {capitalize(pokemon)}</h2>
-    <div class="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-[repeat(auto-fit,minmax(min(25%,100%),1fr))]">
-      <PokemonMoves moves={pokeData.moves} caption="Moves learnt by level" generation="scarlet-violet" method="level-up" />
-      <PokemonMoves moves={pokeData.moves} caption="Moves learnt by TM" generation="scarlet-violet" method="machine" />
-      <PokemonMoves moves={pokeData.moves} caption="Moves learnt by tutor" generation="scarlet-violet" method="tutor" />
-      <PokemonMoves moves={pokeData.moves} caption="Moves learnt by breeding" generation="scarlet-violet" method="egg" />
-    </div>
-  </section>
-  <section>
-    <h2 class="text-4xl mb-2 font-black">Pokédex entries</h2>
-    <PokemonDexEntries entries={pokeSpecies.flavor_text_entries} lang="en" />
-  </section>
-  <section>
-    <h2 class="text-4xl mb-2 font-black">Other languages</h2>
-  </section>
+	</section>
 </Layout>
 
 <script is:inline>
