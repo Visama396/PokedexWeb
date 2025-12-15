@@ -7,5 +7,6 @@
 	"yesterdayPokemon": "어제의 포켓몬 n1",
 	"loading": "로딩 중...",
 	"pokedleDescription": "오늘의 포켓몬을 맞춰보세요!",
-	"footer": "이 페이지는 Nintendo, Pokémon, The Pokémon Company, Game Freak, 또는 Pokémon의 특권에 관련된 다른 회사와 관련이 없습니다. 모든 포켓몬의 이름과 이미지는 Nintendo, The Pokémon Company, Game Freak의 소유물입니다. 데이터는 PokeApi.co API에서 추출되었으며 BSD-3-Clause 라이선스에 따라 사용됩니다."
+	"footer": "이 페이지는 Nintendo, Pokémon, The Pokémon Company, Game Freak, 또는 Pokémon의 특권에 관련된 다른 회사와 관련이 없습니다. 모든 포켓몬의 이름과 이미지는 Nintendo, The Pokémon Company, Game Freak의 소유물입니다. 데이터는 PokeApi.co API에서 추출되었으며 BSD-3-Clause 라이선스에 따라 사용됩니다.",
+	"language": "언어"
 }
