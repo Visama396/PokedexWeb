@@ -8,7 +8,7 @@ import { capitalize } from "../utils/capitalize";
 
 const yesterdayPokemon = await fetch(`https://pokeapi.co/api/v2/pokemon/${getYesterdaysPokemon()}`)
 	.then(response => response.json())
-	.then(data => {console.log(data.name); return data.name});
+	.then(data => data.name);
 
 ---
 <Layout title="Visamadex · Pokedle" language="es">

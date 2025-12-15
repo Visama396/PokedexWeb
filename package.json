@@ -1,39 +1,42 @@
 {
-  "name": "pokedex",
+  "name": "pokedexweb",
+  "version": "1.0.0",
+  "description": "Pokedex made with React, powered by PokeAPI database",
+  "keywords": [
+    "Visamadex",
+    "Pokedex",
+    "Visamalog",
+    "Pokedle",
+    "Pokemon",
+    "PokeAPI"
+  ],
+  "homepage": "https://github.com/Visama396/PokedexWeb#readme",
+  "bugs": {
+    "url": "https://github.com/Visama396/PokedexWeb/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Visama396/PokedexWeb.git"
+  },
+  "license": "ISC",
+  "author": "Visama",
   "type": "module",
-  "version": "0.0.1",
+  "main": ".prettierrc.js",
   "scripts": {
-    "dev": "astro dev",
-    "start": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview",
-    "astro": "astro"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "astro dev"
   },
   "dependencies": {
-    "@astrojs/netlify": "^5.0.1",
-    "@astrojs/react": "^4.4.0",
-    "@astrojs/tailwind": "^5.1.0",
-    "@lucide/astro": "^0.555.0",
-    "@types/react": "^19.2.0",
-    "@types/react-dom": "^19.2.0",
-    "astro": "^4.3.2",
-    "flowbite": "^2.2.1",
-    "lucide-react": "^0.555.0",
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0",
-    "tailwindcss": "^3.3.5"
-  },
-  "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.62.0",
-    "@typescript-eslint/parser": "^5.62.0",
-    "eslint": "^8.53.0",
-    "eslint-config-prettier": "^8.10.0",
-    "eslint-config-standard": "^17.1.0",
-    "eslint-plugin-astro": "^0.29.1",
-    "eslint-plugin-import": "^2.29.0",
-    "eslint-plugin-n": "^15.7.0",
-    "eslint-plugin-promise": "^6.1.1",
-    "prettier": "^2.8.8",
-    "prettier-plugin-astro": "0.5.4"
+    "@astrojs/netlify": "^6.6.3",
+    "@astrojs/react": "^4.4.2",
+    "@lucide/astro": "^0.561.0",
+    "@tailwindcss/vite": "^4.1.18",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "astro": "^5.16.5",
+    "lucide-react": "^0.561.0",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "tailwindcss": "^4.1.18"
   }
 }

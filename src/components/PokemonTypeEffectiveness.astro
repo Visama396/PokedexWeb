@@ -74,8 +74,8 @@ function getTextByTypeValue(value) {
     <section class="grid xl:grid-cols-9 grid-cols-6 xl:gap-2 md:gap-4 gap-8">
         {keys.map(type => (
             <div class="type-effective">
-                <picture>
-                    <img class="max-w-[64px]" src={`/${type}.svg`} alt={type}>
+                <picture class="flex justify-center">
+                    <img class="max-w-16" src={`/${type}.svg`} alt={type}>
                 </picture>
                 <p class={`font-black text-center ${getColorByTypeValue(types[type])}`}>
                     {getTextByTypeValue(types[type])}
