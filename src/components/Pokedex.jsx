@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { capitalize } from '../utils/capitalize'
+import PokedexItem from './PokedexItem'
 
 export default function Pokedex({ lang = 'en', pokedex }) {
 	const [dex, setDex] = useState(pokedex)
@@ -14,11 +15,9 @@ export default function Pokedex({ lang = 'en', pokedex }) {
 	}, []) */
 
 	return (
-		<main className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
+		<main className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 px-4' style={{ gridAutoRows: '1fr' }}>
 			{dex.map((pokemon, _) => (
-				<div key={_}>
-					<h2 className='text-white'>{capitalize(pokemon.name)}</h2>
-				</div>
+				<PokedexItem key={_} pokemonName={capitalize(pokemon.name)} pokemonUrl={pokemon.url} />
 			))}
 		</main>
 	)

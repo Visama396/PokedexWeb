@@ -24,9 +24,9 @@ export default function PokedleInput({ onPokemonClick, pokedex = [], language = 
 	}, [inputValue])
 
 	return (
-		<div className='w-[20rem] rounded-md flex flex-col justify-center items-center py-2 gap-2 z-10 fixed' style={{ backgroundColor: showAutoComplete ? '#333' : 'transparent' }}>
-			<input className='rounded-md bg-[#222] w-[96%] p-4' type='text' value={inputValue} onChange={e => { setInputValue(e.target.value); setShowAutoComplete(e.target.value.length > 0) }} placeholder={translate('pokedleInput', language)} />
-			<div className='flex flex-col justify-center items-center gap-2 max-h-72 w-full overflow-auto scrollbar-minimal' style={{ display: showAutoComplete ? 'block' : 'none' }}>
+		<div className='w-[20rem] rounded-md flex flex-col justify-center items-center py-2 gap-2 z-15 sticky top-16' style={{ backgroundColor: showAutoComplete ? '#333' : 'transparent' }}>
+			<input className='rounded-md bg-[#222] w-[96%] p-4 z-15' type='text' value={inputValue} onChange={e => { setInputValue(e.target.value); setShowAutoComplete(e.target.value.length > 0) }} placeholder={translate('pokedleInput', language)} />
+			<div className='bg-[#222] absolute top-full flex flex-col justify-center items-center gap-2 max-h-72 w-full overflow-auto scrollbar-minimal' style={{ display: showAutoComplete ? 'block' : 'none' }}>
 				{
 					autoCompletedPokemon.map((pokemon, _) => (
 						<PokedleAutocompleteItem key={_} pokeName={capitalize(pokemon.name)} pokeId={getIdFromUrl(pokemon.url)} onPokemonClick={(pokeName, pokeId) => { onPokemonClick(pokeName, pokeId); setShowAutoComplete(false); setInputValue('') }} />

@@ -145,10 +145,10 @@ export default function Pokemondle({ daily, language = 'en' }) {
 
 	return (
 		<main className='text-white flex-1'>
-			<div className='flex justify-center mb-16'>
+			<div className='flex justify-center'>
 				<PokedleInput onPokemonClick={handlePokemonClick} pokedex={allPokemon} language={lang} />
 			</div>
-			<div className='flex justify-center py-2'>
+			<div className='flex md:justify-center py-2'>
 				<table className='border-spacing-2 border-separate'>
 					<thead>
 						{pokeTries.length > 0 && (

@@ -15,9 +15,9 @@ const yesterdayPokemon = await fetch(`https://pokeapi.co/api/v2/pokemon/${getYes
 	<div class="flex flex-col min-h-screen">
 		<TopBar />
 		<header class="p-2 mb-4">
-			<h1 class="font-black text-3xl md:text-6xl md:text-center text-white mb-2">Pokedle</h1>
-			<h2 class="font-medium text-md md:text-xl md:text-center text-gray-500">{translate('pokedleDescription', 'es')}</h2>
-			<h3 class="font-medium text-lg md:text-2xl md:text-center text-gray-300">{translateWithWords('yesterdayPokemon', [capitalize(yesterdayPokemon)], 'es')}</h3>
+			<h1 class="font-black text-3xl md:text-6xl text-center text-white mb-2">Pokedle</h1>
+			<h2 class="font-medium text-md md:text-xl text-center text-gray-500">{translate('pokedleDescription', 'es')}</h2>
+			<h3 class="font-medium text-lg md:text-2xl text-center text-gray-300">{translateWithWords('yesterdayPokemon', [capitalize(yesterdayPokemon)], 'es')}</h3>
 		</header>
 		<Pokemondle daily={true} language='es' client:load />
 		<footer class="p-4 text-gray-600">
