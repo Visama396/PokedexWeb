@@ -2,9 +2,9 @@
 import Layout from '../layouts/Layout.astro'
 import App from '../components/App'
 
-const dex = await fetch('https://pokeapi.co/api/v2/pokemon/?limit=1025')
+const dex = await fetch('https://pokeapi.co/api/v2/pokedex/1/')
 			.then(response => response.json())
-			.then(data => data.results)
+			.then(data => data.pokemon_entries)
 ---
 <Layout title="Visamadex" language="es">
 	<App lang="es" dex={dex} client:load />
