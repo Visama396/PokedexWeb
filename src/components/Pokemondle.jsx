@@ -147,20 +147,20 @@ export default function Pokemondle({ daily, language = 'en' }) {
 		<main className='text-white flex-1'>
 			<div className='flex flex-col md:justify-center py-2'>
 				<PokedleInput onPokemonClick={handlePokemonClick} pokedex={allPokemon} language={lang} />
-				<table className='w-full md:w-[60%] xl:self-center border-spacing-2 border-separate'>
+				<table className='table-fixed w-full xl:w-[90%] xl:max-w-7xl xl:self-center xl:border-spacing-2 xl:border-separate text-xs xl:text-base'>
 					<thead>
 						{pokeTries.length > 0 && (
 							<tr>
-								<th>Tipo 1</th>
-								<th>Tipo 2</th>
-								<th>Altura</th>
-								<th>Peso</th>
-								<th>Habilidad 1</th>
-								<th>Habilidad 2</th>
-								<th>Habilidad 3</th>
-								<th>Stats base</th>
-								<th>Generación</th>
-								<th>Imagen</th>
+								<th className='w-1/10'>Tipo 1</th>
+								<th className='w-1/10'>Tipo 2</th>
+								<th className='w-1/10'>Altura</th>
+								<th className='w-1/10'>Peso</th>
+								<th className='w-1/10'>Hab. 1</th>
+								<th className='w-1/10'>Hab. 2</th>
+								<th className='w-1/10'>Hab. 3</th>
+								<th className='w-1/10'>Stats</th>
+								<th className='w-1/10'>Gen.</th>
+								<th className='w-1/10'>Sprite</th>
 							</tr>
 						)}
 					</thead>
