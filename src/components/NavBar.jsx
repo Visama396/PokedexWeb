@@ -3,7 +3,7 @@ import { translate } from '../utils/translate'
 export default function NavBar({ language = 'en', handleLanguageChange }) {
 	return (
 		<nav className='flex align-center sticky top-0 bg-[#111] z-10'>
-			<a href='/' className='inline-block p-4 text-white duration-500 ease-in-out hover:bg-slate-400'>{translate('home', language)}</a>
+			<a href='/' className='inline-block p-4 text-white duration-500 ease-in-out hover:bg-slate-400'>Pokédex</a>
 			<a href='/pokedle' className='inline-block p-4 text-white duration-500 ease-in-out hover:bg-slate-400'>Pokedle</a>
 			<a href='/pokedlearcade' className='inline-block p-4 text-white duration-500 ease-in-out hover:bg-slate-400'>Pokedle Arcade</a>
 			<div className='group relative inline-block text-center p-4 text-white duration-500 ease-in-out hover:bg-slate-400'>
