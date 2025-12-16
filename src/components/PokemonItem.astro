@@ -20,7 +20,7 @@ const data = await fetch(url).then(response => response.json()).catch(err => con
       <p class="text-center text-white text-xl">#{getDexNumber(data.id)}</p>
       <img class="object-cover mx-auto" src={img} alt={id}>
       <div>
-        <h1 class="font-black text-center text-lg md:text-2xl pokemon mt-2">{backspaceAndCapitalize(title)}</h1>
+        <h1 class="font-black text-center text-white text-lg md:text-2xl pokemon mt-2">{backspaceAndCapitalize(title)}</h1>
         <p class="text-center text-md" style="font-weight: bold">
           {
             (data.types.length == 1) ?
