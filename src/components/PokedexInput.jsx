@@ -45,7 +45,7 @@ export default function PokedexInput({ pokedex = [], language = 'es' }) {
 	return (
 		<div className='bg-white/20 w-[20rem] rounded-2xl shadow-[0_4px_30px_rgba(0,0,0,0.1)] backdrop-blur-[5px] border border-white/30 flex flex-col justify-center items-center mb-4 gap-2 z-15 sticky top-16 self center'>
 			<input className='rounded-2xl w-[96%] p-4 text-white border-none focus:outline-none' type='text' value={inputValue} onChange={(e) => {setInputValue(e.target.value); setShowAutoComplete(e.target.value.length > 0)}} placeholder={translate('pokedleInput', language)} />
-			<div className='bg-white/20 border border-white/30 rounded-2xl absolute top-full flex flex-col justify-center items-center gap-2 max-h-72 w-full overflow-auto scrollbar-minimal' style={{ display: showAutoComplete ? 'block' : 'none' }}>
+			<div className='absolute top-full flex flex-col gap-2 max-h-72 w-full overflow-auto scrollbar-minimal bg-white/20 backdrop-blur-[5px] border border-white/30 rounded-xl z-50' style={{ display: showAutoComplete ? 'block' : 'none' }}>
 				{
 					autoCompletedPokemon.map((entry) => (
 						<PokedexAutocompleteItem key={entry.entry_number} sprite={entry.pokemon.sprites.other.home.front_default} displayName={entry.displayName} fallbackName={entry.pokemon.name} />
