@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react'
-import { translate } from "../utils/translate"
+
 import PokedexAutocompleteItem from './PokedexAutocompleteItem'
+import { X } from 'lucide-react'
+
+import { translate } from "../utils/translate"
 
 export default function PokedexInput({ pokedex = [], language = 'es' }) {
 	const [inputValue, setInputValue] = useState('')
@@ -17,27 +20,15 @@ export default function PokedexInput({ pokedex = [], language = 'es' }) {
 	  const normalizedInput = inputValue.toLowerCase()
 	  const allowedLanguages = ['en', 'es', 'de', 'ja', 'ko']
 
-	  const filtered = pokedex
-	    .map((entry) => {
-	      // Filtramos nombres permitidos
-	      const matchedNameObj = entry.species.names
-	        .filter(n => allowedLanguages.includes(n.language.name))
-	        .find(n => n.name.toLowerCase().startsWith(normalizedInput))
+	  const filtered = pokedex.filter(({ pokemon, species }) => {
+      const localizedName =
+        species.names.find(n => n.language.name === language)?.name ||
+        pokemon.name
 
-	      const matchesPokemonName = entry.pokemon.name
-	        .toLowerCase()
-	        .startsWith(normalizedInput)
-
-	      if (matchedNameObj) {
-	        return { ...entry, displayName: matchedNameObj.name }
-	      } else if (matchesPokemonName) {
-	        return { ...entry, displayName: entry.pokemon.name }
-	      }
-
-	      return null
-	    })
-	    .filter(Boolean)
-	    .slice(0, 10)
+      return localizedName
+        .toLowerCase()
+        .startsWith(normalizedInput)
+    })
 
 	  setAutoCompletedPokemon(filtered)
 	}, [inputValue])
@@ -47,9 +38,13 @@ export default function PokedexInput({ pokedex = [], language = 'es' }) {
 			<input className='rounded-2xl w-[96%] p-4 text-white border-none focus:outline-none' type='text' value={inputValue} onChange={(e) => {setInputValue(e.target.value); setShowAutoComplete(e.target.value.length > 0)}} placeholder={translate('pokedleInput', language)} />
 			<div className='absolute top-full flex flex-col gap-2 max-h-72 w-full overflow-auto scrollbar-minimal bg-white/20 backdrop-blur-[5px] border border-white/30 rounded-xl z-50' style={{ display: showAutoComplete ? 'block' : 'none' }}>
 				{
-					autoCompletedPokemon.map((entry) => (
-						<PokedexAutocompleteItem key={entry.entry_number} sprite={entry.pokemon.sprites.other.home.front_default} displayName={entry.displayName} fallbackName={entry.pokemon.name} />
-					))
+					autoCompletedPokemon.map((entry) => {
+						const displayName = entry.species.names.find(n => n.language.name === language)?.name || entry.pokemon.name
+						const fallbackName = entry.pokemon.name
+						return (
+							<PokedexAutocompleteItem key={entry.entry_number} sprite={entry.pokemon.sprites.other.home.front_default} displayName={displayName} fallbackName={fallbackName} />
+						)
+					})
 				}
 			</div>
 		</div>
