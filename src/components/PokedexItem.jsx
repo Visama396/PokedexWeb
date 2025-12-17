@@ -18,7 +18,7 @@ export default function PokedexItem({ nationalEntry, pokemon, species, language 
 				<h1 className='font-black text-center text-lg md:text-2xl pokemon mb-1 text-shadow-md'>{backspaceAndCapitalize(name)}</h1>
 				<p className='font-bold text-sm flex gap-2 justify-center'>
 					{
-						pokemon.types.map((typ, _) => <span key={_} className='bg-white/35 rounded-md py-1 px-2 shadow-md' style={{ color: `var(--light-${typ.type.name})`, textShadow: '0px 0px 3px rgba(0, 0, 0, 0.3)' }}>{translate(typ.type.name, language)}</span>)
+						pokemon.types.map((typ, _) => <span key={_} className='bg-white/25 rounded-md py-1 px-2 shadow-[0_2px_6px_rgba(255,255,255,0.3)]' style={{ color: `var(--light-${typ.type.name})`, textShadow: '0px 0px 8px rgba(0, 0, 0, 0.5)' }}>{translate(typ.type.name, language)}</span>)
 					}
 				</p>
 			</div>
