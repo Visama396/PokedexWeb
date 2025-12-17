@@ -1,5 +1,3 @@
-import { useState, useEffect } from 'react'
-
 export default function Hero({ language = 'en', showSubtitle = true }) {
 	return (
 		<div id='top' className='py-4 md:py-8'>

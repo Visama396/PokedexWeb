@@ -12,5 +12,19 @@
 	"fire": "Fuego",
 	"water": "Agua",
 	"grass": "Planta",
-	"electric": "Eléctrico"
+	"electric": "Eléctrico",
+	"poison": "Veneno",
+	"flying": "Volador",
+	"bug": "Bicho",
+	"normal": "Normal",
+	"ground": "Tierra",
+	"fairy": "Hada",
+	"fighting": "Lucha",
+	"psychic": "Psíquico",
+	"rock": "Roca",
+	"steel": "Acero",
+	"ghost": "Fantasma",
+	"dragon": "Dragón",
+	"ice": "Hielo",
+	"dark": "Siniestro"
 }

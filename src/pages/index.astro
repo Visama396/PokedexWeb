@@ -1,17 +1,11 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Title from '../components/Title.astro';
-import ListOfPokemon from '../components/ListOfPokemon.astro';
-import TopBar from '../components/TopBar.astro';
-import { translate } from '../utils/translate';
+import Layout from '../layouts/Layout.astro'
+import App from '../components/App'
+
+const dex = await fetch('https://pokeapi.co/api/v2/pokedex/1/')
+			.then(response => response.json())
+			.then(data => data.pokemon_entries)
 ---
 <Layout title="Visamadex" language="es">
-	<TopBar />
-	<Title />
-	<main class="m-auto max-w-7xl flex flex-col min-h-screen">
-		<ListOfPokemon />
-	</main>
-	<footer class="p-4 text-gray-600">
-		<p>{translate('footer', 'es')}</p>
-	</footer>
+	<App dex={dex} client:load />
 </Layout>

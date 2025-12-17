@@ -9,7 +9,7 @@ import { translate } from '../utils/translate'
  * @param {*} onPokemonClick Callback of the method that handles when a pokemon is clicked
  * @param {*} pokedex Array of pokemon objects
  */
-export default function PokedleInput({ onPokemonClick, pokedex = [], language = 'en' }) {
+export default function PokedleInput({ onPokemonClick, pokedex = [], language = 'es' }) {
 	const [inputValue, setInputValue] = useState('')
 	const [showAutoComplete, setShowAutoComplete] = useState(false)
 	const [autoCompletedPokemon, setAutoCompletedPokemon] = useState([])
