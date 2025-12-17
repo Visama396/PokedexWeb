@@ -6,6 +6,7 @@
 	"pokedleInput": "ポケモンの名前を入力してください",
 	"yesterdayPokemon": "昨日のポケモンはn1でした。",
 	"loading": "読み込み中...",
+	"loadingDex": "ポケモン図鑑を読み込み中...",
 	"pokedleDescription": "今日のポケモンを当ててみよう！",
 	"footer": "このページはNintendo、Pokémon、The Pokémon Company、Game Freak、またはPokémonの特許に関与している他の会社と関連していない。すべてのポケモンの名前と画像はNintendo、The Pokémon Company、Game Freakの所有物です。データはPokeApi.co APIから抽出され、BSD-3-Clauseライセンスの使用に準拠しています。",
 	"language": "言語",

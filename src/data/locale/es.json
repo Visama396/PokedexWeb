@@ -6,6 +6,7 @@
 	"pokedleInput": "Introduce un nombre de Pokémon",
 	"yesterdayPokemon": "El Pokémon de ayer fue n1",
 	"loading": "Cargando...",
+	"loadingDex": "Cargando Pokédex...",
 	"pokedleDescription": "¡Adivina el Pokémon del día!",
 	"footer": "Esta página no está afiliada a Nintendo, Pokémon, The Pokémon Company, Game Freak, o ninguna otra empresa involucrada en la franquicia Pokémon. Todos los nombres de Pokémon y sus imágenes son propiedad de Nintendo, The Pokémon Company y Game Freak. Los datos son extraídos de la API de PokeApi.co y están sujetos a licencia de uso BSD-3-Clause.",
 	"language": "Idioma",

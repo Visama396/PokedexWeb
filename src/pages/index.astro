@@ -7,5 +7,5 @@ const dex = await fetch('https://pokeapi.co/api/v2/pokedex/1/')
 			.then(data => data.pokemon_entries)
 ---
 <Layout title="Visamadex" language="es">
-	<App dex={dex} client:load />
+	<App dex={dex} client:idle />
 </Layout>
