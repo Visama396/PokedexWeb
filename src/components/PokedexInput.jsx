@@ -18,7 +18,6 @@ export default function PokedexInput({ pokedex = [], language = 'es' }) {
 	  }
 
 	  const normalizedInput = inputValue.toLowerCase()
-	  const allowedLanguages = ['en', 'es', 'de', 'ja', 'ko']
 
 	  const filtered = pokedex.filter(({ pokemon, species }) => {
       const localizedName =
