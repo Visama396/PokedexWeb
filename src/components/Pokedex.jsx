@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 
 import PokedexItem from './PokedexItem'
 import PokedexInput from './PokedexInput'
+import PokedexTypeFilters from './PokedexTypeFilters'
 
 import { translate } from '../utils/translate'
 import { getPokemon, setPokemon } from '../utils/pokemonDB'
@@ -9,6 +10,7 @@ import { getPokemon, setPokemon } from '../utils/pokemonDB'
 export default function Pokedex({ language = 'es', pokedex }) {
 	const [dex, setDex] = useState([])
 	const [loading, setLoading] = useState(true)
+	const [selectedTypes, setSelectedTypes] = useState(new Set())
 
 	useEffect(() => {
 		const fetchAllPokemon = async () => {
@@ -52,9 +54,10 @@ export default function Pokedex({ language = 'es', pokedex }) {
 	return (
 		<div className='flex flex-col items-center'>
 			<PokedexInput language={language} pokedex={dex} />
+			<PokedexTypeFilters selectedTypes={selectedTypes} setSelectedTypes={setSelectedTypes} />
 			<main className='grid w-full grid-cols-2 xl:max-w-[70%] md:grid-cols-3 lg:grid-cols-5 gap-3 px-4' style={{ gridAutoRows: '1fr' }}>
 				{dex.map(({ entry_number, pokemon, species }) => (
-					<PokedexItem key={entry_number} nationalEntry={entry_number} pokemon={pokemon} species={species} language={language} />
+					<PokedexItem key={entry_number} nationalEntry={entry_number} pokemon={pokemon} species={species} selectedTypes={selectedTypes} language={language} />
 				))}
 			</main>
 		</div>

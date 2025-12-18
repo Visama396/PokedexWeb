@@ -3,8 +3,12 @@ import { getDexNumber } from '../utils/getDexNumber'
 import { capitalize, backspaceAndCapitalize } from '../utils/capitalize'
 import { translate } from '../utils/translate'
 
-export default function PokedexItem({ nationalEntry, pokemon, species, language = 'es' }) {
+export default function PokedexItem({ nationalEntry, pokemon, species, selectedTypes, language = 'es' }) {
 	const name = species.names.find(n => n.language.name === language)?.name || pokemon.name
+
+	if (selectedTypes.size > 0 && !pokemon.types.some(item => selectedTypes.has(item.type.name))) {
+		return null
+	}
 
 	return (
 		<a
