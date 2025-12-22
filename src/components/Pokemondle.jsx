@@ -1,13 +1,17 @@
 import { useState, useEffect } from 'react'
-import { capitalize } from '../utils/capitalize'
-import { getDailyPokemon, getRandomPokemon } from '../utils/getPokemonId'
+import NavBar from './NavBar'
 import PokedleInput from './PokedleInput'
 import PokemondleTry from './PokemondleTry'
-import { translate } from '../utils/translate'
+import Footer from './Footer'
 
-export default function Pokemondle({ daily, language = 'en' }) {
+import { getPokemon, setPokemon } from '../utils/pokemonDB'
+import { capitalize, backspaceAndCapitalize } from '../utils/capitalize'
+import { getDailyPokemon, getRandomPokemon, getYesterdaysPokemon } from '../utils/getPokemonId'
+import { translate, translateWithWords } from '../utils/translate'
+
+export default function Pokemondle({ dex = [], daily, language = 'es' }) {
 	const [pokemon, setPokemon] = useState({ generation: '', height: 0, weight: 0, baseStats: 0, sprite: '', types: [], abilities: [], name: '', id: 0 })
-	const [allPokemon, setAllPokemon] = useState([])
+	const [pokedex, setPokedex] = useState(dex)
 	const [pokeDate, setPokeDate] = useState(() => {
 		if (daily) {
 			try {
@@ -30,8 +34,11 @@ export default function Pokemondle({ daily, language = 'en' }) {
 	})
 	const [loading, setLoading] = useState(true)
 	const [lang, setLang] = useState(language)
+	const [yesterdayPokemon, setYesterdayPokemon] = useState('')
 
 	useEffect(() => {
+		fetch(`https://pokeapi.co/api/v2/pokemon-species/${getYesterdaysPokemon()}`).then(response => response.json()).then(data => setYesterdayPokemon(data.names.find(name => name.language.name === lang).name))
+
 		const pokemonOfTheDay = {
 			generation: '',
 			height: 0,
@@ -127,7 +134,7 @@ export default function Pokemondle({ daily, language = 'en' }) {
 		}
 
 		loadPokemonData()
-	}, [])
+	}, [lang])
 
 	useEffect(() => {
 		if (daily) {
@@ -144,37 +151,46 @@ export default function Pokemondle({ daily, language = 'en' }) {
 	}
 
 	return (
-		<main className='text-white flex-1'>
-			<div className='flex flex-col md:justify-center py-2'>
-				<PokedleInput onPokemonClick={handlePokemonClick} pokedex={allPokemon} language={lang} />
-				<table className='table-fixed w-full xl:w-[90%] xl:max-w-7xl xl:self-center xl:border-spacing-2 xl:border-separate text-xs xl:text-base'>
-					<thead>
-						{pokeTries.length > 0 && (
-							<tr>
-								<th className='w-1/10'>Tipo 1</th>
-								<th className='w-1/10'>Tipo 2</th>
-								<th className='w-1/10'>Altura</th>
-								<th className='w-1/10'>Peso</th>
-								<th className='w-1/10'>Hab. 1</th>
-								<th className='w-1/10'>Hab. 2</th>
-								<th className='w-1/10'>Hab. 3</th>
-								<th className='w-1/10'>Stats</th>
-								<th className='w-1/10'>Gen.</th>
-								<th className='w-1/10'>Sprite</th>
-							</tr>
-						)}
-					</thead>
-					<tbody className='text-center'>
-						{
-							pokeTries.map((pokeTry, index) => {
-								return (
-									<PokemondleTry key={index} pokemon={pokemon} pokeTry={pokeTry} language={lang} />
-								)
-							})
-						}
-					</tbody>
-				</table>
-			</div>
-		</main>
+		<div className='flex flex-col min-h-screen'>
+			<NavBar language={lang} handleLanguageChange={setLang}  />
+			<header class="p-2 mb-4">
+				<h1 class="font-black text-3xl md:text-6xl text-center text-white mb-2">Pokedle</h1>
+				<h2 class="font-medium text-md md:text-xl text-center text-gray-500">{translate('pokedleDescription', lang)}</h2>
+				<h3 class="font-medium text-lg md:text-2xl text-center text-gray-300">{translateWithWords('yesterdayPokemon', [backspaceAndCapitalize(yesterdayPokemon)], lang)}</h3>
+			</header>
+			<main className='text-white flex-1'>
+				<div className='flex flex-col md:justify-center py-2'>
+					<PokedleInput onPokemonClick={handlePokemonClick} pokedex={allPokemon} language={lang} />
+					<table className='table-fixed w-full xl:w-[90%] xl:max-w-7xl xl:self-center xl:border-spacing-2 xl:border-separate text-xs xl:text-base'>
+						<thead>
+							{pokeTries.length > 0 && (
+								<tr>
+									<th className='w-1/10'>Tipo 1</th>
+									<th className='w-1/10'>Tipo 2</th>
+									<th className='w-1/10'>Altura</th>
+									<th className='w-1/10'>Peso</th>
+									<th className='w-1/10'>Hab. 1</th>
+									<th className='w-1/10'>Hab. 2</th>
+									<th className='w-1/10'>Hab. 3</th>
+									<th className='w-1/10'>Stats</th>
+									<th className='w-1/10'>Gen.</th>
+									<th className='w-1/10'>Sprite</th>
+								</tr>
+							)}
+						</thead>
+						<tbody className='text-center'>
+							{
+								pokeTries.map((pokeTry, index) => {
+									return (
+										<PokemondleTry key={index} pokemon={pokemon} pokeTry={pokeTry} language={lang} />
+									)
+								})
+							}
+						</tbody>
+					</table>
+				</div>
+			</main>
+			<Footer language={lang} />
+		</div>
 	)
 }
