@@ -10,8 +10,8 @@ import { getDailyPokemon, getRandomPokemon, getYesterdaysPokemon } from '../util
 import { translate, translateWithWords } from '../utils/translate'
 
 export default function Pokemondle({ dex = [], daily, language = 'es' }) {
-	const [pokemon, setPokemon] = useState({ generation: '', height: 0, weight: 0, baseStats: 0, sprite: '', types: [], abilities: [], name: '', id: 0 })
-	const [pokedex, setPokedex] = useState(dex)
+	const [dailyPokemon, setDailyPokemon] = useState({ generation: '', height: 0, weight: 0, baseStats: 0, sprite: '', types: [], abilities: [], name: '', id: 0 })
+	const [pokedex, setPokedex] = useState([])
 	const [pokeDate, setPokeDate] = useState(() => {
 		if (daily) {
 			try {
@@ -63,12 +63,34 @@ export default function Pokemondle({ dex = [], daily, language = 'es' }) {
 			}
 		}
 
-		fetch('https://pokeapi.co/api/v2/pokemon/?limit=1025').then(response => response.json())
-			.then(data => {
-				setAllPokemon(data.results)
-			})
-
 		async function loadPokemonData() {
+  		const results = await Promise.all(
+  			dex.map(async (entry) => {
+  				const speciesUrl = entry.pokemon_species.url
+
+  				const cached = await getPokemon(speciesUrl)
+  				if (cached) {
+  					return {
+  						entry_number: entry.entry_number,
+  						pokemon: cached.pokemon,
+  						species: cached.species
+  					}
+  				}
+  				const species = await fetch(speciesUrl).then(r => r.json())
+         	const varietyUrl = species.varieties.find(v => v.is_default)?.pokemon.url
+
+           	const pokemon = await fetch(varietyUrl).then(r => r.json())
+            await setPokemon(speciesUrl, { pokemon, species })
+
+            return {
+           	entry_number: entry.entry_number,
+             	pokemon,
+              species
+            }
+  			})
+  		)
+  		setPokedex(results)
+
 			try {
 				// --- Requests al species y pokemon EN PARALELO ---
 				const [speciesRes, pokemonRes] = await Promise.all([
@@ -125,7 +147,7 @@ export default function Pokemondle({ dex = [], daily, language = 'es' }) {
 				}
 
 				// --- Actualizar estado ---
-				setPokemon(newPokemon)
+				setDailyPokemon(newPokemon)
 			} catch (err) {
 				console.error(err)
 			} finally {
@@ -142,8 +164,8 @@ export default function Pokemondle({ dex = [], daily, language = 'es' }) {
 		}
 	}, [pokeTries])
 
-	const handlePokemonClick = (pokeName, pokeId) => {
-		setPokeTries(pokeTries => [...pokeTries, { name: pokeName, id: pokeId }])
+	const handlePokemonClick = (pokemon) => {
+		setPokeTries(pokeTries => [...pokeTries, pokemon])
 	}
 
 	if (loading) {
@@ -152,15 +174,15 @@ export default function Pokemondle({ dex = [], daily, language = 'es' }) {
 
 	return (
 		<div className='flex flex-col min-h-screen'>
-			<NavBar language={lang} handleLanguageChange={setLang}  />
-			<header class="p-2 mb-4">
-				<h1 class="font-black text-3xl md:text-6xl text-center text-white mb-2">Pokedle</h1>
-				<h2 class="font-medium text-md md:text-xl text-center text-gray-500">{translate('pokedleDescription', lang)}</h2>
-				<h3 class="font-medium text-lg md:text-2xl text-center text-gray-300">{translateWithWords('yesterdayPokemon', [backspaceAndCapitalize(yesterdayPokemon)], lang)}</h3>
+			<NavBar language={lang} handleLanguageChange={setLang} />
+			<header className='p-2 mb-4'>
+				<h1 className='font-black text-3xl md:text-6xl text-center text-white mb-2'>Pokedle</h1>
+				<h2 className='font-medium text-md md:text-xl text-center text-gray-500'>{translate('pokedleDescription', lang)}</h2>
+				<h3 className='font-medium text-lg md:text-2xl text-center text-gray-300'>{translateWithWords('yesterdayPokemon', [backspaceAndCapitalize(yesterdayPokemon)], lang)}</h3>
 			</header>
 			<main className='text-white flex-1'>
 				<div className='flex flex-col md:justify-center py-2'>
-					<PokedleInput onPokemonClick={handlePokemonClick} pokedex={allPokemon} language={lang} />
+					<PokedleInput onPokemonClick={handlePokemonClick} pokedex={pokedex} language={lang} />
 					<table className='table-fixed w-full xl:w-[90%] xl:max-w-7xl xl:self-center xl:border-spacing-2 xl:border-separate text-xs xl:text-base'>
 						<thead>
 							{pokeTries.length > 0 && (
@@ -180,9 +202,9 @@ export default function Pokemondle({ dex = [], daily, language = 'es' }) {
 						</thead>
 						<tbody className='text-center'>
 							{
-								pokeTries.map((pokeTry, index) => {
+								pokeTries.map((pokeTry) => {
 									return (
-										<PokemondleTry key={index} pokemon={pokemon} pokeTry={pokeTry} language={lang} />
+										<PokemondleTry key={pokeTry.entry_number} pokemon={dailyPokemon} pokeTry={pokeTry} language={lang} />
 									)
 								})
 							}

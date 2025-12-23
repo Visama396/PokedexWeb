@@ -1,7 +1,10 @@
-import { useState, useEffect } from 'react'
+import { backspaceAndCapitalize } from "../utils/capitalize"
 
-export default function PokedleAutocompleteItem({ pokeName, pokeId, onPokemonClick, language = 'en' }) {
+export default function PokedleAutocompleteItem({ pokemon, handleClick, language = 'es' }) {
 	return (
-		<div className='flex justify-around items-center px-2 cursor-pointer hover:bg-[#444] rounded-md' onClick={() => onPokemonClick(pokeName, pokeId)}><span>{pokeName}</span><img className='size-20 object-contain' src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${pokeId}.png`} alt={pokeName} /></div>
+		<div className='flex justify-around items-center px-2 cursor-pointer hover:bg-[#444] rounded-md' onClick={handleClick}>
+			<span>{backspaceAndCapitalize(pokemon.species.names.find(name => name.language.name === language).name)}</span>
+			<img className='size-20 object-contain' src={pokemon.pokemon.sprites.other.home.front_default} alt={pokemon.pokemon.name} />
+		</div>
 	)
 }
