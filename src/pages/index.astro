@@ -6,6 +6,6 @@ const dex = await fetch('https://pokeapi.co/api/v2/pokedex/1/')
 			.then(response => response.json())
 			.then(data => data.pokemon_entries)
 ---
-<Layout title="Visamadex" language="es">
+<Layout title="Visamadex">
 	<App dex={dex} client:idle />
 </Layout>

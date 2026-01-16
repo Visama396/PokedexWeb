@@ -9,7 +9,7 @@ import { capitalize, backspaceAndCapitalize } from '../utils/capitalize'
 import { getDailyPokemon, getRandomPokemon, getYesterdaysPokemon } from '../utils/getPokemonId'
 import { translate, translateWithWords } from '../utils/translate'
 
-export default function Pokemondle({ dex = [], daily, language = 'es' }) {
+export default function Pokemondle({ dex = [], daily }) {
 	const [dailyPokemon, setDailyPokemon] = useState({ generation: '', height: 0, weight: 0, baseStats: 0, sprite: '', types: [], abilities: [], name: '', id: 0 })
 	const [pokedex, setPokedex] = useState([])
 	const [pokeDate, setPokeDate] = useState(() => {
@@ -33,7 +33,7 @@ export default function Pokemondle({ dex = [], daily, language = 'es' }) {
 		} else return []
 	})
 	const [loading, setLoading] = useState(true)
-	const [lang, setLang] = useState(language)
+	const [lang, setLang] = useState('es')
 	const [yesterdayPokemon, setYesterdayPokemon] = useState('')
 
 	useEffect(() => {
@@ -66,9 +66,12 @@ export default function Pokemondle({ dex = [], daily, language = 'es' }) {
 		async function loadPokemonData() {
   		const results = await Promise.all(
   			dex.map(async (entry) => {
+
+          const yestUrl = `https://pokeapi.co/api/v2/pokemon-species/${getYesterdaysPokemon()}`
   				const speciesUrl = entry.pokemon_species.url
 
   				const cached = await getPokemon(speciesUrl)
+          const yestCached = await getPokemon(yestUrl)
   				if (cached) {
   					return {
   						entry_number: entry.entry_number,
@@ -76,6 +79,10 @@ export default function Pokemondle({ dex = [], daily, language = 'es' }) {
   						species: cached.species
   					}
   				}
+          console.log(yestUrl)
+          if (yestCached) {
+            console.log(yestCached)
+          }
   				const species = await fetch(speciesUrl).then(r => r.json())
          	const varietyUrl = species.varieties.find(v => v.is_default)?.pokemon.url
 
@@ -177,8 +184,8 @@ export default function Pokemondle({ dex = [], daily, language = 'es' }) {
 			<NavBar language={lang} handleLanguageChange={setLang} />
 			<header className='p-2 mb-4'>
 				<h1 className='font-black text-3xl md:text-6xl text-center text-white mb-2'>Pokedle</h1>
-				<h2 className='font-medium text-md md:text-xl text-center text-gray-500'>{translate('pokedleDescription', lang)}</h2>
-				<h3 className='font-medium text-lg md:text-2xl text-center text-gray-300'>{translateWithWords('yesterdayPokemon', [backspaceAndCapitalize(yesterdayPokemon)], lang)}</h3>
+				<h2 className='font-medium text-md md:text-xl text-center text-gray-500'>{daily ? translate('pokedleDescription', lang) : translate('pokedlearcadeDescription', lang)}</h2>
+				{daily && (<h3 className='font-medium text-lg md:text-2xl text-center text-gray-300'>{translateWithWords('yesterdayPokemon', [backspaceAndCapitalize(yesterdayPokemon)], lang)}</h3>)}
 			</header>
 			<main className='text-white flex-1'>
 				<div className='flex flex-col md:justify-center py-2'>

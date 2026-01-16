@@ -22,7 +22,7 @@ if (!pokeData) return Astro.redirect("/404")
 
 const pokeSpecies = await fetch(pokeData.species.url).then(response => response.json())
 ---
-<Layout title={`Visamadex · ${capitalize(pokemon)} details page`} language="en">
+<Layout title={`Visamadex · ${capitalize(pokemon)} details page`}>
 	<TopBar />
 	<!-- Main -->
 	<section class="grid grid-rows-[max-content_1fr] xl:gap-y-8 px-2 md:px-4 justify-center text-white">

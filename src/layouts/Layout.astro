@@ -1,16 +1,15 @@
 ---
 interface Props {
 	title: string;
-	language: string;
 }
 
 import '../styles/global.css'
 
-const { title, language } = Astro.props;
+const { title } = Astro.props;
 ---
 
 <!doctype html>
-<html lang={language}>
+<html>
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="description" content="Pokédex made with Astro and TailwindCSS. Uses PokeAPI to fetch data and the github repository of sprites for the images." />

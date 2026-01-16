@@ -21,46 +21,38 @@ export default function PokemondleTry({ pokemon, pokeTry, language }) {
 		baseStats: pokeTry.pokemon.stats.reduce((acc, stat) => acc + stat.base_stat, 0),
 		generation: pokeTry.species.generation.name.replace('generation-', '').toUpperCase()
 	})
+	const [loading, setLoading] = useState(true)
 
 	const COLORS = {
 		green: '#4caf50',
 		red: '#f44336',
-		yellowSoft: '#e1c03b', // amarillo menos intenso
-		neutral: '#4caf50' // sin color cuando ninguno tiene valor
+		yellowSoft: '#e1c03b',
+		neutral: '#4caf50'
 	}
 
 	function compareTypes(guessTypes = [], targetTypes = [], index) {
 		const guess = guessTypes[index]
 		const target = targetTypes[index]
 
-		// Caso: ninguno tiene valor en esta posición -> neutral (p.ej. no pintar)
 		if (guess === undefined && target === undefined) {
 			return COLORS.neutral
 		}
 
-		// Si guess está vacío/undefined pero target tiene otro sitio con guess → amarillo
-		// (pero aquí guess es undefined, así que no aplica). En cambio si guess existe y target undefined:
 		if (guess === undefined && target !== undefined) {
-			// el usuario no introdujo tipo en esta posición -> rojo (no coincide)
 			return COLORS.red
 		}
 
 		if (target === undefined && guess !== undefined) {
-			// El objetivo no tiene tipo en esta posición pero el usuario sí: si ese tipo aparece en otra posición -> amarillo
 			return (targetTypes.includes(guess) ? COLORS.yellowSoft : COLORS.red)
 		}
 
-		// Ambos definidos: coincidencia exacta -> verde
 		if (guess === target) return COLORS.green
 
-		// Si el tipo del guess aparece en otra posición del target -> amarillo
 		if (targetTypes.includes(guess)) return COLORS.yellowSoft
 
-		// No coincide en ninguna parte -> rojo
 		return COLORS.red
 	}
 
-	// Función para habilidades (puede haber más de 2/3 habilidades; mismo comportamiento)
 	function compareAbilities(guessAbilities = [], targetAbilities = [], index) {
 		const guess = guessAbilities[index]
 		const target = targetAbilities[index]
@@ -82,12 +74,41 @@ export default function PokemondleTry({ pokemon, pokeTry, language }) {
 		return COLORS.red
 	}
 
+	useEffect(() => {
+	  /*const localizeTry = async () => {
+			setLoading(true)
+
+			try {
+			  const localizedAbilities = await Promise.all(
+					pokeTryData.abilities.map(async (abilityName) => {
+					  const res = await fetch(`https://pokeapi.co/api/v2/ability/${abilityName}`)
+					  const data = await res.json()
+					  const localized = data.names.find(n => n.language.name === language)?.name || abilityName
+						return localized
+					})
+				)
+
+				setPokeTryData({ ...pokeTryData, abilities: localizedAbilities })
+			} catch (err) {
+				console.error(err)
+			} finally {
+			  setLoading(false)
+			}
+		}
+
+		localizeTry()*/
+		setLoading(false)
+		/*console.log('PokemondleTry Component PokeTry: ', pokeTry)
+		console.log('PokemondleTry Component Pokemon: ', pokemon)*/
+	}, [language])
+
+  if (loading) return <tr><td className='col-span-10'>{translate('loading', language)}</td></tr>
 	return (
 		<tr className='wrap-break-word'>
-			<td className='size-16 xl:size-32 rounded-sm xl:rounded-md' style={{ backgroundColor: compareTypes(pokeTryData.types, pokemon.types, 0) }}><p>{capitalize(pokeTryData.types[0])}</p></td>
-			<td className='size-16 xl:size-32 rounded-sm xl:rounded-md' style={{ backgroundColor: compareTypes(pokeTryData.types, pokemon.types, 1) }}><p>{pokeTryData.types[1] ? capitalize(pokeTryData.types[1]) : '-'}</p></td>
+			<td className='size-16 xl:size-32 rounded-sm xl:rounded-md' style={{ backgroundColor: compareTypes(pokeTryData.types, pokemon.types, 0) }}><p>{capitalize(translate(pokeTryData.types[0], language))}</p></td>
+			<td className='size-16 xl:size-32 rounded-sm xl:rounded-md' style={{ backgroundColor: compareTypes(pokeTryData.types, pokemon.types, 1) }}><p>{pokeTryData.types[1] ? capitalize(translate(pokeTryData.types[1], language)) : '-'}</p></td>
 			<td className='size-16 xl:size-32 rounded-sm xl:rounded-md' style={{ backgroundColor: pokeTryData.height - pokemon.height === 0 ? COLORS.green : COLORS.red }}><p>{pokeTryData.height / 10} m</p><div className='flex justify-center'>{pokemon.height === pokeTryData.height ? '' : pokemon.height > pokeTryData.height ? <ArrowUp className='size-3 xl:size-6' /> : <ArrowDown className='size-3 xl:size-6' />}</div></td>
-			<td className='size-16 xl:size-32 rounded-sm xl:rounded-md' style={{ backgroundColor: pokeTryData.weight - pokemon.weight === 0 ? COLORS.green : COLORS.red }}><p>{pokeTryData.weight / 10} kg</p><p><div className='flex justify-center'>{pokemon.weight === pokeTryData.weight ? '' : pokemon.weight > pokeTryData.weight ? <ArrowUp className='size-3 xl:size-6' /> : <ArrowDown className='size-3 xl:size-6' />}</div></p></td>
+			<td className='size-16 xl:size-32 rounded-sm xl:rounded-md' style={{ backgroundColor: pokeTryData.weight - pokemon.weight === 0 ? COLORS.green : COLORS.red }}><p>{pokeTryData.weight / 10} kg</p><div className='flex justify-center'>{pokemon.weight === pokeTryData.weight ? '' : pokemon.weight > pokeTryData.weight ? <ArrowUp className='size-3 xl:size-6' /> : <ArrowDown className='size-3 xl:size-6' />}</div></td>
 			<td className='size-16 xl:size-32 rounded-sm xl:rounded-md' style={{ backgroundColor: compareAbilities(pokeTryData.abilities, pokemon.abilities, 0) }}><p>{capitalize(pokeTryData.abilities[0])}</p></td>
 			<td className='size-16 xl:size-32 rounded-sm xl:rounded-md' style={{ backgroundColor: compareAbilities(pokeTryData.abilities, pokemon.abilities, 1) }}><p>{pokeTryData.abilities[1] ? capitalize(pokeTryData.abilities[1]) : '-'}</p></td>
 			<td className='size-16 xl:size-32 rounded-sm xl:rounded-md' style={{ backgroundColor: compareAbilities(pokeTryData.abilities, pokemon.abilities, 2) }}><p>{pokeTryData.abilities[2] ? capitalize(pokeTryData.abilities[2]) : '-'}</p></td>

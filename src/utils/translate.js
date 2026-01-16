@@ -4,6 +4,12 @@ import de from '../data/locale/de.json'
 import ja from '../data/locale/ja.json'
 import ko from '../data/locale/ko.json'
 
+/**
+ *
+ * @param {string} key The keyword that identifies the translation
+ * @param {string} language The language code to translate the keyword, default is 'en'. Options are: 'es', 'de', 'ja', 'ko'
+ * @returns {string} The translated string
+ */
 export const translate = (key, language = 'en') => {
 	switch (language) {
 	case 'es':
@@ -19,6 +25,13 @@ export const translate = (key, language = 'en') => {
 	}
 }
 
+/**
+ *
+ * @param {string} key The keyword that identifies the translation
+ * @param {string[]} words The words to replace in the translation
+ * @param {string} language The language code to translate the keyword, default is 'en'. Options are: 'es', 'de', 'ja', 'ko'
+ * @returns {string} The translated string
+ */
 export const translateWithWords = (key, words, language = 'en') => {
 	let result = key
 	switch (language) {
